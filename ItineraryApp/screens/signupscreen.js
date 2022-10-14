@@ -2,7 +2,7 @@ import {ImageBackground, StyleSheet, Text, View, Platform, Dimensions, Touchable
 import React, { Component } from 'react';
 import CustomAndroid from '../components/CustomAndroid';
 
-const image = { uri: "https://unsplash.com/photos/lu8-EpYHkho" };
+const image = { uri: "https://images.unsplash.com/photo-1526482312921-58d5666a52c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2130&q=80" };
 
 
 
@@ -36,8 +36,9 @@ const styles = StyleSheet.create({
     image: {
       flex: 1,
       justifyContent: "center",
-      height: 300,
-      width: 100
+      height: 650,
+      width: 500,
+      justifyContent: "center"
     },
     custom: {
       fontFamily: 'ABeeZee',
