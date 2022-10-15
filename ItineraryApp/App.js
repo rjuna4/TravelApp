@@ -22,6 +22,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import SignupForm from './screens/signupform';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,8 +59,9 @@ class App extends Component {
 render() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="SignupScreen">
         <Stack.Screen name="SignupScreen" component={SignupScreen} />
+        <Stack.Screen name="SignupForm" component={SignupForm} />
       </Stack.Navigator>
     </NavigationContainer>
   );
