@@ -13,7 +13,9 @@ class MoreInformation extends Component {
     return (
       <>
         <StatusBar style="dark-content" />
+
         <View style={styles.conatiner}>
+          <View style={styles.dockContainer}></View>
           <View style={styles.buttonOuterContainerAdd}>
             <Pressable
               style={({pressed}) =>
@@ -52,7 +54,15 @@ const styles = StyleSheet.create({
   image: {
     //TBD
   },
-  dockContainer: {},
+  dockContainer: {
+    backgroundColor: '#744578',
+    height: 70,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+  },
   buttonInnerContainerAdd: {
     backgroundColor: '#1D54A6',
     paddingVertical: 8,
@@ -65,12 +75,13 @@ const styles = StyleSheet.create({
     bottom: 80,
     right: 200,
     margin: 4,
+    marginBottom: 20,
     width: 100,
     overflow: 'hidden',
   },
   buttonInnerContainerSave: {
     backgroundColor: '#1D54A6',
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 18,
     elevation: 2,
   },
@@ -80,12 +91,13 @@ const styles = StyleSheet.create({
     bottom: 80,
     left: 200,
     margin: 4,
+    marginBottom: 20,
     marginHorizontal: 20,
     width: 100,
     overflow: 'hidden',
   },
   text: {
-    fontFamily: 'ABeeZee',
+    fontFamily: 'ABeeZee-Regular',
     color: 'white',
     fontSize: 28,
     textAlign: 'right',
