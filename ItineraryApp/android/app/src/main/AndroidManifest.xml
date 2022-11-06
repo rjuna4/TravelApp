@@ -12,7 +12,7 @@
       android:theme="@style/AppTheme">
       <meta-data
       android:name="com.google.android.geo.API_KEY"
-      android:value="ENTER API KEY"/>
+      android:value="I am missing my key"/> <!--*REPLACE THE PLACEHOLDER WITH THE 'MAPS SDK FOR ANDROID' API KEY ONLY*-->
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
