@@ -4,6 +4,7 @@ import SignupScreen from './screens/signupscreen';
 import SignupForm from './screens/signupform';
 import LoginForm from './screens/loginform';
 import MoreInformation from './screens/moreInformation';
+import MapTest from './screens/mapsTest';
 //Navigation Imports
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -31,11 +32,12 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MoreInformation">
+        <Stack.Navigator initialRouteName="MapTest">
           <Stack.Screen name="SignupScreen" component={SignupScreen} />
           <Stack.Screen name="SignupForm" component={SignupForm} />
           <Stack.Screen name="LoginForm" component={LoginForm} />
           <Stack.Screen name="MoreInformation" component={MoreInformation} />
+          <Stack.Screen name="MapTest" component={MapTest} />
         </Stack.Navigator>
       </NavigationContainer>
     );
