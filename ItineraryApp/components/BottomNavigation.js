@@ -4,9 +4,8 @@ import ProfileScreen from '../screens/profilescreen'
 import ItineraryListScreen from '../screens/itinerarylistscreen'
 import BookmarksScreen from '../screens/bookmarksscreen'
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native'
-import EditProfileScreen from '../screens/editprofilescreen'
 const BottomNavigator = createBottomTabNavigator();
-import CreateItineraryScreen from '../screens/createitineraryscreen'
+//import CreateItineraryScreen from '../screens/createitineraryscreen'
 
 const BottomNavBar = () => {
     return (

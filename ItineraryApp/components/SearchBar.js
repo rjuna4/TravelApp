@@ -1,40 +1,36 @@
 import React from "react";
-import { StyleSheet, TextInput, View, Keyboard, Button, Image } from "react-native"
+import { StyleSheet, SafeAreaView, Text, TextInput, View, Keyboard, Button, Image } from "react-native"
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
-const SearchBar = ({clicked, searchItem, setSearchItem, setClicked}) => {
+const SearchBar = () => {
     return (
-        <View style={StyleSheet.container}>
-            <View
-              style={
-                clicked
-                ? styles.searchBar__clicked
-                : styles.searchBar__unclicked
-              }
-            >
+        <SafeAreaView style={StyleSheet.container}>
             <Image style={styles.searchBarIcon}
                 source={require('../assets/icons/Search_alt.png')}
             />    
-            <TextInput
+            <GooglePlacesAutocomplete
+                GooglePlacesDetailsQuery={{fields: 'geometry'}}
                 style ={styles.container}
                 placeholder="Where do you want to go?"
-                value={searchItem}   
-                onChangeText={setSearchItem} 
-                onFocus={() => {
-                    setClicked(true);
+                query={{
+                    key: 'AIzaSyAkWZoqmot4KRuIsGlZshMlJ1PV52fOYhk',
+                    language: 'en'
                 }}
+                fetchDetails={true}
+                onPress={(data, details = null) => {
+                    console.log("data: ", data)
+                    console.log("details: ", details)
+                    console.log(JSON.stringify(details?.geometry?.viewport));
+                }}
+                onFail={error => console.log(error)}
+                onNotFound={() => console.log('No search results found')}
+                listEmptyComponent={() => (
+                    <View style={{flex: 1}}>
+                        <Text>No search results found</Text>
+                    </View>
+                )}    
             />
-        </View>  
-        <View>
-            <Image style={styles.crossButton}
-                source={require('../assets/icons/Close_round.png')}
-                title="Cancel"
-                onPress={() => {
-                    Keyboard.dismiss();
-                    setClicked(false);
-                }}
-            />  
-        </View>
-    </View>
+    </SafeAreaView>
     );
 };     
 export default SearchBar;
@@ -46,31 +42,12 @@ const styles = StyleSheet.create({
         color: "#F1EEEE",
         borderRadius: 13,
         flexDirection: "row",
-        justifyContent: "center",
         fontSize: 19,
     },
-
-    searchBar__clicked: {
-        width: 332,
-        height: 56,
-        color: "#F1EEEE",
-        borderRadius: 13,
-        shadowColor: "#0E74AD",
-        shadowOffset: { width: 4, height: 10}
-    },
-
-    searchBar__unclicked: {
-        width: 332,
-        height: 56,
-        color: "#1D54A6",
-        borderRadius: 13,
-        shadowColor: "#0E74AD",
-        shadowOffset: { width: 4, height: 10}
-    },
-
+    
     searchBarIcon: {
-        width: 21,
-        height: 19.25,
         justifyContent: 'flex-start',
+        width: 332,
+        height: 56,
     }
 });
