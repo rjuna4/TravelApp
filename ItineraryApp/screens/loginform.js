@@ -1,5 +1,6 @@
-import {Icon, SafeAreaView, TextInput, ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable } from 'react-native';
+import {Icon, SafeAreaView, TextInput, ImageBackground, Image, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable } from 'react-native';
 import React, { Component, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const image = { uri: "https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=998&q=80"};
 
@@ -16,6 +17,9 @@ const inputField = () => {
     return (
       <SafeAreaView>
         <View style={styles.inputContainer}>
+        <Image style={styles.userIcon}
+                source={require('ItineraryApp/assets/icons/User_fill(1).png')}
+        />    
         <TextInput
           placeholder="Username"
           style={styles.input}
@@ -24,6 +28,9 @@ const inputField = () => {
         />
         </View>
         <View style={styles.inputContainer}>
+        <Image style={styles.passwordIcon}
+                source={require('ItineraryApp/assets/icons/Lock_fill.png')}
+        />    
         <TextInput
           //onChangeText={(value) => console.log(value)}
           placeholder="Password"
@@ -42,24 +49,26 @@ const inputField = () => {
     );
   };
 
-class LoginForm extends Component {
-  render(){
+const LoginForm = () => {
+  const navigation = useNavigation();
     return (
     <View style={styles.container}>
-
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
         <Text style={styles.custom}>Welcome Back!</Text>
          {inputField()}
         <Text style={styles.text}>Remember me?</Text>
         <Text style={styles.text}>Forgot username and/or password? Click here</Text>
       </ImageBackground>
-      <TouchableOpacity style={styles.button2}>
+      <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('HomeScreen')}>
           <Text style={styles.custom}>Login</Text>
         </TouchableOpacity>
+        <Text style={styles.text}>Don't have an account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignupForm')}>
+          <Text style={styles.text2}>Sign up here.</Text>
+        </TouchableOpacity>  
     </View>  
     )  
   }
-};
 export default LoginForm
 
 const styles = StyleSheet.create({
@@ -74,7 +83,12 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    color: "#FFFFFF"
+    color: "#FFFFFF",
+  },
+  text2: {
+    textAlign: "center",
+    color: "#FFFFFF",
+    textDecorationLine: 'underline',
   },
   custom: {
     fontFamily: 'ABeeZee',
@@ -95,14 +109,27 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10
   },
-  button2: {
+  input: {
+    fontSize: 20
+  },
+  button1: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 13,
     backgroundColor: "#DA5263",
     width: 205,
     height: 56,
-    marginBottom: 100,
+    marginBottom: 150,
     marginHorizontal: 100
-  }
+  },
+  userIcon: {
+    tintColor: '#000000',
+    opacity: 0.45,
+    width: 35,
+    height: 35,
+  },
+  passwordIcon: {
+    width: 35,
+    height: 35,
+  },
 });

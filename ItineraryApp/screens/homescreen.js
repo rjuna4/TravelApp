@@ -1,7 +1,9 @@
-import {ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, Button, SafeAreaView, Image, ActivityIndicator, FlatList } from 'react-native';
-import React, { Component, useState, useEffect } from 'react';
+import {ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, Button, SafeAreaView, Image, ActivityIndicator } from 'react-native';
+import React, { Component, useState, useLayoutEffect, useEffect } from 'react';
 import CustomAndroid from '../components/CustomAndroid';
-//import List from '../components/List';
+import { useNavigation } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
+
 import SearchBar from '../components/SearchBar';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -31,38 +33,32 @@ const onPressHandler = () => {
     navigation.navigate('MoreInformation');
 }
 
+const navigation = useNavigation();
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerShown: false,
+        })
+      }, []);
+
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.container}>
         <View style={styles.searchBar}></View>
-        <ImageBackground source={image} resizeMode="cover" style={styles.image}></ImageBackground>
+        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        </ImageBackground>
       </View>
-      {!clicked && <Text style={styles.title}></Text>}
-      <SearchBar style={styles.searchBar}
-        searchItem={searchItem}
-        setSearchItem={setSearchItem}
-        clicked={clicked}
-        setClicked={clicked}
-      />
-      <Text style={styles.name}>Welcome Back, {userName}!</Text>
-      <Text style={styles.categoryTitle}>Trending Destinations</Text>
-      <FlatList
-        style={styles.section}
-        horizontal
-        data={places}
-        renderItem={({item, index}) => (
-            <View>
-                <Pressable
-                onPress={onPressHandler}
-           >
-                   <View> 
-                    <Text style={styles.description}>{item.name}</Text>
-                </View>
-              
-            </Pressable>
-            </View>
-        )}
+      <View style ={styles.searchBar}>
+        <TouchableOpacity onPress={() => navigation.navigate('ActivityRecommendations')}>
+          <Image style={styles.searchBarIcon}
+              source={require('../assets/icons/Search_alt.png')}
+          />
+        </TouchableOpacity>
+        {!clicked && <Text style={styles.title}></Text>}
+        <SearchBar style={styles.searchBar}
         />
+      </View>
+      <Text style={styles.text}>Trending Destinations</Text>
     </SafeAreaView>
   )
 }
@@ -72,7 +68,7 @@ export default HomeScreen
 
 
 const styles = StyleSheet.create({
-    container: {
+    photo: {
       flex: 1
     },
 
@@ -100,15 +96,23 @@ const styles = StyleSheet.create({
       height: 264,
       width: 415,
     },
+    
+
+    categoryTitle: {
+        fontSize: 17,
+        color: 'black',
+        top: 160,
+        right: 110
+      }
 
     searchBar: {
       marginBottom: 15,
-    },
+    }, 
 
-    categoryTitle: {
-      fontSize: 17,
-      color: 'black',
-      top: 160,
-      right: 110
+    searchBarIcon: {
+      width: 33,
+      height: 33,
+      marginTop: 200,
+      marginRight: 50,
     }
   });
