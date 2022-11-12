@@ -6,13 +6,19 @@ import {
   StatusBar,
   Pressable,
   Image,
+  FlatList
 } from 'react-native';
+import MapTest from './mapsTest';
+
+function map() { new Map();}
 
 class MoreInformation extends Component {
   render() {
+    map();
     return (
       <>
         <StatusBar style="dark-content" />
+        
 
         <View style={styles.conatiner}>
           <View style={styles.dockContainer}></View>
@@ -27,6 +33,8 @@ class MoreInformation extends Component {
               <Text style={styles.text}>Add</Text>
             </Pressable>
           </View>
+
+
           <View style={styles.buttonOuterContainerSave}>
             <Pressable
               style={({pressed}) =>
@@ -39,7 +47,6 @@ class MoreInformation extends Component {
               <Text style={styles.text}>Save</Text>
             </Pressable>
           </View>
-          <Text></Text>
         </View>
       </>
     );
@@ -100,9 +107,8 @@ const styles = StyleSheet.create({
     fontFamily: 'ABeeZee-Regular',
     color: 'white',
     fontSize: 28,
-    textAlign: 'right',
+    textAlign: 'center',
   },
-  button: {},
   pressed: {
     opacity: 0.75,
   },

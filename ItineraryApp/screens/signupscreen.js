@@ -20,9 +20,6 @@ class SignupScreen extends Component {
         <TouchableOpacity style={styles.button2}>
           <Text style={styles.custom}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button3}>
-          <Text style={styles.custom}>Guest</Text>
-        </TouchableOpacity>
       </View> 
       
     )
@@ -56,28 +53,16 @@ const styles = StyleSheet.create({
       backgroundColor: "#1D54A6",
       width: 205,
       height: 56,
-      marginBottom: 22,
+      bottom: 20,
       marginHorizontal: 100,
     },
     button2: {
-      alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 13,
-      backgroundColor: "#DA5263",
+      backgroundColor: "#E8358B",
       width: 205,
       height: 56,
-      marginBottom: 22,
+      marginBottom: 70,
       marginHorizontal: 100
-    },
-    button3: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: 13,
-      backgroundColor: "#744578",
-      width: 205,
-      height: 56,
-      marginHorizontal: 100,
-      marginBottom: 125
-    },
-
+    }
   });

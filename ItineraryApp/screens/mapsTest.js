@@ -3,8 +3,9 @@ import React, {Component} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 // Import Map and Marker
 import MapView, {Marker} from 'react-native-maps';
-class MapTest extends Component {
-  render() {
+
+export default function Map() {
+
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
@@ -32,7 +33,6 @@ class MapTest extends Component {
         </View>
       </SafeAreaView>
     );
-  }
 }
 
 const mapStyle = [
@@ -125,6 +125,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
+  text: {
+    fontFamily: 'ABeeZee-Regular',
+    color: 'white',
+    fontSize: 28,
+    textAlign: 'right',
+  },
   mapStyle: {
     position: 'absolute',
     top: 0,
@@ -138,4 +144,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export default MapTest;
