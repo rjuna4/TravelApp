@@ -54,17 +54,18 @@ const LoginForm = () => {
     return (
     <View style={styles.container}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <Text style={styles.custom}>Welcome Back!</Text>
+        <Text style={styles.title}>Welcome Back!</Text>
          {inputField()}
         <Text style={styles.text}>Remember me?</Text>
-        <Text style={styles.text}>Forgot username and/or password? Click here</Text>
+        <Text style={styles.text}>Forgot username and/or password?</Text>
+        <Text style={styles.text2}>Click Here.</Text>
       </ImageBackground>
       <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('HomeScreen')}>
           <Text style={styles.custom}>Login</Text>
         </TouchableOpacity>
-        <Text style={styles.text}>Don't have an account?</Text>
+        <Text style={[styles.text, {bottom: 90} ]}>Don't have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('SignupForm')}>
-          <Text style={styles.text2}>Sign up here.</Text>
+          <Text style={[styles.text2, {bottom: 90}]}>Sign up here.</Text>
         </TouchableOpacity>  
     </View>  
     )  
@@ -81,6 +82,13 @@ const styles = StyleSheet.create({
     height: 610,
     width: 420,
   },
+  title: {
+    fontFamily: 'ABeeZee',
+    fontSize: 38,
+    color: "white",
+    textAlign: "center",
+    bottom: 10,
+  },
   text: {
     textAlign: "center",
     color: "#FFFFFF",
@@ -89,10 +97,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFFFFF",
     textDecorationLine: 'underline',
+    fontWeight: 'bold'
   },
   custom: {
     fontFamily: 'ABeeZee',
-    fontSize: 38,
+    fontSize: 25,
     color: "white",
     textAlign: "center",
   },
@@ -110,7 +119,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   input: {
-    fontSize: 20
+    fontSize: 18,
   },
   button1: {
     alignItems: 'center',
@@ -119,17 +128,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#DA5263",
     width: 205,
     height: 56,
-    marginBottom: 150,
+    bottom: 100,
     marginHorizontal: 100
   },
   userIcon: {
     tintColor: '#000000',
     opacity: 0.45,
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
+    marginLeft: 5
   },
   passwordIcon: {
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
+    marginLeft: 5
   },
 });

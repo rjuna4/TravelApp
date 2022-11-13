@@ -4,8 +4,8 @@ import ProfileScreen from '../screens/profilescreen'
 import ItineraryListScreen from '../screens/itinerarylistscreen'
 import BookmarksScreen from '../screens/bookmarksscreen'
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native'
+
 const BottomNavigator = createBottomTabNavigator();
-//import CreateItineraryScreen from '../screens/createitineraryscreen'
 
 const BottomNavBar = () => {
     return (
@@ -15,7 +15,7 @@ const BottomNavBar = () => {
                     position: 'absolute',
                     elevation: 0,
 
-                    height: 73,
+                    height: 60,
                     backgroundColor: '#744578'
                 }]
             }}
@@ -28,8 +28,8 @@ const BottomNavBar = () => {
                             source={require('../assets/icons/User_fill(1).png')}
                             resizeMode='contain'
                             style={{
-                                width: 46,
-                                height: 50,
+                                width: 40,
+                                height: 40,
                                 tintColor: focused ? '#DA5263' : '#FFFFFF',
                             }}
                         />    
@@ -43,8 +43,8 @@ const BottomNavBar = () => {
                             source={require('../assets/icons/Home_fill.png')}
                             resizeMode='contain'
                             style={{
-                                width: 46,
-                                height: 50,
+                                width: 40,
+                                height: 40,
                                 tintColor: focused ? '#DA5263' : '#FFFFFF',
                             }}
                         />    
@@ -52,15 +52,15 @@ const BottomNavBar = () => {
                 ),    
             }} />
 
-            <BottomNavigator.Screen name="Itineraries" component={CreateItineraryScreen} options={{
+            <BottomNavigator.Screen name="Itineraries" component={ItineraryListScreen} options={{
                 tabBarIcon: ({focused}) => (
                     <View style={{alignItems: 'center', justifyContent: 'center'}}>
                         <Image
                             source={require('../assets/icons/Map_fill.png')}
                             resizeMode='contain'
                             style={{
-                                width: 46,
-                                height: 50,
+                                width: 40,
+                                height: 38,
                                 tintColor: focused ? '#DA5263':'#FFFFFF'
                             }}
                         />    
@@ -74,8 +74,8 @@ const BottomNavBar = () => {
                             source={require('../assets/icons/Bookmark_fill(1).png')}
                             resizeMode='contain'
                             style={{
-                                width: 46,
-                                height: 40,
+                                width: 40,
+                                height: 35,
                                 tintColor: focused ? '#DA5263' : '#FFFFFF'
                             }}
                         />    

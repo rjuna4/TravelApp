@@ -58,7 +58,6 @@ const inputField = () => {
           placeholder="Password"
           secureTextEntry
           secure={true}
-          style={styles.input}
         />
         {/* {
         <Icon style={{ paddingRight: 15, }}
@@ -76,7 +75,6 @@ const inputField = () => {
           placeholder=" Confirm Password"
           secureTextEntry
           secure={true}
-          style={styles.input}
         />
         {/* {
         <Icon style={{ paddingRight: 15, }}
@@ -90,26 +88,19 @@ const inputField = () => {
     );
   };
 
-const SignupForm = () => {
-  const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-      navigation.setOptions({
-          headerShown: false,
-      })
-    }, []);
+const SignupForm = ({navigation}) => {
     return (
     <View style={styles.container}>
       <ImageBackground source={localImage} resizeMode="cover" style={styles.localImage}>
-        <Text style={styles.text}>Sign Up</Text>
+        <Text style={styles.title}>Create an Account</Text>
          {inputField()}
       </ImageBackground>
-      <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('HomeScreen')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
           <Text style={styles.custom}>Sign Up</Text>
       </TouchableOpacity>
-        <Text style={styles.text2}>Already have an account?</Text>
+        <Text style={[styles.text, {bottom: 80} ]}>Already have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
-          <Text style={styles.text2}>Login here.</Text>
+          <Text style={[styles.text2, {bottom: 80} ]}>Login here.</Text>
         </TouchableOpacity>  
     </View>  
     )  
@@ -126,8 +117,14 @@ const styles = StyleSheet.create({
     height: 660,
     width: 420,
   },
+  title: {
+    fontFamily: 'ABeeZee',
+    fontSize: 38,
+    color: "white",
+    textAlign: "center",
+    bottom: 10,
+  },
   text: {
-    fontSize: 45,
     textAlign: "center",
     color: "#FFFFFF",
   },
@@ -135,6 +132,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFFFFF",
     textDecorationLine: 'underline',
+    fontWeight: 'bold'
   },
   custom: {
     fontFamily: 'ABeeZee',
@@ -155,29 +153,32 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10
   },
-  button1: {
+  button: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 13,
     backgroundColor: "#CE80D4",
     width: 205,
     height: 56,
-    marginBottom: 150,
-    marginHorizontal: 105,
+    bottom: 90,
+    marginHorizontal: 105
   },
   userIcon: {
     tintColor: '#000000',
     opacity: 0.45,
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
+    marginLeft: 5
   },
   emailIcon: {
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
+    marginLeft: 5
   },
   passwordIcon: {
-    width: 35,
-    height: 35,
+    width: 25,
+    height: 25,
+    marginLeft: 5
   },
 });
 
