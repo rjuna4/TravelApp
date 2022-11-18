@@ -1,19 +1,40 @@
-import {Component} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  StatusBar,
-  Pressable,
-  Image,
-  FlatList
-} from 'react-native';
+import {Component, useLayoutEffect} from 'react';
+import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import MapTest from './mapsTest';
 
 function map() { new Map();}
 
-class MoreInformation extends Component {
-  render() {
+const alert = () => 
+  Alert.alert(
+    'Add Activity to Itinerary',
+    '',
+    [
+      {
+        text: "Cancel"
+      },
+      {
+        text: "Create new itinerary",
+      },
+      {
+        text: "Add to existing itinerary",
+        //onPress: () => navigation.navigate('ItineraryListScreen')
+      }
+    ]
+  )
+
+
+const MoreInformation = ({route}) => {
+      useLayoutEffect(() => {
+        navigation.setOptions({
+            headerShown: false,
+        })
+      }, []);
+    const navigation = useNavigation();
+
+    console.log("data: ", data)
+
+    const data = route?.params?.param
     map();
     return (
       <>
@@ -46,12 +67,14 @@ class MoreInformation extends Component {
               <Image></Image>
               <Text style={styles.text}>Save</Text>
             </Pressable>
+            <TouchableOpacity style ={styles.alert} onPress={() => alert()}>
+            <Text style={styles.text}>Save</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </>
     );
   }
-}
 
 const styles = StyleSheet.create({
   conatiner: {
