@@ -14,7 +14,7 @@ import ActivityRecommendations from './screens/activityrecommendations';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import BottomNavBar from './components/BottomNavigation';
+import { BottomNavigator } from './components/BottomNavigation';
 import {
   SafeAreaView,
   ScrollView,
@@ -40,19 +40,20 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MoreInformation">
-          <Stack.Screen name="SignupScreen" component={SignupScreen} />
-          <Stack.Screen name="SignupForm" component={SignupForm} />
-          <Stack.Screen name="LoginForm" component={LoginForm} />
-          <Stack.Screen name="MoreInformation" component={MoreInformation} />
+        <Stack.Navigator initialRouteName="SignupScreen">
+          <Stack.Screen name="Tabs" component={BottomNavigator} options={{headerShown: false}} />
+          <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>
+          <Stack.Screen name="LoginForm" component={LoginForm} options={{headerShown: false}}/>
+          {/* <Stack.Screen name="MoreInformation" component={MoreInformation} />
           <Stack.Screen name="MapTest" component={MapTest} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           <Stack.Screen name="ActivityRecommendations" component={ActivityRecommendations} />
           <Stack.Screen name="BookmarksScreen" component={BookmarksScreen} />
-          <Stack.Screen name="ItineraryListScreen" component={ItineraryListScreen} />
-
-        </Stack.Navigator>
+          <Stack.Screen name="ItineraryListScreen" component={ItineraryListScreen} /> */}
+        </Stack.Navigator> 
+        {/* <BottomNavigator /> */}
       </NavigationContainer>
     );
   }

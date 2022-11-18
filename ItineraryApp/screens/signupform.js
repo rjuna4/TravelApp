@@ -95,7 +95,7 @@ const SignupForm = ({navigation}) => {
         <Text style={styles.title}>Create an Account</Text>
          {inputField()}
       </ImageBackground>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tabs')}>
           <Text style={styles.custom}>Sign Up</Text>
       </TouchableOpacity>
         <Text style={[styles.text, {bottom: 80} ]}>Already have an account?</Text>

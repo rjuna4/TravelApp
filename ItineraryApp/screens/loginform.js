@@ -60,7 +60,7 @@ const LoginForm = () => {
         <Text style={styles.text}>Forgot username and/or password?</Text>
         <Text style={styles.text2}>Click Here.</Text>
       </ImageBackground>
-      <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('HomeScreen')}>
+      <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('Tabs')}>
           <Text style={styles.custom}>Login</Text>
         </TouchableOpacity>
         <Text style={[styles.text, {bottom: 90} ]}>Don't have an account?</Text>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: "center",
-    height: 610,
+    height: 660,
     width: 420,
   },
   title: {

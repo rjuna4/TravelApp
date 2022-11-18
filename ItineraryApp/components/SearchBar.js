@@ -4,13 +4,10 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 
 const SearchBar = () => {
     return (
-        <SafeAreaView style={StyleSheet.container}>
-            <Image style={styles.searchBarIcon}
-                source={require('../assets/icons/Search_alt.png')}
-            />    
+        <SafeAreaView style={styles.container}>
             <GooglePlacesAutocomplete
                 GooglePlacesDetailsQuery={{fields: 'geometry'}}
-                style ={styles.container}
+                style={styles.container}
                 placeholder="Where do you want to go?"
                 query={{
                     key: 'AIzaSyAkWZoqmot4KRuIsGlZshMlJ1PV52fOYhk',
@@ -37,17 +34,14 @@ export default SearchBar;
 
 const styles = StyleSheet.create({
     container: {
-        width: 332,
-        height: 56,
-        color: "#F1EEEE",
+        //alignItems: 'center',
+        height: 35,
+        width: 390,
+        color: "purple",
         borderRadius: 13,
-        flexDirection: "row",
         fontSize: 19,
-    },
-    
-    searchBarIcon: {
-        justifyContent: 'flex-start',
-        width: 332,
-        height: 56,
+        marginHorizontal : 12,
+        //justifyContent: 'center',
+        top: 152
     }
 });

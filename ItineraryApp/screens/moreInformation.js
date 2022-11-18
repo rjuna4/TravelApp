@@ -21,7 +21,6 @@ class MoreInformation extends Component {
         
 
         <View style={styles.conatiner}>
-          <View style={styles.dockContainer}></View>
           <View style={styles.buttonOuterContainerAdd}>
             <Pressable
               style={({pressed}) =>
@@ -60,15 +59,6 @@ const styles = StyleSheet.create({
   },
   image: {
     //TBD
-  },
-  dockContainer: {
-    backgroundColor: '#744578',
-    height: 70,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 0,
   },
   buttonInnerContainerAdd: {
     backgroundColor: '#1D54A6',
