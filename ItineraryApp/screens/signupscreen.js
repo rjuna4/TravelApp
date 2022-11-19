@@ -5,8 +5,8 @@ import SignupForm from './signupform'
 import { useNavigation } from '@react-navigation/native'
 
 
-const image = { uri: "https://images.unsplash.com/photo-1526482312921-58d5666a52c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2130&q=80" };
-
+//const image = { uri: "https://images.unsplash.com/photo-1526482312921-58d5666a52c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2130&q=80" };
+const localImage = require('ItineraryApp/assets/appimages/signupscreenbackground.png')
 
 const SignupScreen = () => {
 
@@ -20,7 +20,7 @@ const SignupScreen = () => {
 
   return(
       <View style={styles.container}>
-        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        <ImageBackground source={localImage} resizeMode="cover" style={styles.image}>
         </ImageBackground>
         <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('SignupForm')}>
           <Text style={styles.custom}>Sign Up</Text>

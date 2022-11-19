@@ -1,38 +1,89 @@
-import {Icon, SafeAreaView, TextInput, ImageBackground, Image, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable } from 'react-native';
-import React, { Component, useLayoutEffect, useState } from 'react';
+import {Icon, SafeAreaView, TextInput, ImageBackground, Image, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, ScrollView, ActivityIndicator, FlatList } from 'react-native';
+import React, { Component, useLayoutEffect, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native'
+import ActivityContainer from '../components/ActivityContainer';
+import { getPlaceDetails } from 'ItineraryApp/api/index.js';
+import ActivityMenu from '../components/ActivityMenu';
 
-const googleAPIkey = 'AIzaSyAkWZoqmot4KRuIsGlZshMlJ1PV52fOYhk';
+//const googleAPIkey = 'AIzaSyAkWZoqmot4KRuIsGlZshMlJ1PV52fOYhk';
 
 const ActivityRecommendations = () => {
 
         const navigation = useNavigation();
-
-        useLayoutEffect(() => {
-            navigation.setOptions({
-                headerShown: false,
-            })
-        }, []);
-
+        const[loading, setLoading] = useState(false)
+        const[mainData, setMainData] = useState([])
+        const[searchItem, setSearchItem] = useState("");
+        const[activityType, changeActivityType] = useState("restaurants")
+        const[clicked, setClicked] = useState(false);
         return (
             <SafeAreaView>
                 <View>
-                    <TouchableOpacity>
-                        <Image style ={styles.foodIcon}
-                            source={require('ItineraryApp/assets/icons/bx-bowl-hot 1.png')}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image style ={styles.touristAttractionIcon}
-                            source={require('ItineraryApp/assets/icons/bx-bowl-hot 1.png')}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image style ={styles.hotelsIcon}
-                            source={require('ItineraryApp/assets/icons/bx-bowl-hot 1.png')}
-                        />
-                    </TouchableOpacity>
+                {/* <SearchBar style={styles.searchBar}
+                  searchItem={searchItem}
+                  setSearchItem={setSearchItem}
+                  clicked={clicked}
+                  setClicked={clicked}
+                /> */}
                 </View>
+                {loading ? 
+                <View>
+                   <ActivityIndicator visible ={loading} size="large" color="#08646B" />
+                </View> : 
+                <ScrollView>
+                  <View>
+                  <ActivityMenu
+                    key={"restaurants"}
+                    name="Restaurants"
+                    image={require('ItineraryApp/assets/icons/restaurant(2).png')}
+                    activityType={activityType}
+                    changeActivityType={changeActivityType}
+                  />
+                  <ActivityMenu
+                    key={"attractions"}
+                    name="Attractions"
+                    image={require('ItineraryApp/assets/icons/beach.png')}
+                    activityType={activityType}
+                    changeActivityType={changeActivityType}
+                  />
+                  <ActivityMenu
+                    key={"hotels"}
+                    name="Hotels"
+                    image={require('ItineraryApp/assets/icons/hotel(2).png')}
+                    activityType={activityType}
+                    changeActivityType={changeActivityType} 
+                  /> 
+                  </View>
+                  <View>
+                    <View>
+                      <Text style={styles.recommendations}>Recommendations</Text>
+                    </View>
+                    <View>
+                      {mainData?.length > 0 ? (
+                      <>
+                        {mainData?.map((data, i) => (
+                          <ActivityContainer
+                            key={i}
+                            image={
+                              data?.photo?.images?.medium?.url 
+                              ? data?.photo?.images?.medium?.url 
+                              : 'ItineraryApp/assets/icons/restaurant(1).png'
+                            }
+                            title={data?.name}
+                            location={data?.location_string}
+                            data={data}
+                         />   
+                        ))}
+                      </> 
+                      ) : ( 
+                      <>
+                        <View>
+                          <Text>No results found</Text>
+                        </View>
+                      </>
+                      )}
+                    </View>
+                  </View>
+                </ScrollView> }
             </SafeAreaView>
          
         )
@@ -67,8 +118,29 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     marginHorizontal: 100
   },
-  foodIcon: {
-    width: 45,
-    height: 45,
-  }
+  icon: {
+    width: 65,
+    height: 65,
+    marginTop: 90,
+    marginLeft: 55,
+
+  },
+  recommendations: {
+    fontSize: 25,
+    marginTop: 35,
+    marginLeft: 10,
+    color: "#744578",
+  },
+  text1: {
+    textAlign: 'left',
+    fontSize: 18,
+  },
+  text2: {
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  text3: {
+    textAlign: 'right',
+    fontSize: 18,
+  },
 })

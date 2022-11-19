@@ -1,30 +1,82 @@
 import {Icon, SafeAreaView, TextInput, ImageBackground, Image, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable } from 'react-native';
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { send } from 'process';
 
 const image = { uri: "https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=998&q=80"};
 
 const changeVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [rightIcon, setRightIcon] = useState('eye');
+    const [rightIcon, setRightIcon] = useState('eye');
 
 }
 
-const inputField = () => {
-    // const [text, onChangeText] = React.useState("Username");
-    // const [secure, setSecure] = React.useState(props.secure);
+
+const LoginForm = () => {
+    const navigation = useNavigation();
+
+    useLayoutEffect(() => {
+      navigation.setOptions({
+          headerShown: false,
+       })
+    }, []);
+
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    const [formData, setFormData] = useState({
+      username: ' ',
+      password: ' ',
+    })
+
+    const sendToDatabase = () => {
+      //console.log(formData)
+        // check if all fields are filled out
+        if (formData.username === '' || formData.password === '') {
+          setErrorMessage('All fields are required.');
+          return;
+        }
+        fetch('http://10.0.2.2:8000/api/login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+
+            }, 
+            body: JSON.stringify(formData)
+        }).then().catch(error=>console.log(error)).then(res => res.json()).then(
+          data => {
+            if(data.error) {
+              setErrorMessage(data.error);
+            } else {
+              alert('User signed in successfully')
+              navigation.navigate('Tabs')
+            }
+          }
+        )
+    
+  }
+
+  // const buttonActions  = () => {
+  //   sendToDatabase();
+  //   navigation.navigate('Tabs');
+  //   }
   
     return (
-      <SafeAreaView>
+
+    <View style={styles.container}>
+      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        <Text style={styles.title}>Welcome Back!</Text>
         <View style={styles.inputContainer}>
         <Image style={styles.userIcon}
                 source={require('ItineraryApp/assets/icons/User_fill(1).png')}
         />    
+        {
+          errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
+        }
         <TextInput
           placeholder="Username"
           style={styles.input}
-          //onChangeText={onChangeText}
-          //value={}
+          onChangeText={(text) => setFormData( {...formData, username: text})}
         />
         </View>
         <View style={styles.inputContainer}>
@@ -32,7 +84,7 @@ const inputField = () => {
                 source={require('ItineraryApp/assets/icons/Lock_fill.png')}
         />    
         <TextInput
-          //onChangeText={(value) => console.log(value)}
+          onChangeText={(text) => setFormData( {...formData, password: text})}
           placeholder="Password"
           secureTextEntry
           secure={true}
@@ -45,28 +97,19 @@ const inputField = () => {
         onPress={() => setSecure(!secure)} />
         } */}
         </View>
-      </SafeAreaView>
-    );
-  };
-
-const LoginForm = () => {
-  const navigation = useNavigation();
-    return (
-    <View style={styles.container}>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <Text style={styles.title}>Welcome Back!</Text>
-         {inputField()}
         <Text style={styles.text}>Remember me?</Text>
-        <Text style={styles.text}>Forgot username and/or password?</Text>
-        <Text style={styles.text2}>Click Here.</Text>
       </ImageBackground>
-      <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('Tabs')}>
+      <TouchableOpacity style={styles.button1} onPress={() => {sendToDatabase()}}>
           <Text style={styles.custom}>Login</Text>
         </TouchableOpacity>
-        <Text style={[styles.text, {bottom: 90} ]}>Don't have an account?</Text>
+      <View style={styles.box}>
+      </View>  
+      <View>
+      <Text style={[styles.text, {bottom: 170} ]}>Don't have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('SignupForm')}>
-          <Text style={[styles.text2, {bottom: 90}]}>Sign up here.</Text>
+          <Text style={[styles.text2, {bottom: 165}]}>Sign up here.</Text>
         </TouchableOpacity>  
+      </View>
     </View>  
     )  
   }
@@ -92,12 +135,14 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     color: "#FFFFFF",
+    fontSize: 17,
   },
   text2: {
     textAlign: "center",
     color: "#FFFFFF",
     textDecorationLine: 'underline',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 17,
   },
   custom: {
     fontFamily: 'ABeeZee',
@@ -125,22 +170,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 13,
-    backgroundColor: "#DA5263",
+    backgroundColor: "#E8358B",
     width: 205,
     height: 56,
-    bottom: 100,
+    bottom: 120,
     marginHorizontal: 100
   },
   userIcon: {
     tintColor: '#000000',
     opacity: 0.45,
-    width: 25,
-    height: 25,
+    width: 30,
+    height: 30,
     marginLeft: 5
   },
   passwordIcon: {
-    width: 25,
-    height: 25,
+    width: 30,
+    height: 30,
     marginLeft: 5
   },
+  errorMessage: {
+    color: '#FFFFFF',
+    width: 278,
+    height: 50,
+    fontSize: 18,
+    borderRadius: 8,
+    backgroundColor: '#D41F1F',
+    marginHorizontal: -117,
+    marginTop: -95,
+  },
+  box: {
+    width: 212,
+    height: 72,
+    borderRadius: 13,
+    backgroundColor: '#D9D9D9',
+    opacity: 0.40,
+    bottom: 110,
+    marginHorizontal: 100,
+  }
 });
