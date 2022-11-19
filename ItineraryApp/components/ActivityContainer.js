@@ -7,7 +7,7 @@ const ActivityContainer = ({image, name, location, data}) => {
     const navigation = useNavigation()
     return (
         <TouchableOpacity onPress={() => navigation.navigate("MoreInformation", {param : data})}>
-            <ImageBackground style = {styles.activityImage}
+            <Image style = {styles.activityImage}
                 source={{uri: image}}
             />
             {name ? (
@@ -35,17 +35,20 @@ export default ActivityContainer
 
 const styles = StyleSheet.create({
     activityImage: {
-        width: 150,
-        height: 150,
+        width: 160,
+        height: 160,
         borderRadius: 13,
+        marginHorizontal: 15,
     },
 
     nameText: {
         fontSize: 18,
+        marginHorizontal: 15,
     },
 
     locationText: {
         fontSize: 15,
+        marginHorizontal: 15,
     }
 
 });

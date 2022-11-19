@@ -26,7 +26,7 @@ const HomeStackTab = () => {
         <HomeStack.Navigator initialRouteName="HomeScreen">
          <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
          <HomeStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} options={{headerShown: false}}/>
-         {/* <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> */}
+         <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="MapTest" component={MapTest} options={{headerShown: false}}/>
       </HomeStack.Navigator>
     )
@@ -46,7 +46,7 @@ const BookmarksStackTab = () => {
     return(
         <BookmarkStack.Navigator initialRouteName="BookmarksScreen">
          <BookmarkStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
-         {/* <BookmarkStack.Screen name="MoreInformation" component={MoreInformation} /> */}
+         <BookmarkStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <BookmarkStack.Screen name="MapTest" component={MapTest} />
       </BookmarkStack.Navigator>
     )
@@ -56,7 +56,7 @@ const ProfileStackTab = () => {
     return(
         <ProfileStack.Navigator initialRouteName="ProfileScreen">
          <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
-         {/* <ProfileStack.Screen name="MoreInformation" component={MoreInformation} /> */}
+         <ProfileStack.Screen name="MoreInformation" component={MoreInformation} />
       </ProfileStack.Navigator>
     )
 }
@@ -76,23 +76,7 @@ export function BottomNavigator() {
             }}
             >
             
-            <BottomNavBar.Screen name="Profile" component={ProfileStackTab} 
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({focused}) => (
-                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                            <Image
-                                source={require('../assets/icons/User_fill(1).png')}
-                                resizeMode='contain'
-                                style={{
-                                    width: 40,
-                                    height: 40,
-                                    tintColor: focused ? '#DA5263' : '#FFFFFF',
-                                }}
-                        />    
-                    </View>
-                ),    
-            }} />
+           
             
             <BottomNavBar.Screen name="Home" component={HomeStackTab} 
                 options={{
@@ -108,6 +92,25 @@ export function BottomNavigator() {
                                     tintColor: focused ? '#DA5263' : '#FFFFFF',
                                 }}
                             />    
+                    </View>
+                ),    
+            }} />
+
+
+        <BottomNavBar.Screen name="Profile" component={ProfileStackTab} 
+                options={{
+                    headerShown: false,
+                    tabBarIcon: ({focused}) => (
+                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <Image
+                                source={require('../assets/icons/User_fill(1).png')}
+                                resizeMode='contain'
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    tintColor: focused ? '#DA5263' : '#FFFFFF',
+                                }}
+                        />    
                     </View>
                 ),    
             }} />

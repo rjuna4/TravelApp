@@ -8478,6 +8478,11 @@
     "jscodeshift" "^0.13.1"
     "nullthrows" "^1.1.1"
 
+"react-native-dialog@^9.3.0":
+  "integrity" "sha512-JEOJY/0AzTM9grIl0BL8o/IJPIJru7k5MPj9POTE9RRezUEtgn0YSvCpTlBtG0obWgOdzg2otMz1OQvMXS0wMQ=="
+  "resolved" "https://registry.npmjs.org/react-native-dialog/-/react-native-dialog-9.3.0.tgz"
+  "version" "9.3.0"
+
 "react-native-drag-sort@^2.4.4":
   "integrity" "sha512-MixkgMzybt8tn9m850YK5VOSlicytV41mOp/b1gAE7cK94bou27ApvVJH9oCM61vY5EN6g9VT5PwLOahbYc+BQ=="
   "resolved" "https://registry.npmjs.org/react-native-drag-sort/-/react-native-drag-sort-2.4.4.tgz"
@@ -8548,7 +8553,12 @@
     "react-freeze" "^1.0.0"
     "warn-once" "^0.1.0"
 
-"react-native@*", "react-native@>= 0.59", "react-native@>= 0.64.3", "react-native@>=0.42.0", "react-native@>=0.57", "react-native@>=0.65.0", "react-native@0.70.0":
+"react-native-simple-dialogs@^1.5.0":
+  "integrity" "sha512-GwnnrAx99yeJEeEKyWPVBU1V2nmxH9JFfVbD4YvBeeiczqOzdY0i0vG5yUulomdOpl1ZrZJW6RnLw3GEkrGT0g=="
+  "resolved" "https://registry.npmjs.org/react-native-simple-dialogs/-/react-native-simple-dialogs-1.5.0.tgz"
+  "version" "1.5.0"
+
+"react-native@*", "react-native@>= 0.59", "react-native@>= 0.64.3", "react-native@>=0.42.0", "react-native@>=0.44", "react-native@>=0.57", "react-native@>=0.63.0", "react-native@>=0.65.0", "react-native@0.70.0":
   "integrity" "sha512-QjXLbrK9f+/B2eCzn6kAvglLV/8nwPuFGaFv7ggPpAzFRyx5bVN1dwQLHL3MrP7iXR/M7Jc6Nnid7tmRSic6vA=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.70.0.tgz"
   "version" "0.70.0"

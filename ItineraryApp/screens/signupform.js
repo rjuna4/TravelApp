@@ -216,7 +216,7 @@ const SignupForm = () => {
   const sendToDatabase = () => {
     //console.log(formData)
       // check if all fields are filled out
-      if (formData.fullName == null || formData.username == null || formData.emailAddress == null || formData.password == null || formData.confirmPassword == null) {
+      if (formData.fullName == '' || formData.username == '' || formData.emailAddress == '' || formData.password == '' || formData.confirmPassword == '') {
         setErrorMessage('All fields are required.');
         return;
       }
