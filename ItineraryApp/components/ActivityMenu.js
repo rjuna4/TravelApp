@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 17,
         color: '#744578',
+        marginHorizontal: -9,
     },
     icon: {
         width: 45,

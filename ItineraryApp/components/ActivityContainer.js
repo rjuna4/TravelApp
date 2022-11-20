@@ -13,12 +13,13 @@ const ActivityContainer = ({image, name, location, data}) => {
             {name ? (
             <>
             <Text style={styles.nameText}> 
-                { name?.length > 15 ? `${name.slice(0, 15)}...` : name }
+                { name?.length > 17 ? `${name.slice(0, 17)}...` : name }
             </Text>
             <View>
                 <Text style={styles.locationText}>
                     { location?.length > 18 ? `${location.slice(0,18)}...` : location }
                 </Text>
+                <Image source={require('ItineraryApp/assets/icons/Pin_fill.png')} style={{width: 23, height: 23, marginTop: -23, marginHorizontal: 10}}></Image>
             </View>
         </>
         ) : (
@@ -39,16 +40,17 @@ const styles = StyleSheet.create({
         height: 160,
         borderRadius: 13,
         marginHorizontal: 15,
+        marginTop: 20,
     },
 
     nameText: {
-        fontSize: 18,
+        fontSize: 20,
         marginHorizontal: 15,
     },
 
     locationText: {
-        fontSize: 15,
-        marginHorizontal: 15,
+        fontSize: 18,
+        marginHorizontal: 32,
     }
 
 });
