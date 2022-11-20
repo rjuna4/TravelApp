@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
 
 
 
-  import {ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, Button, SafeAreaView, Image, ActivityIndicator, ScrollView, VirtualizedList } from 'react-native';
+import {ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, Button, SafeAreaView, Image, ActivityIndicator, ScrollView, VirtualizedList } from 'react-native';
 import React, { Component, useState, useLayoutEffect, useEffect } from 'react';
 import CustomAndroid from '../components/CustomAndroid';
 import ActivityMenu from '../components/ActivityMenu';
@@ -357,6 +357,7 @@ const HomeScreen = () => {
  
  return (
   <SafeAreaView>
+    <ScrollView>
      <View style={styles.container}>
        {/*<View style={styles.searchBar}></View> */}
        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
@@ -453,6 +454,7 @@ const HomeScreen = () => {
              </>
              )}
            </ScrollView> }
+     </ScrollView>      
  </SafeAreaView> 
  )
 }
@@ -474,7 +476,7 @@ const styles = StyleSheet.create({
    image: {
      flex: 1,
      justifyContent: "center",
-     height: 305,
+     height: 250,
      width: 415,
    },
    text: {
@@ -488,7 +490,7 @@ const styles = StyleSheet.create({
    },
    recommendations: {
      fontSize: 25,
-     marginTop: 285,
+     marginTop: -20,
      marginLeft: 30,
      color: "#744578",
    },

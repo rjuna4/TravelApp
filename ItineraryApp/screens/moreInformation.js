@@ -1,27 +1,54 @@
-import {Component, useLayoutEffect} from 'react';
+import {Component, useLayoutEffect, useState} from 'react';
 import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity, ScrollView, TextInput, Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapTest from './mapsTest';
+import DialogInput from 'react-native-dialog-input'
 
 function map() { new Map();}
 
-const alert = () => 
+
+const textInput = () => {
+
+  const[userInput, setUserInput] = useState('');
+  const[dialogVisible, setDialogVisible] = useState(false);
+
+  
+  { userInput ?
+      <Text style={styles.text}>{userInput}</Text>
+      :
+      <Text style={styles.text}>App</Text>
+  }
+  <DialogInput
+    isDialogVisible={visible}
+    title={"Create new itinerary"}
+    hintInput={"Enter a name for itinerary"}
+    submitInput={ (input) => {
+      setUserInput(input),
+      setDialogVisible(false)
+    }}    
+    closeDialog={() => setDialogVisible(false)}>
+  </DialogInput>    
+
+}   
+
+const alert = () => {
   Alert.alert(
     'Add Activity to Itinerary',
     '',
     [
       {
-        text: "Cancel"
+        text: "Cancel",
       },
       {
         text: "Create new itinerary",
       },
       {
         text: "Add to existing itinerary",
-        //onPress: () => navigation.navigate('ItineraryListScreen')
+        //onPress: () => textInput()
       }
     ]
   )
+}
 
 
 const MoreInformation = ({route}) => {
@@ -34,9 +61,7 @@ const MoreInformation = ({route}) => {
 
 
     const data = route?.params?.param
-
-    console.log("data: ", data)
-    map();
+    //map();
     return (
       <>
       <ScrollView>
@@ -63,7 +88,7 @@ const MoreInformation = ({route}) => {
                   source={require('ItineraryApp/assets/icons/Map_fill.png')}
                  /> 
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("BookmarksScreen", {param : data})}>
                 <Image style={styles.saveButton}
                   source={require('ItineraryApp/assets/icons/Bookmark_fill(1).png')}
                  /> 
@@ -71,8 +96,20 @@ const MoreInformation = ({route}) => {
             </View>
             <View>
               <Text style={styles.name}>{data?.name}</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Image style={{marginHorizontal: 3}}
+                  source={require('ItineraryApp/assets/icons/Pin_fill.png')}
+                />  
+                <Text style={{fontSize: 17}}>Location</Text>
+              </View>
               <Text style={styles.location}>{data?.location_string}</Text>
             </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Image style={{marginHorizontal: 5}}
+                  source={require('ItineraryApp/assets/icons/File_dock.png')}
+                />  
+                <Text style={{fontSize: 17}}>Description</Text>
+              </View>
             <View>
               <Text style={styles.description}>{data?.description}</Text>
             </View>
@@ -82,37 +119,7 @@ const MoreInformation = ({route}) => {
       </ScrollView>  
         
 
-        <View style={styles.conatiner}>
-          <View style={styles.dockContainer}></View>
-          <View style={styles.buttonOuterContainerAdd}>
-            <Pressable
-              style={({pressed}) =>
-                pressed
-                  ? [styles.buttonInnerContainerAdd, styles.pressed]
-                  : styles.buttonInnerContainerAdd
-              }
-              android_ripple={{color: '#154182'}}>
-              <Text style={styles.text}>Add</Text>
-            </Pressable>
-          </View>
-
-
-          <View style={styles.buttonOuterContainerSave}>
-            <Pressable
-              style={({pressed}) =>
-                pressed
-                  ? [styles.buttonInnerContainerSave, styles.pressed]
-                  : styles.buttonInnerContainerSave
-              }
-              android_ripple={{color: '#154182'}}>
-              <Image></Image>
-              <Text style={styles.text}>Save</Text>
-            </Pressable>
-            <TouchableOpacity style ={styles.alert} onPress={() => alert()}>
-            <Text style={styles.text}>Save</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+      
       </>
     );
   }
@@ -120,52 +127,7 @@ const MoreInformation = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-  },
-  image: {
-    //TBD
-  },
-  dockContainer: {
-    backgroundColor: '#744578',
-    height: 70,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 0,
-  },
-  buttonInnerContainerAdd: {
-    backgroundColor: '#1D54A6',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    elevation: 2,
-  },
-  buttonOuterContainerAdd: {
-    borderRadius: 13,
-    position: 'absolute',
-    bottom: 80,
-    right: 200,
-    margin: 4,
-    marginBottom: 20,
-    width: 100,
-    overflow: 'hidden',
-  },
-  buttonInnerContainerSave: {
-    backgroundColor: '#1D54A6',
-    paddingVertical: 8,
-    paddingHorizontal: 18,
-    elevation: 2,
-  },
-  buttonOuterContainerSave: {
-    borderRadius: 13,
-    position: 'absolute',
-    bottom: 80,
-    left: 200,
-    margin: 4,
-    marginBottom: 20,
-    marginHorizontal: 20,
-    width: 100,
-    overflow: 'hidden',
+    backgroundColor: '#FFFFFF',
   },
   text: {
     fontFamily: 'ABeeZee-Regular',
@@ -212,6 +174,7 @@ const styles = StyleSheet.create({
   location: {
     fontSize: 20,
     marginHorizontal: 10,
+    marginBottom: 8,
   },
   description: {
     fontSize: 18,

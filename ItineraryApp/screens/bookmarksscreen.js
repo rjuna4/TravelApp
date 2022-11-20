@@ -1,32 +1,39 @@
-import {Icon, SafeAreaView, TextInput, ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, Image, VirtualizedList} from 'react-native';
+import {Icon, SafeAreaView, TextInput, ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, Image, VirtualizedList, ScrollView} from 'react-native';
 import React, { Component, useState, useLayoutEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import ItineraryContainer from 'ItineraryApp/components/ItineraryContainer';
-
-const image = { uri: "https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=998&q=80"};
-
-const changeVisibility = () => {
-    const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [rightIcon, setRightIcon] = useState('eye');
-
-}
+import ActivityContainer from '../components/ActivityContainer';
 
 
-const BookmarksScreen = () => {
+const BookmarksScreen = ({route}) => {
     const navigation = useNavigation();
+
+    const[mainData, setMainData] = useState([])
+
     useLayoutEffect(() => {
       navigation.setOptions({
           headerShown: false,
        })
     }, []);
+
+    const data = route?.params?.param
+
     return (
     <View style={styles.container}>
       <View>
         <Text style={styles.title}>My Bookmarks</Text>
-      </View>  
-        <ItineraryContainer
-        />
-    </View>  
+      </View> 
+      <View>
+          <Image 
+            source={
+              {uri:
+                data?.photo?.images?.medium?.url 
+                ? data?.photo?.images?.medium?.url 
+                : 'ItineraryApp/assets/icons/restaurant(1).png'}
+            }
+          />
+       </View>    
+   </View>  
     )  
   }
 export default BookmarksScreen

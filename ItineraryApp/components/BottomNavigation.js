@@ -89,15 +89,19 @@ export function BottomNavigator() {
                                 style={{
                                     width: 40,
                                     height: 40,
-                                    tintColor: focused ? '#DA5263' : '#FFFFFF',
+                                    tintColor: focused ? '#FF8BDF' : '#FFFFFF',
                                 }}
                             />    
                     </View>
                 ),    
+                tabBarLabelStyle: {
+                    fontSize: 13,
+                    color: '#FFFFFF'
+                }
             }} />
 
 
-        <BottomNavBar.Screen name="Profile" component={ProfileStackTab} 
+        <BottomNavBar.Screen name="Profile" component={ProfileStackTab}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({focused}) => (
@@ -108,11 +112,15 @@ export function BottomNavigator() {
                                 style={{
                                     width: 40,
                                     height: 40,
-                                    tintColor: focused ? '#DA5263' : '#FFFFFF',
+                                    tintColor: focused ? '#FF8BDF' : '#FFFFFF',
                                 }}
                         />    
                     </View>
                 ),    
+                tabBarLabelStyle: {
+                    fontSize: 13,
+                    color: '#FFFFFF'
+                }
             }} />
 
             <BottomNavBar.Screen name="Itineraries" component={ItineraryStackTab} 
@@ -126,11 +134,15 @@ export function BottomNavigator() {
                                 style={{
                                     width: 40,
                                     height: 38,
-                                    tintColor: focused ? '#DA5263':'#FFFFFF'
+                                    tintColor: focused ? '#FF8BDF':'#FFFFFF'
                                 }}
                         />    
                     </View>
                 ),    
+                tabBarLabelStyle: {
+                    fontSize: 13,
+                    color: '#FFFFFF'
+                }
             }}/>
             <BottomNavBar.Screen name="Bookmarks" component={BookmarksStackTab} 
                 options={{
@@ -143,11 +155,15 @@ export function BottomNavigator() {
                                 style={{
                                     width: 40,
                                     height: 35,
-                                    tintColor: focused ? '#DA5263' : '#FFFFFF'
+                                    tintColor: focused ? '#FF8BDF' : '#FFFFFF',
                                 }}
                         />    
                     </View>
                 ),    
+                tabBarLabelStyle: {
+                    fontSize: 13,
+                    color: '#FFFFFF'
+                }
             }}/>
             </BottomNavBar.Navigator>
     )
