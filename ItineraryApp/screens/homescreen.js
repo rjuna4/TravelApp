@@ -327,9 +327,9 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 const image = { uri: "https://images.unsplash.com/photo-1531850039645-b21522964b91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2342&q=80" };
  
  
-const HomeScreen = () => {
+const HomeScreen = ({data}) => {
  const navigation = useNavigation();
- const[activityType, changeActivityType] = useState("attractions");
+ const[activityType, changeActivityType] = useState("restaurants");
  const[searchItem, setSearchItem] = useState("");
  const[clicked, setClicked] = useState(false);
  const[mainData, setMainData] = useState([])
@@ -429,7 +429,7 @@ const HomeScreen = () => {
          <View>
            <ActivityIndicator visible ={loading} size="large" color="#08646B" />
          </View> :
-       <ScrollView>
+       <View style={styles.activitiesContainer}>
          {mainData?.length > 0 ? (
            <>
            {mainData?.map((data, i) => (
@@ -453,7 +453,7 @@ const HomeScreen = () => {
                </View>
              </>
              )}
-           </ScrollView> }
+           </View> }
      </ScrollView>      
  </SafeAreaView> 
  )
@@ -499,10 +499,16 @@ const styles = StyleSheet.create({
      marginLeft: 130,
      marginTop: 50,
    },
- list: {
-     height: '100%',
-     position: 'absolute',
- }
+    list: {
+        height: '100%',
+        position: 'absolute',
+    },
+    
+    activitiesContainer: {
+      flexDirection: 'column',
+
+      
+    }
  
  });
 

@@ -3,6 +3,8 @@ import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, To
 import { useNavigation } from '@react-navigation/native';
 import MapTest from './mapsTest';
 import DialogInput from 'react-native-dialog-input'
+import Dialog from 'react-native-dialog'
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 function map() { new Map();}
 
@@ -41,6 +43,10 @@ const alert = () => {
       },
       {
         text: "Create new itinerary",
+        onPress: () => Alert.prompt(
+          'Create new itinerary',
+          'Enter a name for your itinerary'
+        )
       },
       {
         text: "Add to existing itinerary",
@@ -49,6 +55,7 @@ const alert = () => {
     ]
   )
 }
+
 
 
 const MoreInformation = ({route}) => {
@@ -61,6 +68,7 @@ const MoreInformation = ({route}) => {
 
 
     const data = route?.params?.param
+    //console.log("data: ", data)
     //map();
     return (
       <>
@@ -88,7 +96,7 @@ const MoreInformation = ({route}) => {
                   source={require('ItineraryApp/assets/icons/Map_fill.png')}
                  /> 
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("BookmarksScreen", {param : data})}>
+              <TouchableOpacity onPress={() => navigation.navigate("BookmarksScreen")}>
                 <Image style={styles.saveButton}
                   source={require('ItineraryApp/assets/icons/Bookmark_fill(1).png')}
                  /> 
@@ -96,6 +104,8 @@ const MoreInformation = ({route}) => {
             </View>
             <View>
               <Text style={styles.name}>{data?.name}</Text>
+              <Text style={styles.priceLevel}>{data?.price_level}</Text>
+              <Text style={styles.ranking}>{data?.ranking}</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image style={{marginHorizontal: 3}}
                   source={require('ItineraryApp/assets/icons/Pin_fill.png')}
@@ -111,18 +121,44 @@ const MoreInformation = ({route}) => {
                 <Text style={{fontSize: 17}}>Description</Text>
               </View>
             <View>
-              <Text style={styles.description}>{data?.description}</Text>
+              <Text style={styles.description} numberOfLines={10} renderTruncatedFooter>{data?.description}</Text>
+              {/*<Text style={styles.description}>{data?.description}</Text> */}
             </View>
             <View>
+              <Text style={styles.price}>{data?.price}</Text>
+              <Text style={styles.rating}>{data?.rating}</Text>
+              {/*<Text style={styles.hours}>{data?.hours}</Text> */}
+            </View>
+            <View>
+              {/*<Text style={styles.priceLevel}>{data?.cuisine}</Text> */}
             </View>
         </View>
       </ScrollView>  
-        
-
-      
       </>
     );
   }
+
+
+  const saveBookmarkedActivity = async data => {
+    const [bookmark, setBookmark] = useState(false)
+    storage = AsyncStorage()
+    setBookmark(true)
+    await storage.getItem('bookmark').then(token => {
+      const response = JSON.parse(token);
+      if (response !== null) {
+        response.push(data)
+        storage.setItem('bookmark', JSON.stringify(response))
+      }
+      else {
+        let bookmark = []
+        bookmark.push(data)
+        storage.setItem('bookmark', JSON.stringify(bookmark))
+      }
+    })
+  }
+
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -180,6 +216,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginHorizontal: 10,
     marginTop: 2,
+  },
+  ranking: {
+    marginHorizontal: 10,
+    fontSize: 16,
+  },
+  priceLevel: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: -30,
+    marginLeft: 320,
   }
   
 });

@@ -3,6 +3,7 @@ import React, { Component, useState, useLayoutEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import ItineraryContainer from 'ItineraryApp/components/ItineraryContainer';
 import ActivityContainer from '../components/ActivityContainer';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 
 const BookmarksScreen = ({route}) => {
@@ -24,18 +25,22 @@ const BookmarksScreen = ({route}) => {
         <Text style={styles.title}>My Bookmarks</Text>
       </View> 
       <View>
-          <Image 
-            source={
-              {uri:
-                data?.photo?.images?.medium?.url 
-                ? data?.photo?.images?.medium?.url 
-                : 'ItineraryApp/assets/icons/restaurant(1).png'}
-            }
-          />
+        
        </View>    
    </View>  
     )  
   }
+
+
+  const retrieveBookmark = async () => {
+    storage = AsyncStorage();
+    await storage.getItem('bookmark').then(async (token) => {
+      response = JSON.parse(token);
+    })
+  }
+
+ 
+
 export default BookmarksScreen
 
 const styles = StyleSheet.create({
