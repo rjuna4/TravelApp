@@ -2293,9 +2293,8 @@
     "read-package-json-fast" "^2.0.3"
     "which" "^2.0.2"
 
-"@react-native-async-storage/async-storage@^1.17.11":
-  "integrity" "sha512-bzs45n5HNcDq6mxXnSsOHysZWn1SbbebNxldBXCQs8dSvF8Aor9KCdpm+TpnnGweK3R6diqsT8lFhX77VX0NFw=="
-  "resolved" "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.17.11.tgz"
+"@react-native-async-storage/async-storage@github:react-native-async-storage/async-storage":
+  "resolved" "git+ssh://git@github.com/react-native-async-storage/async-storage.git#1ae6fa8d4fde7f8c3e2a8faa0fa11ec7da93f62e"
   "version" "1.17.11"
   dependencies:
     "merge-options" "^3.0.4"
@@ -8696,6 +8695,11 @@
   dependencies:
     "prop-types" "^15.7.2"
 
+"react-native-async-storage@^0.0.1":
+  "integrity" "sha512-EwOIpNfwMiELMnS7HDzgyX2xO4TALK95O473Z6Kai5Il5j/03yTTErwMtvoYnA0OKUHd1R54ptmbbMukUH03Xg=="
+  "resolved" "https://registry.npmjs.org/react-native-async-storage/-/react-native-async-storage-0.0.1.tgz"
+  "version" "0.0.1"
+
 "react-native-codegen@^0.70.4":
   "integrity" "sha512-bPyd5jm840omfx24VRyMP+KPzAefpRDwE18w5ywMWHCWZBSqLn1qI9WgBPnavlIrjTEuzxznWQNcaA26lw8AMQ=="
   "resolved" "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.70.4.tgz"
@@ -8796,7 +8800,7 @@
   "resolved" "https://registry.npmjs.org/react-native-simple-dialogs/-/react-native-simple-dialogs-1.5.0.tgz"
   "version" "1.5.0"
 
-"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.71 || 1000.0.0", "react-native@>= 0.59", "react-native@>= 0.64.3", "react-native@>=0.42.0", "react-native@>=0.44", "react-native@>=0.57", "react-native@>=0.63.0", "react-native@>=0.65.0", "react-native@0.70.0":
+"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.71 || 1000.0.0", "react-native@>= 0.59", "react-native@>= 0.64.3", "react-native@>=0.42.0", "react-native@>=0.44", "react-native@>=0.5.0", "react-native@>=0.57", "react-native@>=0.63.0", "react-native@>=0.65.0", "react-native@0.70.0":
   "integrity" "sha512-QjXLbrK9f+/B2eCzn6kAvglLV/8nwPuFGaFv7ggPpAzFRyx5bVN1dwQLHL3MrP7iXR/M7Jc6Nnid7tmRSic6vA=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.70.0.tgz"
   "version" "0.70.0"
