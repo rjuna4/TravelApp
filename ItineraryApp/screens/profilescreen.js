@@ -1,50 +1,33 @@
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  Dimensions,
-  TouchableOpacity,
-  Pressable,
-  Button,
-  SafeAreaView,
-  ActivityIndicator,
-  TouchableHighlight,
-  Image,
-  ImageBackgroundComponent,
-} from 'react-native';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React, {Component, useState, useEffect} from 'react';
-import CustomAndroid from '../components/CustomAndroid';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 //import EditProfileScreen from './editprofilescreen';
-import {NavigationContainer} from '@react-navigation/native';
-import {NavigationButton} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createStackNavigator} from 'react-navigation-stack';
-import {navigationRef} from './RootNavigation';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Text,
-  PressableRipple,
-} from 'react-native-paper';
+import {Avatar, Title, Caption, PressableRipple} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-class ProfileScreen extends Component {
+const ProfileScreen = () => {
   //loadRoute = () => this.props.navigation.navigate('EditProfileScreen');
 
-  render() {
-    return;
-    <View style={styles.container}>
-      <View>
-        <View>
-          <Avatar.Text>"Initials"</Avatar.Text>
+  const navigation = useNavigation();
+
+  return (
+    <>
+      <View style={styles.container}>
+        <View style={styles.info}>
+          <View>
+            <Text style={styles.text}>Initials</Text>
+            <Avatar.Image
+              size={100}
+              source={{
+                uri: '',
+              }}
+            />
+          </View>
         </View>
       </View>
-    </View>;
-  }
-}
+      ;
+    </>
+  );
+};
 
 export default ProfileScreen;
 
@@ -61,7 +44,9 @@ initials = (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 30,
   },
 
   header: {
@@ -76,10 +61,19 @@ const styles = StyleSheet.create({
     borderColor: '#DA5263',
   },
 
+  info: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+
   settingsIcon: {
     right: 35,
     top: -380,
     position: 'absolute',
+  },
+
+  text: {
+    fontSize: 30,
   },
 });
 
