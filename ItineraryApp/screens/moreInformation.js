@@ -4,10 +4,24 @@ import { useNavigation } from '@react-navigation/native';
 import MapTest from './mapsTest';
 import DialogInput from 'react-native-dialog-input'
 import Dialog from 'react-native-dialog'
+import prompt from 'react-native-prompt-android'
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 function map() { new Map();}
 
+{/*}
+prompt(
+  'Create new itinerary',
+  'Enter a name for your itinerary',
+  [
+    {
+      text: 'Cancel'
+    }, 
+    {
+      text: 'Save'
+    },
+  ]
+) */}
 
 const textInput = () => {
 
@@ -43,15 +57,22 @@ const alert = () => {
       },
       {
         text: "Create new itinerary",
-        onPress: () => Alert.prompt(
-          'Create new itinerary',
-          'Enter a name for your itinerary'
-        )
       },
       {
         text: "Add to existing itinerary",
-        //onPress: () => textInput()
-      }
+      },
+      prompt(
+        'Create new itinerary',
+        'Enter a name for your itinerary',
+        [
+          {
+            text: 'Cancel'
+          }, 
+          {
+            text: 'Save'
+          },
+        ]
+      )
     ]
   )
 }
@@ -59,12 +80,14 @@ const alert = () => {
 
 
 const MoreInformation = ({route}) => {
+
+  const navigation = useNavigation();
       useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
         })
       }, []);
-    const navigation = useNavigation();
+    
 
 
     const data = route?.params?.param
@@ -96,7 +119,7 @@ const MoreInformation = ({route}) => {
                   source={require('ItineraryApp/assets/icons/Map_fill.png')}
                  /> 
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("BookmarksScreen")}>
+              <TouchableOpacity onPress={() => navigation.navigate("BookmarksScreen", {param : data})}>
                 <Image style={styles.saveButton}
                   source={require('ItineraryApp/assets/icons/Bookmark_fill(1).png')}
                  /> 
