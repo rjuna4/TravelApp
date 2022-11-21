@@ -23,11 +23,26 @@ import {NavigationButton} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createStackNavigator} from 'react-navigation-stack';
 import {navigationRef} from './RootNavigation';
+import {
+  Avatar,
+  Title,
+  Caption,
+  Text,
+  PressableRipple,
+} from 'react-native-paper';
 
 class ProfileScreen extends Component {
   //loadRoute = () => this.props.navigation.navigate('EditProfileScreen');
+
   render() {
-    return <View style={styles.container}></View>;
+    return;
+    <View style={styles.container}>
+      <View>
+        <View>
+          <Avatar.Text>"Initials"</Avatar.Text>
+        </View>
+      </View>
+    </View>;
   }
 }
 
