@@ -48,6 +48,16 @@ class ProfileScreen extends Component {
 
 export default ProfileScreen;
 
+// Grab the initials of the users name and display them in the Avatar
+let name = 'User Name to be configured'; // Pull users name and run regex
+let rgx = new RegExp(/(\p{L}{1})\p{L}+/, 'gu');
+
+let initials = [...name.matchAll(rgx)] || [];
+
+initials = (
+  (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
+).toUpperCase();
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
