@@ -13,7 +13,7 @@ const ActivityContainer = ({image, name, location, data}) => {
             {name ? (
             <>
             <Text style={styles.nameText}> 
-                { name?.length > 17 ? `${name.slice(0, 17)}...` : name }
+                { name?.length > 15 ? `${name.slice(0, 15)}...` : name }
             </Text>
             <View>
                 <Text style={styles.locationText}>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
 
     locationText: {
-        fontSize: 18,
+        fontSize: 16,
         marginHorizontal: 32,
     }
 

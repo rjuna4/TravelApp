@@ -325,7 +325,7 @@ import { useNavigation } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
  
 const image = { uri: "https://images.unsplash.com/photo-1531850039645-b21522964b91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2342&q=80" };
- 
+const userName = "insertName";  //pull from database
  
 const HomeScreen = ({data}) => {
  const navigation = useNavigation();
@@ -354,22 +354,16 @@ const HomeScreen = ({data}) => {
      }, 3000)
      })
      }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+
  
  return (
   <SafeAreaView>
     <ScrollView>
      <View style={styles.container}>
-       {/*<View style={styles.searchBar}></View> */}
        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
        </ImageBackground>
      </View>
-       {!clicked && <Text style={styles.title}></Text>}
-       {/*<SearchBar style={styles.searchBar}
-         searchItem={searchItem}
-         setSearchItem={setSearchItem}
-         clicked={clicked}
-         setClicked={clicked}
- /> */}
+     <Text style={styles.title}>Hello, {userName}!</Text>
      <View style={styles.list}>
            <GooglePlacesAutocomplete
                GooglePlacesDetailsQuery={{fields: 'geometry'}}
@@ -470,8 +464,12 @@ const styles = StyleSheet.create({
    },
  
    title: {
-     fontSize: 25,
-   },
+    fontSize: 25,
+    color: '#FFFFFF',
+    marginHorizontal: 100,
+    bottom: 160,
+    style: 'bold'
+  },
  
    image: {
      flex: 1,
@@ -479,9 +477,7 @@ const styles = StyleSheet.create({
      height: 250,
      width: 415,
    },
-   text: {
-     justifyContent: 'flex-start',
-   },
+
    activityMenu: {
      justifyContent: 'center',
      flexDirection: 'row',
@@ -489,9 +485,9 @@ const styles = StyleSheet.create({
      marginTop: 10,
    },
    recommendations: {
-     fontSize: 25,
+     fontSize: 23,
      marginTop: -20,
-     marginLeft: 30,
+     marginLeft: 20,
      color: "#744578",
    },
    noResults: {
@@ -500,14 +496,17 @@ const styles = StyleSheet.create({
      marginTop: 50,
    },
     list: {
-        height: '100%',
         position: 'absolute',
+        width: 390,
+        marginHorizontal: 10,
+        top: 145,
+        zIndex: 2,
     },
     
     activitiesContainer: {
-      flexDirection: 'column',
-
-      
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginLeft: 16,
     }
  
  });
