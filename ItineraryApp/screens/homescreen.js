@@ -358,7 +358,6 @@ const HomeScreen = ({data}) => {
  
  return (
   <SafeAreaView>
-    <ScrollView>
      <View style={styles.container}>
        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
        </ImageBackground>
@@ -419,6 +418,9 @@ const HomeScreen = ({data}) => {
            changeActivityType={changeActivityType}
          />
        </View>
+       
+       <View style={{top: 175}}>
+       <ScrollView>
        {loading ?
          <View>
            <ActivityIndicator visible ={loading} size="large" color="#08646B" />
@@ -448,7 +450,8 @@ const HomeScreen = ({data}) => {
              </>
              )}
            </View> }
-     </ScrollView>      
+           </ScrollView>
+           </View>
  </SafeAreaView> 
  )
 }
@@ -474,7 +477,7 @@ const styles = StyleSheet.create({
    image: {
      flex: 1,
      justifyContent: "center",
-     height: 250,
+     height: 195,
      width: 415,
    },
 
@@ -483,10 +486,11 @@ const styles = StyleSheet.create({
      flexDirection: 'row',
      justifyContent: 'space-evenly',
      marginTop: 10,
+     top: 170
    },
    recommendations: {
      fontSize: 23,
-     marginTop: -20,
+     top: 170,
      marginLeft: 20,
      color: "#744578",
    },
@@ -499,14 +503,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: 390,
         marginHorizontal: 10,
-        top: 145,
+        top: 140,
         zIndex: 2,
     },
     
     activitiesContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      marginLeft: 16,
+      justifyContent: 'space-between',
+      marginLeft: 20,
+      marginBottom: 500
     }
  
  });

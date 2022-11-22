@@ -36,15 +36,15 @@ export default ActivityContainer
 
 const styles = StyleSheet.create({
     activityImage: {
-        width: 160,
-        height: 160,
+        width: 150,
+        height: 140,
         borderRadius: 13,
         marginHorizontal: 15,
         marginTop: 20,
     },
 
     nameText: {
-        fontSize: 20,
+        fontSize: 19,
         marginHorizontal: 15,
     },
 

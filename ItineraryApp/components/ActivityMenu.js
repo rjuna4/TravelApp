@@ -6,12 +6,13 @@ const ActivityMenu = ({ name, image, activityType, changeActivityType}) => {
     return (
         <TouchableOpacity style={styles.container}>
             <View {...`${activityType === name.toLowerCase()}`}>
-                <View>
+                <View style={{justifyContent: 'center'}}>
                     <Image style ={styles.icon}
                         source={image}
                     />
+                    <Text style={styles.text}>{name}</Text>
                 </View>
-                <Text style={styles.text}>{name}</Text>
+                {/* <Text style={styles.text}>{name}</Text> */}
             </View>    
         </TouchableOpacity>
     )
@@ -27,19 +28,24 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginLeft: 25,
-        textAlign: 'center'
+        textAlign: 'center',
+        alignItems: 'center'
     },
 
     text: {
-        fontSize: 17,
+        fontSize: 16,
         color: '#744578',
-        marginHorizontal: -9,
+        // marginHorizontal: -9,
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     icon: {
-        width: 45,
-        height: 45,
+        width: 43,
+        height: 43,
         justifyContent: 'center',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        textAlign: 'center'
     }
 })
