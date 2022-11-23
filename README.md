@@ -2,8 +2,7 @@
 
 Welcome to the COMP 322 ItineraryApp!
 
-As of now, there are a few things you must do to ensure proper functinoality of the whole program. This is due to a repo configuration that does not
-import node_modules.
+If there are issues related to packages, you MAY need to install the following:
 
 Please install the following in /ItineraryApp/ItineraryApp
   If not, the program may not function as intended.
