@@ -35,34 +35,34 @@ initials = (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 30,
   },
-
   header: {
     width: 775,
     height: 273,
   },
-
-  profilePicture: {
-    width: 143,
-    height: 143,
-    borderRadius: 143 / 2,
-    borderColor: '#DA5263',
+  backgroundPicture: {
+    height: 200,
   },
-
+  profilePicture: {
+    width: 130,
+    height: 130,
+    borderWidth: 2,
+    borderRadius: 65,
+    borderColor: '#A067A5',
+    marginBottom: 10,
+    alignSelf: 'center',
+    position: 'absolute',
+    marginTop: 130,
+  },
   info: {
     paddingHorizontal: 20,
     marginBottom: 20,
   },
-
   settingsIcon: {
     right: 35,
     top: -380,
     position: 'absolute',
   },
-
   text: {
     fontSize: 30,
   },
