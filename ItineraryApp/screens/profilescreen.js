@@ -1,4 +1,4 @@
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {ImageBackground, StyleSheet, Text, View, Image} from 'react-native';
 import React, {Component, useState, useEffect} from 'react';
 
 const ProfileScreen = () => {
@@ -9,11 +9,18 @@ const ProfileScreen = () => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.info}>
-          <View>
-            <Text style={styles.text}>Initials</Text>
-          </View>
-        </View>
+        <Image
+          style={styles.backgroundPicture}
+          source={{
+            uri: 'https://cdn2.hometogo.net/assets/media/pics/1500_500/611b25bfdeedb.jpg',
+          }}
+        />
+        <Image
+          style={styles.profilePicture}
+          source={{
+            uri: 'https://creativeandcultural.files.wordpress.com/2018/04/default-profile-picture.png',
+          }}
+        />
       </View>
       ;
     </>
