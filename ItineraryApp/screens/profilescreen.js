@@ -1,8 +1,5 @@
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React, {Component, useState, useEffect} from 'react';
-//import EditProfileScreen from './editprofilescreen';
-import {Avatar, Title, Caption, PressableRipple} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 const ProfileScreen = () => {
   //loadRoute = () => this.props.navigation.navigate('EditProfileScreen');
@@ -15,12 +12,6 @@ const ProfileScreen = () => {
         <View style={styles.info}>
           <View>
             <Text style={styles.text}>Initials</Text>
-            <Avatar.Image
-              size={100}
-              source={{
-                uri: '',
-              }}
-            />
           </View>
         </View>
       </View>
