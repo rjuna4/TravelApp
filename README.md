@@ -8,5 +8,4 @@ Please install the following in /ItineraryApp/ItineraryApp
   If not, the program may not function as intended.
   
   1) npm install
-  2) npm install react-native-paper@5.0.0-rc.10
-  3) npm install react-native-google-places-autocomplete --save
+  2) npm install react-native-google-places-autocomplete --save
