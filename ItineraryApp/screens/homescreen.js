@@ -329,7 +329,7 @@ const userName = "insertName";  //pull from database
  
 const HomeScreen = ({data}) => {
  const navigation = useNavigation();
- const[activityType, changeActivityType] = useState("restaurants");
+ const[activityType, changeActivityType] = useState("attractions");
  const[searchItem, setSearchItem] = useState("");
  const[clicked, setClicked] = useState(false);
  const[mainData, setMainData] = useState([])
@@ -419,11 +419,11 @@ const HomeScreen = ({data}) => {
          />
        </View>
        
-       <View style={{top: 175}}>
+       <View style={{top: 180}}>
        <ScrollView>
        {loading ?
          <View>
-           <ActivityIndicator visible ={loading} size="large" color="#08646B" />
+           <ActivityIndicator visible ={loading} size="large" color="#A067A5" />
          </View> :
        <View style={styles.activitiesContainer}>
          {mainData?.length > 0 ? (
@@ -433,8 +433,8 @@ const HomeScreen = ({data}) => {
                key={i}
                image={
                  data?.photo?.images?.medium?.url
-                 ? data?.photo?.images?.medium?.url
-                 : 'ItineraryApp/assets/icons/restaurant(1).png'
+                 //? data?.photo?.images?.medium?.url
+                 //: 'ItineraryApp/assets/icons/restaurant(1).png'
                }
                name={data?.name}
                location={data?.location_string}
@@ -496,13 +496,13 @@ const styles = StyleSheet.create({
    },
    noResults: {
      fontSize: 20,
-     marginLeft: 130,
+     marginLeft: 110,
      marginTop: 50,
    },
     list: {
         position: 'absolute',
         width: 390,
-        marginHorizontal: 10,
+        marginHorizontal: 11,
         top: 140,
         zIndex: 2,
     },
@@ -512,6 +512,7 @@ const styles = StyleSheet.create({
       flexWrap: 'wrap',
       justifyContent: 'space-between',
       marginLeft: 20,
+      marginRight: 20,
       marginBottom: 500
     }
  

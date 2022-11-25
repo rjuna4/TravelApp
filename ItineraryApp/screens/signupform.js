@@ -270,7 +270,7 @@ const SignupForm = () => {
           setErrorMessage(data.error);
         } else {
           alert('User created successfully');
-          navigation.navigate('HomeScreen');
+          navigation.navigate('Tabs');
         }
       }
     )

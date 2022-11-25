@@ -34,6 +34,9 @@ const BookmarksScreen = ({route}) => {
       <>
       <ScrollView>
         <View style={styles.container}>
+          <View>
+            <Text style={styles.title}>My Bookmarks</Text>
+          </View> 
           <Image style={styles.activityImage}
             source={
               {uri:
@@ -42,7 +45,17 @@ const BookmarksScreen = ({route}) => {
                 : 'ItineraryApp/assets/icons/restaurant(1).png'}
             }
           />
-            <View>
+          <View style={{marginLeft: 10, marginTop: 3}}>
+              <Text style={styles.name}>{data?.name}</Text>
+              <View style={[styles.location, {flexDirection: 'row', alignItems: 'center'}]}>
+                <Image style={{marginHorizontal: 3}}
+                  source={require('ItineraryApp/assets/icons/Pin_fill.png')}
+                />  
+                 <Text>{data?.location_string}</Text>
+              </View>
+             
+            </View>
+            {/* <View>
               <TouchableOpacity>
                 <Image style={styles.backButton}
                   source={require('ItineraryApp/assets/icons/Refund_back.png')}
@@ -60,17 +73,7 @@ const BookmarksScreen = ({route}) => {
                   source={require('ItineraryApp/assets/icons/Bookmark_fill(1).png')}
                  /> 
               </TouchableOpacity>
-            </View>
-            <View>
-              <Text style={styles.name}>{data?.name}</Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 3}}
-                  source={require('ItineraryApp/assets/icons/Pin_fill.png')}
-                />  
-                 <Text style={styles.location}>{data?.location_string}</Text>
-              </View>
-             
-            </View>
+            </View> */}
         </View>
       </ScrollView>  
       </>
@@ -90,7 +93,7 @@ export default BookmarksScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    // backgroundColor: "#FFFFFF",
   },
   title: {
     fontFamily: 'ABeeZee',
@@ -101,10 +104,18 @@ const styles = StyleSheet.create({
   },
   activityImage: {
     width: '85%',
-    height: 200,
-    borderTopLeftRadius: 13,
-    borderTopRightRadius: 13,
-    marginHorizontal: 10,
-    top: 10
+    height: 180,
+    borderRadius: 13,
+    marginHorizontal: 30,
+    top: 20
+  },
+  name: {
+    fontSize: 20,
+    marginLeft: 25,
+    top: '40%'
+  },
+  location: {
+    marginLeft: 20,
+    top: 16
   }
 });

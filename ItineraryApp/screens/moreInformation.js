@@ -1,5 +1,5 @@
 import {Component, useLayoutEffect, useState} from 'react';
-import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity, ScrollView, TextInput, Modal} from 'react-native';
+import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity, ScrollView, TextInput, Modal, Button} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MapTest from './mapsTest';
 import DialogInput from 'react-native-dialog-input'
@@ -8,20 +8,6 @@ import prompt from 'react-native-prompt-android'
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 function map() { new Map();}
-
-{/*}
-prompt(
-  'Create new itinerary',
-  'Enter a name for your itinerary',
-  [
-    {
-      text: 'Cancel'
-    }, 
-    {
-      text: 'Save'
-    },
-  ]
-) */}
 
 const textInput = () => {
 
@@ -47,39 +33,8 @@ const textInput = () => {
 
 }   
 
-const alert = () => {
-  Alert.alert(
-    'Add Activity to Itinerary',
-    '',
-    [
-      {
-        text: "Cancel",
-      },
-      {
-        text: "Create new itinerary",
-      },
-      {
-        text: "Add to existing itinerary",
-      },
-      prompt(
-        'Create new itinerary',
-        'Enter a name for your itinerary',
-        [
-          {
-            text: 'Cancel'
-          }, 
-          {
-            text: 'Save'
-          },
-        ]
-      )
-    ]
-  )
-}
 
-
-
-const MoreInformation = ({route}) => {
+function MoreInformation({route}) {
 
   const navigation = useNavigation();
       useLayoutEffect(() => {
@@ -87,12 +42,60 @@ const MoreInformation = ({route}) => {
             headerShown: false,
         })
       }, []);
-    
-
+  
 
     const data = route?.params?.param
     //console.log("data: ", data)
     //map();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handleModal = () => {
+      setIsModalVisible(() => !isModalVisible)
+    };
+
+    
+    const bookmarks = [{id: 0, image:data , name: data?.name}]
+    let bookmarkData = data
+    const [bookmark, setBookmark] = useState(false)
+    // storage = AsyncStorage()
+
+    const storeData = async () => {
+      try {
+        await AsyncStorage.setItem('token', 'book')
+      } catch (e) {
+
+      }
+    }
+
+    const saveBookmarkedActivity = async data => {
+      // const [bookmark, setBookmark] = useState(false)
+      // storage = AsyncStorage()
+      setBookmark(true)
+      try {
+      await AsyncStorage.getItem('image').then(token => {
+        alert('Your bookmark post');
+        const res = JSON.parse(token);
+        alert('Your bookmark post');
+           if (res !== null) {
+               let data = res.find(value => value === data);
+               if (data == null) {
+                   res.push(data);
+                   AsyncStorage.setItem('bookmark', JSON.stringify(res));
+                   alert('Your bookmark post');
+               }
+           } else {
+               let bookmark = [];
+               bookmark.push(data);
+               AsyncStorage.setItem('bookmark', JSON.stringify(bookmark));
+               alert('Your bookmark post');
+           }
+      }) 
+    } catch (e) {
+        alert('Failed to save the data to the storage')
+      }
+    }
+
     return (
       <>
       <ScrollView>
@@ -114,12 +117,30 @@ const MoreInformation = ({route}) => {
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity onPress={() => alert()}>
+              <TouchableOpacity title="add" onPress={() => handleModal()}>
                 <Image style={styles.addButton}
                   source={require('ItineraryApp/assets/icons/Map_fill.png')}
                  /> 
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("BookmarksScreen", {param : data})}>
+                <Modal 
+                  animationType="slide"
+                  transparent={true}
+                  visible={isModalVisible}>
+                    <View style={styles.modalContainer}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
+                    <Text style={[styles.text, {color:"#A067A5"}]}>Add to Itinerary</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('CreateItinerary')}>
+                    <Text style={[styles.text, {color:"#A067A5"}]}>Create new Itinerary</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>
+                    <Text style={[styles.text, {color:"red"}]}>Cancel</Text>
+                  </TouchableOpacity>
+                  </View>
+                </Modal>
+                {/* navigation.navigate("BookmarksScreen", {param : data}) */}
+                {/* AsyncStorage.setItem('BookmarksScreen',JSON.stringify({param : data})) */}
+              <TouchableOpacity onPress={() => saveBookmarkedActivity()}>
                 <Image style={styles.saveButton}
                   source={require('ItineraryApp/assets/icons/Bookmark_fill(1).png')}
                  /> 
@@ -161,24 +182,31 @@ const MoreInformation = ({route}) => {
     );
   }
 
+  // const bookmarks = [{
+  //   id: 0,
+  //   image: {uri: data?.photo?.images?.large?.url },
+  //   name: data?.name
+  // }]
 
-  const saveBookmarkedActivity = async data => {
-    const [bookmark, setBookmark] = useState(false)
-    storage = AsyncStorage()
-    setBookmark(true)
-    await storage.getItem('bookmark').then(token => {
-      const response = JSON.parse(token);
-      if (response !== null) {
-        response.push(data)
-        storage.setItem('bookmark', JSON.stringify(response))
-      }
-      else {
-        let bookmark = []
-        bookmark.push(data)
-        storage.setItem('bookmark', JSON.stringify(bookmark))
-      }
-    })
-  }
+  // const bookmarkData = data?.photo?.images?.large?.url 
+
+  //  const saveBookmarkedActivity = async bookmarkData => {
+  //   const [bookmark, setBookmark] = useState(false)
+  //   storage = AsyncStorage()
+  //   setBookmark(true)
+  //   await storage.getItem('bookmark').then(token => {
+  //     const response = JSON.parse(token);
+  //     if (response !== null) {
+  //       response.push(data)
+  //       storage.setItem('bookmark', JSON.stringify(response))
+  //     }
+  //     else {
+  //       let bookmark = []
+  //       bookmark.push(data)
+  //       storage.setItem('bookmark', JSON.stringify(bookmark))
+  //     }
+  //   })
+  // }
 
 
 
@@ -190,9 +218,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'ABeeZee-Regular',
-    color: 'white',
-    fontSize: 28,
+    fontSize: 25,
     textAlign: 'center',
+    paddingVertical: 11,
   },
   pressed: {
     opacity: 0.75,
@@ -249,6 +277,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: -30,
     marginLeft: 320,
+  },
+
+  modalContainer: {
+    backgroundColor:"#FFFFFF", 
+    margin: 50, 
+    padding: 40, 
+    borderRadius: 13, 
+    flex:.35,
+    top: 100,
+    borderWidth: .5,
+    borderColor: '#A067A5',
+  },
+
+  menuOptions: {
+    borderRadius: 13,
+    borderWidth: .5,
+    borderColor: '#A067A5',
+    marginBottom: 10,
+    bottom: 12
   }
   
 });
