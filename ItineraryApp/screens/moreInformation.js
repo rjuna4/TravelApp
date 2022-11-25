@@ -117,7 +117,7 @@ function MoreInformation({route}) {
               </TouchableOpacity>
             </View>
             <View>
-              <TouchableOpacity title="add" onPress={() => handleModal()}>
+              <TouchableOpacity onPress={() => handleModal()}>
                 <Image style={styles.addButton}
                   source={require('ItineraryApp/assets/icons/Map_fill.png')}
                  /> 
