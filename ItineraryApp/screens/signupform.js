@@ -205,18 +205,17 @@ const SignupForm = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const [formData, setFormData] = useState({
-    fullName: ' ',
-    username: ' ',
-    emailAddress: ' ',
-    password: ' ',
-    confirmPassword: ' '
+    fullName: '',
+    username: '',
+    emailAddress: '',
+    password: '',
+    confirmPassword: ''
   })
-
 
   const sendToDatabase = () => {
     //console.log(formData)
       // check if all fields are filled out
-      if (formData.fullName == '' || formData.username == '' || formData.emailAddress == '' || formData.password == '' || formData.confirmPassword == '') {
+      if (!formData.fullName || !formData.username || !formData.emailAddress || !formData.password || !formData.confirmPassword) {
         setErrorMessage('All fields are required.');
         return;
       }
@@ -285,19 +284,22 @@ const SignupForm = () => {
     <View style={styles.container}>
       <ImageBackground source={localImage} resizeMode="cover" style={styles.localImage}>
         <Text style={styles.text}>Create Account</Text>
+        {
+          errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
+        }
         <View style={styles.inputContainer}>
         <Image style={styles.userIcon}
                 source={require('ItineraryApp/assets/icons/User_fill(1).png')}
-        />   
+        />
         <TextInput
           placeholder="Full Name"
           style={styles.input}
           onChangeText={(text) => setFormData( {...formData, fullName: text})}
           //value={}
         />
-         {
+         {/* {
           errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
-        }
+        } */}
         </View>
         <View style={styles.inputContainer}>
         <Image style={styles.emailIcon}
@@ -361,9 +363,9 @@ const SignupForm = () => {
       <TouchableOpacity style={styles.button1} onPress={() => {sendToDatabase()}}>
           <Text style={styles.custom}>Sign Up</Text>
       </TouchableOpacity>
-        <Text style={styles.text2}>Already have an account?</Text>
+        <Text style={[styles.text2, {bottom: 70} ]}>Already have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
-          <Text style={styles.text2}>Login here.</Text>
+          <Text style={[styles.text2, {bottom: 70} ]}>Login here.</Text>
         </TouchableOpacity>  
     </View>  
     )  
@@ -384,7 +386,8 @@ const styles = StyleSheet.create({
     fontSize: 35,
     textAlign: "center",
     color: "#FFFFFF",
-    marginBottom: 45,
+    bottom: 15
+    // 
   },
   text2: {
     textAlign: "center",
@@ -406,10 +409,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#d7d7d7',
-    marginHorizontal: 65,
+    
+    marginHorizontal: 68,
     marginTop: 5,
     marginBottom: 5,
-    bottom: -50
+    // bottom: -50
   },
   input: {
     fontSize: 18,
@@ -424,7 +428,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#CE80D4",
     width: 205,
     height: 56,
-    marginBottom: 75,
+    bottom: 90,
+    // marginBottom: 75,
     marginHorizontal: 105,
   },
   userIcon: {
@@ -443,14 +448,13 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: '#FFFFFF',
-    width: 280,
-    height: 70,
+    width: 250,
+    height: 50,
     fontSize: 18,
     borderRadius: 8,
     backgroundColor: '#DA5263',
-    marginHorizontal: -125,
-    marginTop: -95,
-    top: -30
+    left: 85,
+    marginBottom: 10
   }
 });
 
