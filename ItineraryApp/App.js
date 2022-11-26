@@ -1,5 +1,3 @@
-{/* REACT NATIVE 4 */}
-
 import React, {Component} from 'react';
 import {Button} from 'react-native';
 import SignupScreen from './screens/signupscreen';
@@ -43,7 +41,7 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Tabs">
+        <Stack.Navigator initialRouteName="LoginForm">
           <Stack.Screen name="Tabs" component={BottomNavigator} options={{headerShown: false}} />
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
           <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>

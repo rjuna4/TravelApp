@@ -37,9 +37,10 @@
 
 // // let initials = [...name.matchAll(rgx)] || [];
 
-// initials = (
-//   (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
-// ).toUpperCase();
+{/*initials = (
+  (initials.shift()?.[1] || '') + (initials.pop()?.[1] || '')
+).toUpperCase(); */}
+
 
 // const styles = StyleSheet.create({
 //   container: {
