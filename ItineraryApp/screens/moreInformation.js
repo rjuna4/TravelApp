@@ -54,6 +54,19 @@ function MoreInformation({route}) {
       setIsModalVisible(() => !isModalVisible)
     };
 
+    postData = async () => {
+      try {
+          let post = {title: data?.name, image: data?.photo?.images?.large?.url, location: data?.location_string}
+          const posts = await AsyncStorage.getItem('posts') || '[]';
+          posts = JSON.parse(posts);
+          posts.push(post);
+          AsyncStorage.setItem('posts', JSON.stringify(posts)).then(() => {
+          });
+      } catch(error) {
+        alert('Failed to save the data to the storage')
+      }
+      };
+
     
     const bookmarks = [{id: 0, image:data , name: data?.name}]
     let bookmarkData = data
@@ -130,7 +143,7 @@ function MoreInformation({route}) {
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
                     <Text style={[styles.text, {color:"#A067A5"}]}>Add to Itinerary</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('CreateItinerary')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('CreateItinerary', {param : data})}>
                     <Text style={[styles.text, {color:"#A067A5"}]}>Create new Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>
