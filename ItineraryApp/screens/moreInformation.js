@@ -4,8 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import MapTest from './mapsTest';
 import DialogInput from 'react-native-dialog-input'
 import Dialog from 'react-native-dialog'
-import prompt from 'react-native-prompt-android'
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function map() { new Map();}
 
@@ -35,6 +34,9 @@ const textInput = () => {
 
 
 function MoreInformation({route}) {
+
+  let userid = AsyncStorage.getItem('user_id')
+  alert("userid ", userid)
 
   const navigation = useNavigation();
       useLayoutEffect(() => {

@@ -1,7 +1,3 @@
-{
-  /* REACT NATIVE 4 */
-}
-
 import React, {Component} from 'react';
 import {Button} from 'react-native';
 import SignupScreen from './screens/signupscreen';
@@ -44,38 +40,12 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        {/* v Change which screen shows on emulator v */}
-        <Stack.Navigator initialRouteName="Tabs">
-          <Stack.Screen
-            name="Tabs"
-            component={BottomNavigator}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignupScreen"
-            component={SignupScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignupForm"
-            component={SignupForm}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="LoginForm"
-            component={LoginForm}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ViewItinerary"
-            component={ViewItinerary}
-            options={{headerShown: false}}
-          />
-          {/* <Stack.Screen
-            name="ProfileScreen"
-            component={ProfileScreen}
-            options={{headerShown: false}}
-          /> */}
+        <Stack.Navigator initialRouteName="LoginForm">
+          <Stack.Screen name="Tabs" component={BottomNavigator} options={{headerShown: false}} />
+          <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
+          <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>
+          <Stack.Screen name="LoginForm" component={LoginForm} options={{headerShown: false}}/>
+          <Stack.Screen name="ViewItinerary" component={ViewItinerary} options={{headerShown: false}}/>
           {/* <Stack.Screen name="MoreInformation" component={MoreInformation} />
           <Stack.Screen name="MapTest" component={MapTest} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />

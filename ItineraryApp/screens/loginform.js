@@ -1,7 +1,6 @@
 import {Icon, SafeAreaView, TextInput, ImageBackground, Image, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable } from 'react-native';
 import React, { Component, useState, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { send } from 'process';
 
 const image = { uri: "https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=998&q=80"};
 
@@ -24,18 +23,18 @@ const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState(null);
 
     const [formData, setFormData] = useState({
-      username: ' ',
-      password: ' ',
+      username: '',
+      password: '',
     })
 
-    const sendToDatabase = () => {
+    async function sendToDatabase() {
       //console.log(formData)
         // check if all fields are filled out
-        if (formData.username === '' || formData.password === '') {
+        if (!formData.username|| !formData.password) {
           setErrorMessage('All fields are required.');
           return;
         }
-        fetch('http://10.0.2.2:8000/api/login', {
+        await fetch('http://10.0.2.2:8000/api/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -43,26 +42,22 @@ const LoginForm = () => {
 
             }, 
             body: JSON.stringify(formData)
-        }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-          data => {
-            if(data.error) {
-              setErrorMessage(data.error);
-            } else {
-              alert('User signed in successfully')
-              navigation.navigate('Tabs')
-            }
+          }).then().catch(error=>console.log(error)).then(res => res.json()).then(
+            //}).then().catch(error=>console.log(error)).then(
+              data => {
+                alert("data: ", data.json);
+                if(data.error) {
+                  setErrorMessage(data.error);
+                } else {
+                  navigation.navigate('Tabs')
+                  alert("User logged in successfully")
+                }  
           }
         )
     
   }
-
-  // const buttonActions  = () => {
-  //   sendToDatabase();
-  //   navigation.navigate('Tabs');
-  //   }
   
     return (
-
     <View style={styles.container}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
         <Text style={styles.title}>Welcome Back!</Text>
@@ -194,7 +189,7 @@ const styles = StyleSheet.create({
     height: 50,
     fontSize: 18,
     borderRadius: 8,
-    backgroundColor: '#D41F1F',
+    backgroundColor: '#DA5263',
     marginHorizontal: -117,
     marginTop: -95,
   },
