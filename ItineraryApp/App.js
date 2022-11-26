@@ -1,4 +1,6 @@
-{/* REACT NATIVE 4 */}
+{
+  /* REACT NATIVE 4 */
+}
 
 import React, {Component} from 'react';
 import {Button} from 'react-native';
@@ -16,8 +18,8 @@ import ViewItinerary from './screens/viewitinerary';
 //Navigation Imports
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigator } from './components/BottomNavigation';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {BottomNavigator} from './components/BottomNavigation';
 import {
   SafeAreaView,
   ScrollView,
@@ -36,33 +38,56 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 class App extends Component {
   render() {
     return (
       <NavigationContainer>
+        {/* v Change which screen shows on emulator v */}
         <Stack.Navigator initialRouteName="Tabs">
-          <Stack.Screen name="Tabs" component={BottomNavigator} options={{headerShown: false}} />
-          <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>
-          <Stack.Screen name="LoginForm" component={LoginForm} options={{headerShown: false}}/>
-          <Stack.Screen name="ViewItinerary" component={ViewItinerary} options={{headerShown: false}}/>
+          <Stack.Screen
+            name="Tabs"
+            component={BottomNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignupScreen"
+            component={SignupScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignupForm"
+            component={SignupForm}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="LoginForm"
+            component={LoginForm}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ViewItinerary"
+            component={ViewItinerary}
+            options={{headerShown: false}}
+          />
+          {/* <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
+            options={{headerShown: false}}
+          /> */}
           {/* <Stack.Screen name="MoreInformation" component={MoreInformation} />
           <Stack.Screen name="MapTest" component={MapTest} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           <Stack.Screen name="ActivityRecommendations" component={ActivityRecommendations} />
           <Stack.Screen name="BookmarksScreen" component={BookmarksScreen} />
           <Stack.Screen name="ItineraryListScreen" component={ItineraryListScreen} /> */}
-        </Stack.Navigator> 
+        </Stack.Navigator>
         {/* <BottomNavigator /> */}
       </NavigationContainer>
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   sectionContainer: {
