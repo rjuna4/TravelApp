@@ -226,15 +226,15 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     backgroundColor: 'white',
-    width: 278,
-    height: 40,
-    borderRadius: 8,
+    width: '75%',
+    height: 45,
+    borderRadius: 13,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#d7d7d7',
     
-    marginHorizontal: 68,
+    marginHorizontal: 48,
     marginTop: 5,
     marginBottom: 5,
     // bottom: -50
@@ -279,6 +279,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#DA5263',
     left: 85,
     marginBottom: 10
+    textA
   }
 });
 

@@ -185,7 +185,7 @@ app.post('/api/signup', async (req, res) => {
         console.log('password: ', password)
 
         try {
-            const user = await userModel.findOne({ username }).lean()
+            const user = await userModel.findOne({ username, password }).lean()
         
             console.log('user: ', user)
             if(!user) {

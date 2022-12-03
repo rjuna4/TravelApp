@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import ItineraryContainer from 'ItineraryApp/components/ItineraryContainer';
 import ActivityContainer from '../components/ActivityContainer';
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
-
+// import {data} from './moreInformation';
 
 const BookmarksScreen = ({route}) => {
     const navigation = useNavigation();
@@ -45,6 +45,7 @@ const BookmarksScreen = ({route}) => {
                 : 'ItineraryApp/assets/icons/restaurant(1).png'}
             }
           />
+
           <View style={{marginLeft: 10, marginTop: 3}}>
               <Text style={styles.name}>{data?.name}</Text>
               <View style={[styles.location, {flexDirection: 'row', alignItems: 'center'}]}>

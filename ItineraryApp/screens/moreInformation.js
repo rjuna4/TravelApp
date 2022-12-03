@@ -8,35 +8,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function map() { new Map();}
 
-const textInput = () => {
-
-  const[userInput, setUserInput] = useState('');
-  const[dialogVisible, setDialogVisible] = useState(false);
-
-  
-  { userInput ?
-      <Text style={styles.text}>{userInput}</Text>
-      :
-      <Text style={styles.text}>App</Text>
-  }
-  <DialogInput
-    isDialogVisible={visible}
-    title={"Create new itinerary"}
-    hintInput={"Enter a name for itinerary"}
-    submitInput={ (input) => {
-      setUserInput(input),
-      setDialogVisible(false)
-    }}    
-    closeDialog={() => setDialogVisible(false)}>
-  </DialogInput>    
-
-}   
-
 
 function MoreInformation({route}) {
 
   let userid = AsyncStorage.getItem('user_id')
-  alert("userid ", userid)
+  // alert("userid ", userid)
 
   const navigation = useNavigation();
       useLayoutEffect(() => {
@@ -56,42 +32,58 @@ function MoreInformation({route}) {
       setIsModalVisible(() => !isModalVisible)
     };
 
-    postData = async () => {
-      try {
-          let post = {title: data?.name, image: data?.photo?.images?.large?.url, location: data?.location_string}
-          const posts = await AsyncStorage.getItem('posts') || '[]';
-          posts = JSON.parse(posts);
-          posts.push(post);
-          AsyncStorage.setItem('posts', JSON.stringify(posts)).then(() => {
-          });
-      } catch(error) {
-        alert('Failed to save the data to the storage')
+    // postData = async () => {
+    //   try {
+    //       let post = {title: data?.name, image: data?.photo?.images?.large?.url, location: data?.location_string}
+    //       const posts = await AsyncStorage.getItem('posts') || '[]';
+    //       posts = JSON.parse(posts);
+    //       posts.push(post);
+    //       AsyncStorage.setItem('posts', JSON.stringify(posts)).then(() => {
+    //       });
+    //   } catch(error) {
+    //     alert('Failed to save the data to the storage')
+    //   }
+    //   };
+
+    const createItinerary = async(data) => {
+      let itineraryArray = await AsyncStorage.getItem('activityInfo')
+      itineraryArray = JSON.parse(itineraryArray)
+      if (itineraryArray) {
+        let array = itineraryArray
+        array.push(data);
+
+        try { //this is working
+          await AsyncStorage.setItem('activityInfo', JSON.stringify(array))
+          alert('adding to new itinerary')
+          navigation.navigate('ViewItinerary')
+        } catch {error} {
+          return error
+        }
       }
-      };
+      else {
+        let array = []
+        array.push(data)
+        try {
+          await AsyncStorage.setItem('activityInfo', JSON.stringify(array))
+          alert('adding to new itinerary')
+          navigation.navigate('ViewItinerary')
+        } catch {error} {
+          return error
+        }
+      }
+      }
 
     
     const bookmarks = [{id: 0, image:data , name: data?.name}]
     let bookmarkData = data
     const [bookmark, setBookmark] = useState(false)
-    // storage = AsyncStorage()
-
-    const storeData = async () => {
-      try {
-        await AsyncStorage.setItem('token', 'book')
-      } catch (e) {
-
-      }
-    }
 
     const saveBookmarkedActivity = async data => {
       // const [bookmark, setBookmark] = useState(false)
-      // storage = AsyncStorage()
       setBookmark(true)
       try {
       await AsyncStorage.getItem('image').then(token => {
-        alert('Your bookmark post');
         const res = JSON.parse(token);
-        alert('Your bookmark post');
            if (res !== null) {
                let data = res.find(value => value === data);
                if (data == null) {
@@ -145,7 +137,8 @@ function MoreInformation({route}) {
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
                     <Text style={[styles.text, {color:"#A067A5"}]}>Add to Itinerary</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('CreateItinerary', {param : data})}>
+                  {/* navigation.navigate('CreateItinerary', {param : data}) */}
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => createItinerary(data)}>
                     <Text style={[styles.text, {color:"#A067A5"}]}>Create new Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>

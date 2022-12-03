@@ -510,9 +510,7 @@ const styles = StyleSheet.create({
     activitiesContainer: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      justifyContent: 'space-between',
-      marginLeft: 20,
-      marginRight: 20,
+      justifyContent: 'space-evenly',
       marginBottom: 500
     }
  

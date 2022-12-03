@@ -1,11 +1,9 @@
 # ItineraryApp
 
-Welcome to the COMP 322 ItineraryApp!
+You may need to use the following commands to properly use this project:
 
-If there are issues related to packages, you MAY need to install the following:
-
-Please install the following in /ItineraryApp/ItineraryApp
-  If not, the program may not function as intended.
-  
-  1) npm install
-  2) npm install react-native-google-places-autocomplete --save
+1) npm install
+2) npm install react-native-maps --save
+3) npm install -g nodemon
+4) nodemon server.js
+5) npm install react-native-google-places-autocomplete --save

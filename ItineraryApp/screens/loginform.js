@@ -61,13 +61,14 @@ const LoginForm = () => {
     <View style={styles.container}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
         <Text style={styles.title}>Welcome Back!</Text>
+        {
+          errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
+        }
+        
         <View style={styles.inputContainer}>
         <Image style={styles.userIcon}
                 source={require('ItineraryApp/assets/icons/User_fill(1).png')}
         />    
-        {
-          errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
-        }
         <TextInput
           placeholder="Username"
           style={styles.input}
@@ -92,7 +93,6 @@ const LoginForm = () => {
         onPress={() => setSecure(!secure)} />
         } */}
         </View>
-        <Text style={styles.text}>Remember me?</Text>
       </ImageBackground>
       <TouchableOpacity style={styles.button1} onPress={() => {sendToDatabase()}}>
           <Text style={styles.custom}>Login</Text>
@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
     fontSize: 38,
     color: "white",
     textAlign: "center",
-    bottom: 10,
   },
   text: {
     textAlign: "center",
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     backgroundColor: 'white',
     width: '80%',
-    height: 50,
+    height: 45,
     borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     borderColor: '#d7d7d7',
     marginHorizontal: 40,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 5
   },
   input: {
     fontSize: 18,
@@ -188,10 +187,10 @@ const styles = StyleSheet.create({
     width: 278,
     height: 50,
     fontSize: 18,
-    borderRadius: 8,
+    borderRadius:13,
     backgroundColor: '#DA5263',
-    marginHorizontal: -117,
-    marginTop: -95,
+    marginHorizontal: 70,
+    textAlign: 'center'
   },
   box: {
     width: 212,
