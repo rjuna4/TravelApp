@@ -14,7 +14,7 @@ import ProfileScreen from '../screens/profilescreen';
 import BookmarksScreen from '../screens/bookmarksscreen';
 import ItineraryListScreen from '../screens/itinerarylistscreen';
 import ActivityRecommendations from '../screens/activityrecommendations';
-import CreateItinerary from '../screens/createitinerary';
+import ViewItinerary from '../screens/viewitinerary';
 
 const BottomNavBar = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -31,7 +31,7 @@ const HomeStackTab = () => {
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="MapTest" component={MapTest} options={{headerShown: false}}/>
-         <HomeStack.Screen name="CreateItinerary" component={CreateItinerary} options={{headerShown: false}}/>
+         <HomeStack.Screen name="ViewItinerary" component={ViewItinerary} options={{headerShown: false}}/>
       </HomeStack.Navigator>
     )
 }

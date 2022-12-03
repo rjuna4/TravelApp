@@ -13,11 +13,11 @@ const ActivityContainer = ({image, name, location, data}) => {
             {name ? (
             <>
             <Text style={styles.nameText}> 
-                { name?.length > 15 ? `${name.slice(0, 15)}...` : name }
+                { name?.length > 13 ? `${name.slice(0, 13)}...` : name }
             </Text>
             <View>
                 <Text style={styles.locationText}>
-                    { location?.length > 18 ? `${location.slice(0,18)}...` : location }
+                    { location?.length > 15 ? `${location.slice(0,15)}...` : location }
                 </Text>
                 <Image source={require('ItineraryApp/assets/icons/Pin_fill.png')} style={{width: 23, height: 23, marginTop: -23, marginHorizontal: 10}}></Image>
             </View>
