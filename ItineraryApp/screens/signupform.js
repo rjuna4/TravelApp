@@ -151,9 +151,6 @@ const SignupForm = () => {
             onChangeText={text => setFormData({...formData, fullName: text})}
             //value={}
           />
-          {/* {
-          errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
-        } */}
         </View>
         <View style={styles.inputContainer}>
           <Image
@@ -214,12 +211,6 @@ const SignupForm = () => {
             secure={true}
             style={styles.input}
           />
-          {/* {
-        <Icon style={{ paddingRight: 15, }}
-        name={secure ? "eye" : 'eye-slash'}
-        size={20} color='gray' 
-        onPress={() => setSecure(!secure)} />
-        } */}
         </View>
       </ImageBackground>
       <TouchableOpacity
@@ -229,10 +220,14 @@ const SignupForm = () => {
         }}>
         <Text style={styles.custom}>Sign Up</Text>
       </TouchableOpacity>
-      <Text style={[styles.text2, {bottom: 70}]}>Already have an account?</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
-        <Text style={[styles.text2, {bottom: 70}]}>Login here.</Text>
-      </TouchableOpacity>
+      <View style={styles.login}>
+        <Text style={[styles.text2, {bottom: 70}]}>
+          Already have an account?
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
+          <Text style={[styles.text3, {bottom: 70}]}>Login here!</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -245,7 +240,7 @@ const styles = StyleSheet.create({
   localImage: {
     flex: 1,
     justifyContent: 'center',
-    height: 660,
+    height: 760,
     width: 420,
   },
   text: {
@@ -256,8 +251,13 @@ const styles = StyleSheet.create({
   },
   text2: {
     textAlign: 'center',
+    color: 'white',
+  },
+  text3: {
+    textAlign: 'center',
+    fontSize: 15,
     color: '#FFFFFF',
-    textDecorationLine: 'underline',
+    fontWeight: 'bold',
   },
   custom: {
     fontFamily: 'ABeeZee',
@@ -267,15 +267,14 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     backgroundColor: 'white',
-    width: '75%',
-    height: 45,
-    borderRadius: 13,
+    width: 278,
+    height: 40,
+    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#d7d7d7',
-
-    marginHorizontal: 48,
+    marginHorizontal: 68,
     marginTop: 5,
     marginBottom: 5,
   },
@@ -284,7 +283,6 @@ const styles = StyleSheet.create({
     marginTop: -4,
     color: '#685F5F',
   },
-
   button1: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -293,7 +291,8 @@ const styles = StyleSheet.create({
     width: 205,
     height: 56,
     bottom: 90,
-    marginHorizontal: 105,
+    alignSelf: 'center',
+    marginBottom: 0,
   },
   userIcon: {
     tintColor: '#000000',
@@ -318,5 +317,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#DA5263',
     left: 85,
     marginBottom: 10,
+  },
+  login: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 65,
   },
 });
