@@ -15,6 +15,12 @@ const changeVisibility = () => {
 const SignupForm = () => {
   const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+        headerShown: false,
+    })
+  }, []);
+
   const [errorMessage, setErrorMessage] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -53,26 +59,7 @@ const SignupForm = () => {
       else if (formData.password.length > 15 || formData.confirmPassword.length > 15) {
           setErrorMessage('Password is too long. Please enter a password between 7-15 characters.');
       }
-      {/*}
-      else {
-        fetch('/api/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        })
-        .then(res => res.json()).then(
-          data => {
-            if(data.error) {
-              setErrorMessage(data.error);
-            } else {
-              alert("User created successfully")
-              navigation.navigate('HomeScreen')
-            }
-          }
-        )
-      } */}
+
       await fetch('http://10.0.2.2:8000/api/signup', {
         method: 'POST',
         headers: {
@@ -98,16 +85,10 @@ const SignupForm = () => {
     )
   }
 
-
-  useLayoutEffect(() => {
-      navigation.setOptions({
-          headerShown: false,
-      })
-    }, []);
     return (
     <View style={styles.container}>
       <ImageBackground source={localImage} resizeMode="cover" style={styles.localImage}>
-        <Text style={styles.text}>Create Account</Text>
+        <Text style={styles.title}>Create Account</Text>
         {
           errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
         }
@@ -176,18 +157,12 @@ const SignupForm = () => {
           secure={true}
           style={styles.input}
         />
-        {/* {
-        <Icon style={{ paddingRight: 15, }}
-        name={secure ? "eye" : 'eye-slash'}
-        size={20} color='gray' 
-        onPress={() => setSecure(!secure)} />
-        } */}
         </View>
       </ImageBackground>
       <TouchableOpacity style={styles.button1} onPress={() => {sendToDatabase()}}>
           <Text style={styles.custom}>Sign Up</Text>
       </TouchableOpacity>
-        <Text style={[styles.text2, {bottom: 70} ]}>Already have an account?</Text>
+        <Text style={[styles.text, {bottom: 70} ]}>Already have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
           <Text style={[styles.text2, {bottom: 70} ]}>Login here.</Text>
         </TouchableOpacity>  
@@ -206,17 +181,23 @@ const styles = StyleSheet.create({
     height: 660,
     width: 420,
   },
+  title: {
+    bottom: 8,
+    fontSize: 38,
+    color: "white",
+    textAlign: "center",
+  },
   text: {
-    fontSize: 35,
+    fontSize: 17,
     textAlign: "center",
     color: "#FFFFFF",
-    bottom: 15
-    // 
   },
   text2: {
     textAlign: "center",
     color: "#FFFFFF",
     textDecorationLine: 'underline',
+    fontWeight: 'bold',
+    fontSize: 17,
   },
   custom: {
     fontFamily: 'ABeeZee',
@@ -233,11 +214,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#d7d7d7',
-    
     marginHorizontal: 48,
     marginTop: 5,
     marginBottom: 5,
-    // bottom: -50
   },
   input: {
     fontSize: 18,
@@ -252,8 +231,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#CE80D4",
     width: 205,
     height: 56,
-    bottom: 90,
-    // marginBottom: 75,
+    bottom: 85,
     marginHorizontal: 105,
   },
   userIcon: {
@@ -275,11 +253,11 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50,
     fontSize: 18,
-    borderRadius: 8,
+    borderRadius: 13,
     backgroundColor: '#DA5263',
     left: 85,
-    marginBottom: 10
-    textA
+    marginBottom: 5,
+    textAlign: 'center'
   }
 });
 

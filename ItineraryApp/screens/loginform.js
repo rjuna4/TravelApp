@@ -34,6 +34,7 @@ const LoginForm = () => {
           setErrorMessage('All fields are required.');
           return;
         }
+
         await fetch('http://10.0.2.2:8000/api/login', {
             method: 'POST',
             headers: {
@@ -45,7 +46,7 @@ const LoginForm = () => {
           }).then().catch(error=>console.log(error)).then(res => res.json()).then(
             //}).then().catch(error=>console.log(error)).then(
               data => {
-                alert("data: ", data.json);
+                // alert("data: ", data.json);
                 if(data.error) {
                   setErrorMessage(data.error);
                 } else {
@@ -86,12 +87,6 @@ const LoginForm = () => {
           secure={true}
           style={styles.input}
         />
-        {/* {
-        <Icon style={{ paddingRight: 15, }}
-        name={secure ? "eye" : 'eye-slash'}
-        size={20} color='gray' 
-        onPress={() => setSecure(!secure)} />
-        } */}
         </View>
       </ImageBackground>
       <TouchableOpacity style={styles.button1} onPress={() => {sendToDatabase()}}>
@@ -148,7 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '80%',
     height: 45,
-    borderRadius: 8,
+    borderRadius: 13,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,
@@ -190,6 +185,7 @@ const styles = StyleSheet.create({
     borderRadius:13,
     backgroundColor: '#DA5263',
     marginHorizontal: 70,
+    marginBottom: 5,
     textAlign: 'center'
   },
   box: {
@@ -198,7 +194,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     backgroundColor: '#D9D9D9',
     opacity: 0.40,
-    bottom: 110,
+    bottom: 107,
     marginHorizontal: 100,
   }
 });
