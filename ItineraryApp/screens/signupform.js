@@ -1,16 +1,28 @@
-import {Icon, SafeAreaView, TextInput, ImageBackground, StyleSheet, Text, Image, View, Platform, Dimensions, TouchableOpacity, Pressable } from 'react-native';
-import React, { Component, useState, useLayoutEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { response } from 'express';
+import {
+  Icon,
+  SafeAreaView,
+  TextInput,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  Image,
+  View,
+  Platform,
+  Dimensions,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
+import React, {Component, useState, useLayoutEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {response} from 'express';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const localImage = require('ItineraryApp/assets/appimages/signupformbackground.png')
+const localImage = require('ItineraryApp/assets/appimages/signupformbackground.png');
 
 const changeVisibility = () => {
-    const [passwordVisibility, setPasswordVisibility] = useState(true);
-    const [rightIcon, setRightIcon] = useState('eye');
-
-}
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [rightIcon, setRightIcon] = useState('eye');
+};
 
 const SignupForm = () => {
   const navigation = useNavigation();
@@ -28,12 +40,10 @@ const SignupForm = () => {
     username: '',
     emailAddress: '',
     password: '',
-    confirmPassword: ''
-  })
-
+    confirmPassword: '',
+  });
 
   //const sendToDatabase = () => {
-
 
   async function sendToDatabase() {
     //console.log(formData)
@@ -70,14 +80,14 @@ const SignupForm = () => {
     }).then().catch(error=>console.log(error)).then(res => res.json()).then(
       data => {
         //alert("data.errror: ", data.error)
-        if(data.error) {
-          alert("inside error")
+        if (data.error) {
+          alert('inside error');
           setErrorMessage(data.error);
         } else {
-            if (data.user_id) {
-              alert('user id', data.user_id)
-              AsyncStorage.setItem('user_id', JSON.stringify(data.user_id))
-            }
+          if (data.user_id) {
+            alert('user id', data.user_id);
+            AsyncStorage.setItem('user_id', JSON.stringify(data.user_id));
+          }
           alert('User created successfully');
           navigation.navigate('Tabs');
         }
@@ -93,53 +103,56 @@ const SignupForm = () => {
           errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
         }
         <View style={styles.inputContainer}>
-        <Image style={styles.userIcon}
-                source={require('ItineraryApp/assets/icons/User_fill(1).png')}
-        />
-        <TextInput
-          placeholder="Full Name"
-          style={styles.input}
-          onChangeText={(text) => setFormData( {...formData, fullName: text})}
-          //value={}
-        />
-         {/* {
-          errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
-        } */}
+          <Image
+            style={styles.userIcon}
+            source={require('ItineraryApp/assets/icons/User_fill(1).png')}
+          />
+          <TextInput
+            placeholder="Full Name"
+            style={styles.input}
+            onChangeText={text => setFormData({...formData, fullName: text})}
+            //value={}
+          />
         </View>
         <View style={styles.inputContainer}>
-        <Image style={styles.emailIcon}
-                source={require('ItineraryApp/assets/icons/Message_alt_fill.png')}
-        />   
-        <TextInput
-          placeholder="Email Address"
-          style={styles.input}
-          onChangeText={(text) => setFormData( {...formData, emailAddress: text})}
-          //value={}
-        />
+          <Image
+            style={styles.emailIcon}
+            source={require('ItineraryApp/assets/icons/Message_alt_fill.png')}
+          />
+          <TextInput
+            placeholder="Email Address"
+            style={styles.input}
+            onChangeText={text =>
+              setFormData({...formData, emailAddress: text})
+            }
+            //value={}
+          />
         </View>
         <View style={styles.inputContainer}>
-        <Image style={styles.userIcon}
-                source={require('ItineraryApp/assets/icons/User_fill(1).png')}
-        />   
-        <TextInput
-          placeholder="Username"
-          style={styles.input}
-          onChangeText={(text) => setFormData( {...formData, username: text})}
-          //value={}
-        />
+          <Image
+            style={styles.userIcon}
+            source={require('ItineraryApp/assets/icons/User_fill(1).png')}
+          />
+          <TextInput
+            placeholder="Username"
+            style={styles.input}
+            onChangeText={text => setFormData({...formData, username: text})}
+            //value={}
+          />
         </View>
         <View style={styles.inputContainer}>
-        <Image style={styles.passwordIcon}
-                source={require('ItineraryApp/assets/icons/Lock_fill.png')}
-        />     
-        <TextInput
-          onChangeText={(text) => setFormData( {...formData, password: text})}
-          placeholder="Password"
-          secureTextEntry
-          secure={true}
-          style={styles.input}
-        />
-        {/* {
+          <Image
+            style={styles.passwordIcon}
+            source={require('ItineraryApp/assets/icons/Lock_fill.png')}
+          />
+          <TextInput
+            onChangeText={text => setFormData({...formData, password: text})}
+            placeholder="Password"
+            secureTextEntry
+            secure={true}
+            style={styles.input}
+          />
+          {/* {
         <Icon style={{ paddingRight: 15, }}
         name={secure ? "eye" : 'eye-slash'}
         size={20} color='gray' 
@@ -159,26 +172,31 @@ const SignupForm = () => {
         />
         </View>
       </ImageBackground>
-      <TouchableOpacity style={styles.button1} onPress={() => {sendToDatabase()}}>
-          <Text style={styles.custom}>Sign Up</Text>
+      <TouchableOpacity
+        style={styles.button1}
+        onPress={() => {
+          sendToDatabase();
+        }}>
+        <Text style={styles.custom}>Sign Up</Text>
       </TouchableOpacity>
         <Text style={[styles.text, {bottom: 70} ]}>Already have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
-          <Text style={[styles.text2, {bottom: 70} ]}>Login here.</Text>
-        </TouchableOpacity>  
-    </View>  
-    )  
-  }
-export default SignupForm
+          <Text style={[styles.text3, {bottom: 70}]}>Login here!</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+export default SignupForm;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   localImage: {
     flex: 1,
-    justifyContent: "center",
-    height: 660,
+    justifyContent: 'center',
+    height: 760,
     width: 420,
   },
   title: {
@@ -202,14 +220,14 @@ const styles = StyleSheet.create({
   custom: {
     fontFamily: 'ABeeZee',
     fontSize: 25,
-    color: "white",
-    textAlign: "center",
+    color: 'white',
+    textAlign: 'center',
   },
   inputContainer: {
     backgroundColor: 'white',
-    width: '75%',
-    height: 45,
-    borderRadius: 13,
+    width: 278,
+    height: 40,
+    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 2,
@@ -223,12 +241,11 @@ const styles = StyleSheet.create({
     marginTop: -4,
     color: '#685F5F',
   },
-
   button1: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 13,
-    backgroundColor: "#CE80D4",
+    backgroundColor: '#CE80D4',
     width: 205,
     height: 56,
     bottom: 85,
@@ -260,10 +277,3 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
-
-
-
-
-
-
-
