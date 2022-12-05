@@ -81,6 +81,7 @@ const ProfileScreen = () => {
             }}
           />
         </View>
+        <View style={styles.bottomSpace}></View>
       </ScrollView>
     </View>
   );
@@ -131,6 +132,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignSelf: 'center',
+    marginBottom: 20,
   },
   myLikesPicsLeft: {
     borderRadius: 25,
@@ -180,5 +182,8 @@ const styles = StyleSheet.create({
     marginTop: 60,
     textAlign: 'left',
     alignSelf: 'flex-start',
+  },
+  bottomSpace: {
+    marginBottom: 40,
   },
 });
