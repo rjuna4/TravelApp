@@ -1,4 +1,4 @@
-import {Button, ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, Container} from 'react-native';
+import {Button, ImageBackground, StyleSheet, Text, View, Image, Platform, Dimensions, TouchableOpacity, Pressable, Container} from 'react-native';
 import React, { Component, useLayoutEffect } from 'react';
 import CustomAndroid from '../components/CustomAndroid';
 import SignupForm from './signupform'
@@ -22,6 +22,7 @@ const SignupScreen = () => {
       <View style={styles.container}>
         <ImageBackground source={localImage} resizeMode="cover" style={styles.image}>
         </ImageBackground>
+        <Image source = {require('ItineraryApp/assets/appimages/wanderlist_logo-removebg-preview.png')} style={styles.logo}/>
         <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('SignupForm')}>
           <Text style={styles.custom}>Sign Up</Text>
         </TouchableOpacity>
@@ -46,6 +47,14 @@ const styles = StyleSheet.create({
       height: 670,
       width: 500,
       justifyContent: "center"
+    },
+    logo: {
+      flex: 1,
+      height: 100,
+      width: 440,
+      marginHorizontal: -15,
+      marginBottom: 100,
+      //tintColor: '#FFFFFF'
     },
     custom: {
       fontFamily: 'ABeeZee',
