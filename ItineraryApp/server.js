@@ -12,6 +12,7 @@ const url = require('url')
 const fs = require("fs")
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'epiurfgiwfbjw!@#^&&*%%dsfiuwqopqsm'
+const querystring = require('querystring');
 
 
   const userSchema = mongoose.Schema({
@@ -151,7 +152,7 @@ app.post('/api/signup', async (req, res) => {
 
     const user = new userModel(req.body);
     const userId = user._id
-    console.log("userId: " + userId)
+    console.log("userId1: " + userId)
     try {
         /*
         const response = await userModel.create({
@@ -161,16 +162,31 @@ app.post('/api/signup', async (req, res) => {
             plainTextPassword
         }) */
         await user.save();
+        console.log("userId2: " + userId)
 
        // user = await userModel.findOne();
         console.log("user ", user)
         console.log("User saved successfully: ", res)
         console.log("response: " + res)
-        return res.json( { user_id: userId})
+        //return res.json( { user_id: userId, username: username})
+        //const resp = res.json( { data: userId })
+        //console.log("resp123: ", resp)
+        //return resp
+        //return res.json(userId)
+
+        const responseData = {
+            user_id : userId
+        }
+
+        // const jsonContent = JSON.stringify(responseData)
+    
+        return res.json(responseData)
+
     } catch(error) {
         // duplicate key
         if (error.code === 11000) {
             return res.json( {status: 'error', error: 'Username or email address already in use' })
+            //return res.json( {status: 'error', error: userId })
         }
         console.log("error: " + error)
         throw error
@@ -201,7 +217,7 @@ app.post('/api/signup', async (req, res) => {
                     }, 
                     JWT_SECRET 
                 )
-                return res.json({ status: "ok", data: token })
+                return res.json({ status: "ok", data: token, user_id: user._id })
             }
             res.json({ status: "error", data: "Invalid username/password" }) 
          } catch (error) {
@@ -216,10 +232,11 @@ app.post('/api/signup', async (req, res) => {
 
 
 const userBookmarkSchema = mongoose.Schema({
-    imageURL: {type: String, required: true, unique: false},
+    userId: {type: String, required: true, unique: false},
     title: {type: String, required: true},
+    imageURL: {type: String, required: true}
 },
-{ collection: 'User_Bookmarks'} 
+{ collection: 'App_User_Bookmarks'} 
 )
 
 
@@ -228,12 +245,16 @@ const bookmarkModel = mongoose.model('UserBookmark', userBookmarkSchema)
 module.exports = bookmarkModel
 
 app.post('/app/api/bookmarks', async (req, res) => {
-    const { imageURL, title} = req.body
+    console.log('inside backend bookmark method');
+    const { userId, title, imageURL} = req.body
 
-    console.log("imageURL: ", imageURL)
+    console.log("request body: ", req.body)
+
+    console.log("userId: ", userId)
     console.log("title: ", title)
-
-    if (!imageURL || !title || typeof title !== 'string' || typeof imageURL !== 'string') {
+    console.log("imageURL: ", imageURL)
+    
+    if (!imageURL || !title || typeof title != 'string' || typeof imageURL != 'string' || !userId || typeof userId != 'string' ) {
         return res.json( { status: 'error', error: 'Invalid or empty data'})
     }
 
@@ -256,13 +277,53 @@ app.post('/app/api/bookmarks', async (req, res) => {
 })
 
 
+app.get('/app/api/:userId/bookmarks', async (req, res) => {
+    console.log('inside get backend bookmark method');
+    var user_id = req.params['userId']
+    const bookmark = new bookmarkModel()
+    console.log("userID: ", user_id)
+    //const bookmark = new bookmarkModel(req.body);
+    var jsonContent;
+    try {
+        //const userBookmarks = await db.getCollection('App_User_Bookmarks').findById(user_id)
+        const userBookmarks = await bookmarkModel.findById('6385988e9cc70af0c207f746')
+        console.log("userBookmarks: ", userBookmarks)
+        //const userBookmarks = await UserBookmark.findById(user_id);
+       //const userBookmarks = bookmarkModel.find({ _id: mongoose.Types.ObjectId(user_id) })
+        //const userBookmarks = bookmarkModel.find({ '_id': user_id }, {lean: true})
+        //var userBookmarks;
+        // bookmarkModel.findById('userId', user_id, { lean: true }, function (err, userBookmarks) {
+        //     console.log("res", userBookmarks);
+        // });
+        // bookmarkModel.findById('userId', user_id).toArray(function(error, userBookmarks) {
+        //     if (error) {
+        //         throw error;
+        //     }
+        //     res.send(userBookmarks);
+        // });
+        //userBookmarks = await bookmarkModel.findById({'_id': user_id}).lean()
+        
+        console.log("userBookmarks", userBookmarks)
+        if (!userBookmarks) {
+            return res.json( { status: 'ok', message: 'No bookmarks found'})
+        }
+        jsonContent = JSON.stringify(userBookmarks);
+    } catch(error) {
+        console.log("error: " + error)
+        return res.json( { status: 'error', error: 'System error, please try again later'} )
+    }
+    
+    return jsonContent;
+
+})
+
+
 
 const userItinerarySchema = mongoose.Schema({
     imageURL: {type: String, required: true, unique: true},
     title: {type: String, required: true, unique: false},
-    location: {type: String, required: true, unique: false},
     time: {type: String, required: true, unique: false},
-    date: {type: String, required: true, unique: false},
+    //date: {type: String, required: true, unique: false},
 },
 { collection: 'User_Itineraries'} 
 )
@@ -273,9 +334,9 @@ const itineraryModel = mongoose.model('UserItinerary', userItinerarySchema)
 module.exports = itineraryModel
 
 app.post('/app/api/itineraries', async (req, res) => {
-    const { imageURL, title, location, time, date } = req.body
+    const { imageURL, title, time } = req.body
 
-    if (!imageURL || !title || !time || !date || typeof time !== 'string' || typeof date !== 'string' || typeof title !== 'string' || typeof imageURL !== 'string' || typeof location !== 'string') {
+    if (!imageURL || !title || !time || typeof time !== 'string' || typeof title !== 'string' || typeof imageURL !== 'string') {
         return res.json( { status: 'error', error: 'Invalid or empty data'})
     }
 
