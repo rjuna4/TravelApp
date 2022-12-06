@@ -152,12 +152,6 @@ const SignupForm = () => {
             secure={true}
             style={styles.input}
           />
-          {/* {
-        <Icon style={{ paddingRight: 15, }}
-        name={secure ? "eye" : 'eye-slash'}
-        size={20} color='gray' 
-        onPress={() => setSecure(!secure)} />
-        } */}
         </View>
         <View style={styles.inputContainer}>
         <Image style={styles.passwordIcon}
@@ -184,7 +178,6 @@ const SignupForm = () => {
           <Text style={[styles.text3, {bottom: 70}]}>Login here!</Text>
         </TouchableOpacity>
       </View>
-    </View>
   );
 };
 export default SignupForm;
