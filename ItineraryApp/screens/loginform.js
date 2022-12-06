@@ -64,7 +64,6 @@ const LoginForm = () => {
                   setErrorMessage(data.error);
                 } else {
                   navigation.navigate('Tabs')
-                  alert("User logged in successfully")
                 }  
           }
         )

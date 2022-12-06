@@ -7,6 +7,7 @@ import MoreInformation from './screens/moreInformation';
 import MapTest from './screens/mapsTest';
 import HomeScreen from './screens/homescreen';
 import ProfileScreen from './screens/profilescreen';
+import ProfileSettings from './screens/profileSettings';
 import BookmarksScreen from './screens/bookmarksscreen';
 import ItineraryListScreen from './screens/itinerarylistscreen';
 import ActivityRecommendations from './screens/activityrecommendations';
@@ -40,12 +41,13 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LoginForm">
+        <Stack.Navigator initialRouteName="Tabs">
           <Stack.Screen name="Tabs" component={BottomNavigator} options={{headerShown: false}} />
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
           <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>
           <Stack.Screen name="LoginForm" component={LoginForm} options={{headerShown: false}}/>
           <Stack.Screen name="ViewItinerary" component={ViewItinerary} options={{headerShown: false}}/>
+          <Stack.Screen name="ProfileSettings" component={ProfileSettings} options={{headerShown: false}}/>
           {/* <Stack.Screen name="MoreInformation" component={MoreInformation} />
           <Stack.Screen name="MapTest" component={MapTest} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />

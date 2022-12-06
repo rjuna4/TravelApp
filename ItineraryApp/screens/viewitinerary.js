@@ -3,7 +3,7 @@ import React, { Component, useState, useLayoutEffect} from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ItineraryContainer from 'ItineraryApp/components/ItineraryContainer';
 import ActivityContainer from '../components/ActivityContainer';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+//import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { getPlaceDetails } from '../api';
 
 const image = { uri: "https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=998&q=80"};
