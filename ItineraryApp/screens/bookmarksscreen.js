@@ -122,12 +122,7 @@ const BookmarksScreen = ({route}) => {
             <Text style={styles.title}>My Bookmarks</Text>
           </View> 
           <Image style={styles.activityImage}
-            source={
-              {uri:
-                data?.photo?.images?.large?.url 
-                ? data?.photo?.images?.large?.url 
-                : 'ItineraryApp/assets/icons/restaurant(1).png'}
-            }
+            source={ {uri: data?.photo?.images?.large?.url }}
           />
           <View style={{marginLeft: 10, marginTop: 3}}>
               <Text style={styles.name}>{data?.name}</Text>         

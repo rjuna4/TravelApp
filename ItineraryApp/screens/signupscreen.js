@@ -1,6 +1,5 @@
 import {Button, ImageBackground, StyleSheet, Text, View, Image, Platform, Dimensions, TouchableOpacity, Pressable, Container} from 'react-native';
 import React, { Component, useLayoutEffect } from 'react';
-import CustomAndroid from '../components/CustomAndroid';
 import SignupForm from './signupform'
 import { useNavigation } from '@react-navigation/native'
 

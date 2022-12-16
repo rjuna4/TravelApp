@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 16,
         color: '#744578',
-        // marginHorizontal: -9,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center'

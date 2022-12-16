@@ -1,6 +1,5 @@
 import {ImageBackground, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, Button, SafeAreaView, Image, ActivityIndicator, ScrollView, VirtualizedList } from 'react-native';
 import React, { Component, useState, useLayoutEffect, useEffect } from 'react';
-import CustomAndroid from '../components/CustomAndroid';
 import ActivityMenu from '../components/ActivityMenu';
 import ActivityContainer from '../components/ActivityContainer';
 import { getPlaceDetails } from 'ItineraryApp/api/index.js';
