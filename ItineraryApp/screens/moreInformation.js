@@ -229,7 +229,7 @@ function MoreInformation({route}) {
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
                     <Text style={[styles.text, {color:"#A067A5"}]}>Add to Itinerary</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('CreateItinerary')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ViewItinerary')}>
                     <Text style={[styles.text, {color:"#A067A5"}]}>Create new Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>

@@ -194,39 +194,39 @@ app.post('/api/signup', async (req, res) => {
     }
 })    
 
-    app.post('/api/login', async (req, res) => {
-        console.log('inside login method')
-        const { username, password } = req.body
-        console.log('username: ', username)
-        console.log('password: ', password)
+app.post('/api/login', async (req, res) => {
+    console.log('inside login method')
+    const { username, password } = req.body
+    console.log('username: ', username)
+    console.log('password: ', password)
 
-        try {
-            const user = await userModel.findOne({ username, password }).lean()
-        
-            console.log('user: ', user)
-            if(!user) {
-                return res.json({ status: "error", error: "Invalid username/password" })
-            }
-            console.log("test1")
-            if(bcrypt.compare(password, user.password)) {
-                // the username password combo is successfull
-                const token = jwt.sign(
-                    { 
-                        id: user._id, 
-                        username: user.username
-                    }, 
-                    JWT_SECRET 
-                )
-                return res.json({ status: "ok", data: token, user_id: user._id })
-            }
-            res.json({ status: "error", data: "Invalid username/password" }) 
-         } catch (error) {
-            console.log("error", error)
-            throw error
-         }
-         console.log("test2")
-         res.json({status: "ok"})
-    })
+    try {
+        const user = await userModel.findOne({ username, password }).lean()
+    
+        console.log('user: ', user)
+        if(!user) {
+            return res.json({ status: "error", error: "Invalid username/password" })
+        }
+        console.log("test1")
+        if(bcrypt.compare(password, user.password)) {
+            // the username password combo is successfull
+            const token = jwt.sign(
+                { 
+                    id: user._id, 
+                    username: user.username
+                }, 
+                JWT_SECRET 
+            )
+            return res.json({ status: "ok", data: token, user_id: user._id })
+        }
+        res.json({ status: "error", data: "Invalid username/password" }) 
+        } catch (error) {
+        console.log("error", error)
+        throw error
+        }
+        console.log("test2")
+        res.json({status: "ok"})
+})
     
 
 

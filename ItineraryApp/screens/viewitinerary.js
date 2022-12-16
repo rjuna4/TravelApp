@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import ItineraryContainer from 'ItineraryApp/components/ItineraryContainer';
 import ActivityContainer from '../components/ActivityContainer';
 //import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import { getPlaceDetails } from '../api';
 
 const image = { uri: "https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=998&q=80"};
@@ -16,36 +17,36 @@ const ViewItinerary = ({route}) => {
         })
     }, []);
 
-    getPlaceDetails();
+    // getPlaceDetails();
 
-    const data = route?.params?.param
+    // const data = route?.params?.param
 
-    const [itineraryInfo, setItineraryInfo] = useState()
+    // const [itineraryInfo, setItineraryInfo] = useState()
    
-    const getDataFromStorage = async() => {
-      let items = await AsyncStorage.getItem('itineraryInfo')
-      items = JSON.parse(items)
-      let itineraryInfo = []
-      if (items) {
-        console.log('arr', items)
-        alert('items')
-        items.forEach(data => {
-          itineraryInfo.push(data)
-          if(items.includes(data?.name)){
-            itineraryInfo.push(data)
-            return
-          }
-        })
-        setItineraryInfo(itineraryInfo)
-      } else {
-        setItineraryInfo(false)
-      }
+    // const getDataFromStorage = async() => {
+    //   let items = await AsyncStorage.getItem('itineraryInfo')
+    //   items = JSON.parse(items)
+    //   let itineraryInfo = []
+    //   if (items) {
+    //     console.log('arr', items)
+    //     alert('items')
+    //     items.forEach(data => {
+    //       itineraryInfo.push(data)
+    //       if(items.includes(data?.name)){
+    //         itineraryInfo.push(data)
+    //         return
+    //       }
+    //     })
+    //     setItineraryInfo(itineraryInfo)
+    //   } else {
+    //     setItineraryInfo(false)
+    //   }
 
-    }
+    // }
 
-    setItineraryInfo(data);
+    // setItineraryInfo(data);
 
-    const data2 = getDataFromStorage();
+    // const data2 = getDataFromStorage();
 
     const [date, setDate] = useState([   //pull from api
     {key: '1', name: 'Item 1'},
@@ -64,7 +65,7 @@ const ViewItinerary = ({route}) => {
     return (
       <View style={styles.container}>
 
-<FlatList
+{/* <FlatList
             style={styles.section}
             horizontal
             data={data}
@@ -78,13 +79,13 @@ const ViewItinerary = ({route}) => {
                     </View>
                 </View>
             )}
-      />
+      /> */}
           <View>
-            {itineraryInfo ?
+            {/* {itineraryInfo ?
               itineraryInfo.map((data,index) => {
                 return  {data}
               }) 
-              : null}
+              : null} */}
             <Text style={styles.title}>My Itineraries</Text>
             <Text style={styles.title}> {}</Text>
           </View>
