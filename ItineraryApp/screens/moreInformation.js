@@ -70,15 +70,11 @@ function MoreInformation({route}) {
       title: data?.name,
     })
 
-    async function saveUserBookmarks(userId, imageURL, title) {
+    async function saveUserBookmarks() {
       try {
         await AsyncStorage.setItem('user_id', bookmarkData.userId)
-        //alert('user_id from async storage', bookmarkData.userId )
         await AsyncStorage.setItem('image_URL', bookmarkData.imageURL)
-        //alert('image_URL from async storage', bookmarkData.imageURL)
         await AsyncStorage.setItem('_title', bookmarkData.title)
-        //alert('_title from async storage', bookmarkData.title)
-        //alert('_title from async storage', AsyncStorage.setItem('_title'))
       } catch (e) {
         console.error('Failed to save user id.')
         console.log("e: ", e)
@@ -239,7 +235,6 @@ function MoreInformation({route}) {
               </View>
             <View>
               <Text style={styles.description} numberOfLines={10} renderTruncatedFooter>{data?.description}</Text>
-              {/*<Text style={styles.description}>{data?.description}</Text> */}
             </View>
             <View>
               <Text style={styles.price}>{data?.price}</Text>

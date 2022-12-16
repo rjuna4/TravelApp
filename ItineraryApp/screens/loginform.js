@@ -1,17 +1,4 @@
-import {
-  Icon,
-  SafeAreaView,
-  TextInput,
-  ImageBackground,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  Dimensions,
-  TouchableOpacity,
-  Pressable,
-} from 'react-native';
+import {Icon, SafeAreaView, TextInput, ImageBackground, Image, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, } from 'react-native';
 import React, {Component, useState, useLayoutEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 

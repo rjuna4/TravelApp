@@ -64,26 +64,6 @@ const SignupForm = () => {
       else if (formData.password.length > 15 || formData.confirmPassword.length > 15) {
           setErrorMessage('Password is too long. Must be between 7-15 characters.');
       }
-      {/*}
-      else {
-        fetch('/api/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        })
-        .then(res => res.json()).then(
-          data => {
-            if(data.error) {
-              setErrorMessage(data.error);
-            } else {
-              alert("User created successfully")
-              navigation.navigate('HomeScreen')
-            }
-          }
-        )
-      } */}
       await fetch('http://10.0.2.2:8000/api/signup', {
         method: 'POST',
         headers: {
