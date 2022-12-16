@@ -13,7 +13,6 @@ import HomeScreen from '../screens/homescreen';
 import ProfileScreen from '../screens/profilescreen';
 import BookmarksScreen from '../screens/bookmarksscreen';
 import ItineraryListScreen from '../screens/itinerarylistscreen';
-import ActivityRecommendations from '../screens/activityrecommendations';
 import ViewItinerary from '../screens/viewitinerary';
 import ProfileSettings from '../screens/profileSettings';
 
@@ -27,7 +26,6 @@ const HomeStackTab = () => {
     return(
         <HomeStack.Navigator initialRouteName="HomeScreen">
          <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
-         <HomeStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} options={{headerShown: false}}/>
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
