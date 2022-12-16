@@ -57,7 +57,7 @@ const ProfileSettings = props => {
           borderColor: '#AAA8A8',
         }}></View>
       <TouchableOpacity
-        onPress={() => navigation.navigate('LoginForm')}
+        onPress={() => navigation.navigate('SignupScreen')}
         style={styles.textContainer}>
         <View style={styles.textContainerInner}>
           <Text style={styles.LogoutText}>Logout</Text>

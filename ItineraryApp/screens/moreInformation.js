@@ -210,6 +210,7 @@ function MoreInformation({route}) {
           />
             <View>
               <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View>
                 <Image style={styles.backButton}
                   source={require('ItineraryApp/assets/icons/Refund_back.png')}
                  />   
@@ -217,6 +218,7 @@ function MoreInformation({route}) {
             </View>
             <View>
               <TouchableOpacity onPress={() => handleModal()}>
+              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: -50}]}></View>
                 <Image style={styles.addButton}
                   source={require('ItineraryApp/assets/icons/Map_fill.png')}
                  /> 
@@ -240,6 +242,7 @@ function MoreInformation({route}) {
                 {/* navigation.navigate("BookmarksScreen", {param : data}) */}
                 {/* AsyncStorage.setItem('BookmarksScreen',JSON.stringify({param : data})) */}
               <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
+              <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View>
                 <Image style={styles.saveButton}
                   source={require('ItineraryApp/assets/icons/Bookmark_fill(1).png')}
                  /> 
@@ -404,7 +407,18 @@ const styles = StyleSheet.create({
     borderColor: '#A067A5',
     marginBottom: 10,
     bottom: 12
+  },
+
+  box1: {
+    width: 50,
+    height: 50,
+    borderRadius: 13,
+    backgroundColor: '#D9D9D9',
+    opacity: 0.80,
+    bottom: 45,
+    position: 'absolute'
   }
+
   
 });
 export default MoreInformation;

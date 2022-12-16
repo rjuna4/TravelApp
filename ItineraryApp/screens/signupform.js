@@ -58,11 +58,11 @@ const SignupForm = () => {
         return;
       }
       else if (formData.password.length < 7 || formData.confirmPassword.length < 7) {
-          setErrorMessage('Password is not long enough. Please enter a password between 7-15 characters.');
+          setErrorMessage('Password is too short. Must be between 7-15 characters.');
       }
 
       else if (formData.password.length > 15 || formData.confirmPassword.length > 15) {
-          setErrorMessage('Password is too long. Please enter a password between 7-15 characters.');
+          setErrorMessage('Password is too long. Must be between 7-15 characters.');
       }
       {/*}
       else {
@@ -95,11 +95,11 @@ const SignupForm = () => {
       data => {
         //alert("data.errror: ", data.error)hich 
         if(data.error) {
-          alert("inside error")
+          //alert("inside error")
           setErrorMessage(data.error);
-          alert("data error: ", data.error)
+          //alert("data error: ", data.error)
         } else {
-            alert('user_id', data.user_id)
+            //alert('user_id', data.user_id)
               // setUserId(data.user_id)
               saveUserId(data.user_id)
               AsyncStorage.setItem('user_id', data.user_id)

@@ -134,11 +134,11 @@ app.post('/api/signup', async (req, res) => {
     }
 
     if (plainTextPassword.length < 7) {
-        return res.json( { status: 'error', error: 'Password is not long enough. Please enter a password between 7-15 characters.'} )
+        return res.json( { status: 'error', error: 'Password is too short. Must be between 7-15 characters.'} )
     }
 
     if (plainTextPassword.length > 15) {
-        return res.json( { status: 'error', error: 'Password is too long. Please enter a password between 7-15 characters.'} )
+        return res.json( { status: 'error', error: 'Password is too long. Must be between 7-15 characters.'} )
     }
 
     if (plainTextPassword !== confirmPassword) {
@@ -209,7 +209,7 @@ app.post('/api/signup', async (req, res) => {
             }
             console.log("test1")
             if(bcrypt.compare(password, user.password)) {
-                // the username password combo is successfull
+                // the username password combo is successful
                 const token = jwt.sign(
                     { 
                         id: user._id, 

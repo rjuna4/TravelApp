@@ -41,7 +41,6 @@ const ItineraryStackTab = () => {
     return(
         <ItineraryStack.Navigator initialRouteName="ItineraryListScreen">
          <ItineraryStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
-         
          <ItineraryStack.Screen name="MapTest" component={MapTest} />
       </ItineraryStack.Navigator>
     )
