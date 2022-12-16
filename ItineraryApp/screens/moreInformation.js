@@ -118,12 +118,6 @@ function MoreInformation({route}) {
     async function sendBookmarkToDatabase() {
 
 
-        console.log("data route", data)
-        console.log("data name", bookmarkData.title)
-        console.log("data image", bookmarkData.imageURL)
-        console.log("user id bookmark data: ", bookmarkData.userId)
-
-
         setBookmarkData( {...bookmarkData, imageURL: data?.photo?.images?.medium?.url})
         setBookmarkData( {...bookmarkData, title:  data?.name})
 
@@ -144,12 +138,8 @@ function MoreInformation({route}) {
             console.log("error")
           } else {
               saveUserBookmarks(data.user_id, data.image_URL, data._title)
-              console.log("data.user_id", data.user_id)
-              console.log("data.user_id", data.image_URL)
-              console.log("data.user_id", data._title)
-               
               console.log("inside else statement")
-            alert('Bookmark saved successfully');
+              alert('Bookmark saved successfully');
           }
         }
       )
@@ -239,8 +229,6 @@ function MoreInformation({route}) {
                   </TouchableOpacity>
                   </View>
                 </Modal>
-                {/* navigation.navigate("BookmarksScreen", {param : data}) */}
-                {/* AsyncStorage.setItem('BookmarksScreen',JSON.stringify({param : data})) */}
               <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
               <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View>
                 <Image style={styles.saveButton}
@@ -370,25 +358,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   cuisine: {
-    // justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    //marginHorizontal: 5,
     marginTop: 5,
     marginHorizontal: 6,
   },
-  // box: {
-  //     width: 150,
-  //     height: 50,
-  //     borderRadius: 13,
-  //     backgroundColor: '#FFFFFF',
-  //     borderColor: '#744578',
-  //     borderWidth: 3,
-  //     opacity: 0.40,
-  //     bottom: 55,
-  //     flexDirection: 'row',
-  // },
 
   modalContainer: {
     backgroundColor:"#FFFFFF", 
