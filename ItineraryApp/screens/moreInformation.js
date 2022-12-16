@@ -11,18 +11,14 @@ import { getPlaceDetails } from 'ItineraryApp/api/index.js';
 
 function MoreInformation({route}) {
 
-    async function saveUserId(userId) {
-      alert("inside saveUserId, userId: " + userId)
-      try {
-        await AsyncStorage.setItem('user_id', userId)
-        alert('user_id from async storage', AsyncStorage.setItem('user_id'))
-        setUserId(userId)
-        alert("user id after setting", userId)
-      } catch (e) {
-        console.error('Failed to save user id.')
-        console.log("e: ", e)
-      }
-    }
+    // async function saveUserId(userId) {
+    //   try {
+    //     await AsyncStorage.setItem('user_id', userId)
+    //     setUserId(userId)
+    //   } catch (e) {
+    //     console.log("e: ", e)
+    //   }
+    // }
 
     const [userId, setUserId] = useState('');
     var user_id;
@@ -49,32 +45,6 @@ function MoreInformation({route}) {
           user_id = loadUserId().then((userId) => {
           })
       }, [setUserId]) 
-  
-
-    // //var user_id;
-    // const asyncResult = async function loadUserId() {
-    //   try {
-    //     await AsyncStorage.getItem('user_id').then(value => console.log("async storage user id after getItem: ", value));
-    //     //AsyncStorage.getItem('user_id').then(value => {user_id = value});
-
-    //     // await AsyncStorage.getItem('user_id').then(function(value) {
-    //     //   console.log("user ID after getItem: ", value); 
-    //     //   //setUserId(value)
-    //     asyncResult = value;
-    //     // });
-    //     return value;
-    //   } catch (e) {
-    //       //console.error('Failed to load user id.')
-    //       //console.log("e: ", e)
-    //       throw new Error("async await failed")
-    //   }
-    // }
-    
-    // console.log(`async result = ${asyncResult}` )
-    // console.log(asyncResult);
-
-    // asyncResult = await loasUserId();
-
 
   const navigation = useNavigation();
       useLayoutEffect(() => {
@@ -191,12 +161,7 @@ function MoreInformation({route}) {
         <StatusBar style="dark-content" />
         <View style={styles.container}>
           <Image style={styles.activityImage}
-            source={
-              {uri:
-                data?.photo?.images?.large?.url 
-                ? data?.photo?.images?.large?.url 
-                : 'ItineraryApp/assets/icons/restaurant(1).png'}
-            }
+            source={{ uri: data?.photo?.images?.medium?.url }}
           />
             <View>
               <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
@@ -250,7 +215,7 @@ function MoreInformation({route}) {
               {data?.cuisine && (
                 <View style={styles.cuisine}>
                       {data?.cuisine.map((n) => (
-                  <View style={styles.box}
+                  <View
                      key={n.key}
                   >
                   <Text style={{fontSize: 18}}>{n.name + ', '}</Text>

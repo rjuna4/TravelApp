@@ -29,7 +29,6 @@ const HomeStackTab = () => {
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
-         <HomeStack.Screen name="MapTest" component={MapTest} options={{headerShown: false}}/>
          <HomeStack.Screen name="ViewItinerary" component={ViewItinerary} options={{headerShown: false}}/>
       </HomeStack.Navigator>
     )
@@ -39,7 +38,6 @@ const ItineraryStackTab = () => {
     return(
         <ItineraryStack.Navigator initialRouteName="ItineraryListScreen">
          <ItineraryStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
-         <ItineraryStack.Screen name="MapTest" component={MapTest} />
       </ItineraryStack.Navigator>
     )
 }
@@ -49,7 +47,6 @@ const BookmarksStackTab = () => {
         <BookmarkStack.Navigator initialRouteName="BookmarksScreen">
          <BookmarkStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
          <BookmarkStack.Screen name="MoreInformation" component={MoreInformation} /> 
-         <BookmarkStack.Screen name="MapTest" component={MapTest} />
       </BookmarkStack.Navigator>
     )
 }

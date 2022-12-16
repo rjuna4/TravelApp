@@ -149,7 +149,6 @@ app.post('/api/signup', async (req, res) => {
         // duplicate key
         if (error.code === 11000) {
             return res.json( {status: 'error', error: 'Username or email address already in use' })
-            //return res.json( {status: 'error', error: userId })
         }
         console.log("error: " + error)
         throw error
@@ -245,24 +244,14 @@ app.get('/app/api/:userId/bookmarks', async (req, res) => {
     var user_id = req.params['userId']
     const bookmark = new bookmarkModel()
     console.log("userID: ", user_id)
-    //const bookmark = new bookmarkModel(req.body);
     var jsonContent;
     try {
-        //const userBookmarks = await db.getCollection('App_User_Bookmarks').findById(user_id)
         const userBookmarks = await bookmarkModel.findById('6385988e9cc70af0c207f746')
         console.log("userBookmarks: ", userBookmarks)
-        //const userBookmarks = await UserBookmark.findById(user_id);
-       //const userBookmarks = bookmarkModel.find({ _id: mongoose.Types.ObjectId(user_id) })
         //const userBookmarks = bookmarkModel.find({ '_id': user_id }, {lean: true})
         //var userBookmarks;
         // bookmarkModel.findById('userId', user_id, { lean: true }, function (err, userBookmarks) {
         //     console.log("res", userBookmarks);
-        // });
-        // bookmarkModel.findById('userId', user_id).toArray(function(error, userBookmarks) {
-        //     if (error) {
-        //         throw error;
-        //     }
-        //     res.send(userBookmarks);
         // });
         //userBookmarks = await bookmarkModel.findById({'_id': user_id}).lean()
         
@@ -275,12 +264,9 @@ app.get('/app/api/:userId/bookmarks', async (req, res) => {
         console.log("error: " + error)
         return res.json( { status: 'error', error: 'System error, please try again later'} )
     }
-    
     return jsonContent;
 
 })
-
-
 
 const userItinerarySchema = mongoose.Schema({
     imageURL: {type: String, required: true, unique: true},
