@@ -13,7 +13,6 @@ import HomeScreen from '../screens/homescreen';
 import ProfileScreen from '../screens/profilescreen';
 import BookmarksScreen from '../screens/bookmarksscreen';
 import ItineraryListScreen from '../screens/itinerarylistscreen';
-import ActivityRecommendations from '../screens/activityrecommendations';
 import ViewItinerary from '../screens/viewitinerary';
 import ProfileSettings from '../screens/profileSettings';
 
@@ -27,11 +26,9 @@ const HomeStackTab = () => {
     return(
         <HomeStack.Navigator initialRouteName="HomeScreen">
          <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
-         <HomeStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} options={{headerShown: false}}/>
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
-         <HomeStack.Screen name="MapTest" component={MapTest} options={{headerShown: false}}/>
          <HomeStack.Screen name="ViewItinerary" component={ViewItinerary} options={{headerShown: false}}/>
       </HomeStack.Navigator>
     )
@@ -41,8 +38,6 @@ const ItineraryStackTab = () => {
     return(
         <ItineraryStack.Navigator initialRouteName="ItineraryListScreen">
          <ItineraryStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
-         
-         <ItineraryStack.Screen name="MapTest" component={MapTest} />
       </ItineraryStack.Navigator>
     )
 }
@@ -52,7 +47,6 @@ const BookmarksStackTab = () => {
         <BookmarkStack.Navigator initialRouteName="BookmarksScreen">
          <BookmarkStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
          <BookmarkStack.Screen name="MoreInformation" component={MoreInformation} /> 
-         <BookmarkStack.Screen name="MapTest" component={MapTest} />
       </BookmarkStack.Navigator>
     )
 }

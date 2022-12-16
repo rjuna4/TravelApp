@@ -11,18 +11,14 @@ import { getPlaceDetails } from 'ItineraryApp/api/index.js';
 
 function MoreInformation({route}) {
 
-    async function saveUserId(userId) {
-      alert("inside saveUserId, userId: " + userId)
-      try {
-        await AsyncStorage.setItem('user_id', userId)
-        alert('user_id from async storage', AsyncStorage.setItem('user_id'))
-        setUserId(userId)
-        alert("user id after setting", userId)
-      } catch (e) {
-        console.error('Failed to save user id.')
-        console.log("e: ", e)
-      }
-    }
+    // async function saveUserId(userId) {
+    //   try {
+    //     await AsyncStorage.setItem('user_id', userId)
+    //     setUserId(userId)
+    //   } catch (e) {
+    //     console.log("e: ", e)
+    //   }
+    // }
 
     const [userId, setUserId] = useState('');
     var user_id;
@@ -49,32 +45,6 @@ function MoreInformation({route}) {
           user_id = loadUserId().then((userId) => {
           })
       }, [setUserId]) 
-  
-
-    // //var user_id;
-    // const asyncResult = async function loadUserId() {
-    //   try {
-    //     await AsyncStorage.getItem('user_id').then(value => console.log("async storage user id after getItem: ", value));
-    //     //AsyncStorage.getItem('user_id').then(value => {user_id = value});
-
-    //     // await AsyncStorage.getItem('user_id').then(function(value) {
-    //     //   console.log("user ID after getItem: ", value); 
-    //     //   //setUserId(value)
-    //     asyncResult = value;
-    //     // });
-    //     return value;
-    //   } catch (e) {
-    //       //console.error('Failed to load user id.')
-    //       //console.log("e: ", e)
-    //       throw new Error("async await failed")
-    //   }
-    // }
-    
-    // console.log(`async result = ${asyncResult}` )
-    // console.log(asyncResult);
-
-    // asyncResult = await loasUserId();
-
 
   const navigation = useNavigation();
       useLayoutEffect(() => {
@@ -118,12 +88,6 @@ function MoreInformation({route}) {
     async function sendBookmarkToDatabase() {
 
 
-        console.log("data route", data)
-        console.log("data name", bookmarkData.title)
-        console.log("data image", bookmarkData.imageURL)
-        console.log("user id bookmark data: ", bookmarkData.userId)
-
-
         setBookmarkData( {...bookmarkData, imageURL: data?.photo?.images?.medium?.url})
         setBookmarkData( {...bookmarkData, title:  data?.name})
 
@@ -144,12 +108,8 @@ function MoreInformation({route}) {
             console.log("error")
           } else {
               saveUserBookmarks(data.user_id, data.image_URL, data._title)
-              console.log("data.user_id", data.user_id)
-              console.log("data.user_id", data.image_URL)
-              console.log("data.user_id", data._title)
-               
               console.log("inside else statement")
-            alert('Bookmark saved successfully');
+              alert('Bookmark saved successfully');
           }
         }
       )
@@ -201,15 +161,11 @@ function MoreInformation({route}) {
         <StatusBar style="dark-content" />
         <View style={styles.container}>
           <Image style={styles.activityImage}
-            source={
-              {uri:
-                data?.photo?.images?.large?.url 
-                ? data?.photo?.images?.large?.url 
-                : 'ItineraryApp/assets/icons/restaurant(1).png'}
-            }
+            source={{ uri: data?.photo?.images?.medium?.url }}
           />
             <View>
               <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View>
                 <Image style={styles.backButton}
                   source={require('ItineraryApp/assets/icons/Refund_back.png')}
                  />   
@@ -217,6 +173,7 @@ function MoreInformation({route}) {
             </View>
             <View>
               <TouchableOpacity onPress={() => handleModal()}>
+              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: -50}]}></View>
                 <Image style={styles.addButton}
                   source={require('ItineraryApp/assets/icons/Map_fill.png')}
                  /> 
@@ -237,9 +194,8 @@ function MoreInformation({route}) {
                   </TouchableOpacity>
                   </View>
                 </Modal>
-                {/* navigation.navigate("BookmarksScreen", {param : data}) */}
-                {/* AsyncStorage.setItem('BookmarksScreen',JSON.stringify({param : data})) */}
               <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
+              <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View>
                 <Image style={styles.saveButton}
                   source={require('ItineraryApp/assets/icons/Bookmark_fill(1).png')}
                  /> 
@@ -259,7 +215,7 @@ function MoreInformation({route}) {
               {data?.cuisine && (
                 <View style={styles.cuisine}>
                       {data?.cuisine.map((n) => (
-                  <View style={styles.box}
+                  <View
                      key={n.key}
                   >
                   <Text style={{fontSize: 18}}>{n.name + ', '}</Text>
@@ -367,25 +323,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   cuisine: {
-    // justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    //marginHorizontal: 5,
     marginTop: 5,
     marginHorizontal: 6,
   },
-  // box: {
-  //     width: 150,
-  //     height: 50,
-  //     borderRadius: 13,
-  //     backgroundColor: '#FFFFFF',
-  //     borderColor: '#744578',
-  //     borderWidth: 3,
-  //     opacity: 0.40,
-  //     bottom: 55,
-  //     flexDirection: 'row',
-  // },
 
   modalContainer: {
     backgroundColor:"#FFFFFF", 
@@ -404,7 +347,18 @@ const styles = StyleSheet.create({
     borderColor: '#A067A5',
     marginBottom: 10,
     bottom: 12
+  },
+
+  box1: {
+    width: 50,
+    height: 50,
+    borderRadius: 13,
+    backgroundColor: '#D9D9D9',
+    opacity: 0.80,
+    bottom: 45,
+    position: 'absolute'
   }
+
   
 });
 export default MoreInformation;

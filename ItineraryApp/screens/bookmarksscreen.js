@@ -19,34 +19,28 @@ const BookmarksScreen = ({route}) => {
   })
 
 
-  async function saveUserBookmarks(userId, imageURL, title) {
-    alert("inside saveUserBookmarks, userId: " + userId)
-    try {
-      await AsyncStorage.setItem('user_id', bookmarkData.userId)
-      alert('user_id from async storage', AsyncStorage.setItem('user_id'))
-      await AsyncStorage.setItem('image_URL', bookmarkData.imageURL)
-      alert('user_id from async storage', AsyncStorage.setItem('image_URL'))
-      await AsyncStorage.setItem('_title', bookmarkData.title)
-      alert('user_id from async storage', AsyncStorage.setItem('_title'))
-      //setUserId(userId)
-      alert("user id after setting", userId)
-    } catch (e) {
-      console.error('Failed to save user id.')
-      console.log("e: ", e)
-    }
-  }
+  // async function saveUserBookmarks(userId, imageURL, title) {
+  //   alert("inside saveUserBookmarks, userId: " + userId)
+  //   try {
+  //     await AsyncStorage.setItem('user_id', bookmarkData.userId)
+  //     alert('user_id from async storage', AsyncStorage.setItem('user_id'))
+  //     await AsyncStorage.setItem('image_URL', bookmarkData.imageURL)
+  //     alert('user_id from async storage', AsyncStorage.setItem('image_URL'))
+  //     await AsyncStorage.setItem('_title', bookmarkData.title)
+  //     alert('user_id from async storage', AsyncStorage.setItem('_title'))
+  //     //setUserId(userId)
+  //     alert("user id after setting", userId)
+  //   } catch (e) {
+  //     console.error('Failed to save user id.')
+  //     console.log("e: ", e)
+  //   }
+  // }
 
         const loadUserBookmarks = async() => {
           await AsyncStorage.getItem('user_id').then(value => console.log("async storage user id after getItem: ", value));
           await AsyncStorage.getItem('image_URL').then(value => console.log("async storage image URL after getItem: ", value));
           await AsyncStorage.getItem('_title').then(value => console.log("async storage title after getItem: ", value));
       };
-
-      // // Bypass it as follows:
-      // let value;
-      // (async () => {
-      //     value = await loadUserId()
-      // })()
 
       useEffect(() => {
       console.log("inside useEffect()")
@@ -109,9 +103,6 @@ const BookmarksScreen = ({route}) => {
     getFromDatabase();
     console.log("after get from database")
   }, []) 
-  console.log("after use effect")
-
-
 
     const navigation = useNavigation();
 
@@ -123,18 +114,6 @@ const BookmarksScreen = ({route}) => {
        })
     }, []);
 
-
-    {/*return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>My Bookmarks</Text>
-      </View> 
-      <View>
-        
-       </View>    
-    </View> 
-    )  */}
-
     return (
       <>
       <ScrollView>
@@ -143,35 +122,11 @@ const BookmarksScreen = ({route}) => {
             <Text style={styles.title}>My Bookmarks</Text>
           </View> 
           <Image style={styles.activityImage}
-            source={
-              {uri:
-                data?.photo?.images?.large?.url 
-                ? data?.photo?.images?.large?.url 
-                : 'ItineraryApp/assets/icons/restaurant(1).png'}
-            }
+            source={ {uri: data?.photo?.images?.large?.url }}
           />
           <View style={{marginLeft: 10, marginTop: 3}}>
               <Text style={styles.name}>{data?.name}</Text>         
             </View>
-            {/* <View>
-              <TouchableOpacity>
-                <Image style={styles.backButton}
-                  source={require('ItineraryApp/assets/icons/Refund_back.png')}
-                 />   
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity>
-                <Image style={styles.addButton}
-                  source={require('ItineraryApp/assets/icons/Map_fill.png')}
-                 /> 
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image style={styles.saveButton}
-                  source={require('ItineraryApp/assets/icons/Bookmark_fill(1).png')}
-                 /> 
-              </TouchableOpacity>
-            </View> */}
         </View>
       </ScrollView>  
       </>
@@ -191,7 +146,6 @@ export default BookmarksScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#FFFFFF",
   },
   title: {
     fontFamily: 'ABeeZee',

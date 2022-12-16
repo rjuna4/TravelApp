@@ -3,8 +3,13 @@ import React from "react";
 
 
 const ActivityMenu = ({ name, image, activityType, changeActivityType}) => {
+    const handlePress = () => {
+        //const [borderColor, setBorderColor] = useState(false)
+        changeActivityType(name.toLowerCase());
+    }    
+    
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={handlePress}>
             <View {...`${activityType === name.toLowerCase()}`}>
                 <View style={{justifyContent: 'center'}}>
                     <Image style ={styles.icon}
@@ -12,7 +17,6 @@ const ActivityMenu = ({ name, image, activityType, changeActivityType}) => {
                     />
                     <Text style={styles.text}>{name}</Text>
                 </View>
-                {/* <Text style={styles.text}>{name}</Text> */}
             </View>    
         </TouchableOpacity>
     )
@@ -35,7 +39,6 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 16,
         color: '#744578',
-        // marginHorizontal: -9,
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center'

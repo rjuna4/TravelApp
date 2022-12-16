@@ -43,42 +43,10 @@ mongoose.connect('mongodb+srv://PragyaK:772492@travelitineraryaccounts.yalqnry.m
     }
 })
 
-/* const username = "PragyaK";
-const password = "772492";
-const cluster = "Loyol/Travel_Itinerary_Accounts";
-const dbname = "travelitineraryaccounts";
-
-mongoose.connect(
-  `mongodb+srv://${username}:${password}@${cluster}.mongodb.net/${dbname}?retryWrites=true&w=majority`, 
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  }
-); */
 app.get('/', (req, res) => {
     res.send("Hello World");
 })
 
-
-
-/* const formData = (bodyData) => {
-    userModel ({data: bodyData}).save((err) => {
-        if (err) {
-            throw err;
-        }
-    
-    })
-} */
-
-/*
-app.use(bodyParser.json())
-app.use('/', express.static(path.join(__dirname, 'HTML')))
-app.use(express.static('HTML'))
-//app.use('/', express.static('HTML'))
-app.use('/', express.static(path.join(__dirname, 'CSS')))
-app.use(express.static('CSS'))
-//app.use('/', express.static('CSS')) */
 
 app.get('/hello', (req, res) => {
   res.send('Hi!')
@@ -134,11 +102,11 @@ app.post('/api/signup', async (req, res) => {
     }
 
     if (plainTextPassword.length < 7) {
-        return res.json( { status: 'error', error: 'Password is not long enough. Please enter a password between 7-15 characters.'} )
+        return res.json( { status: 'error', error: 'Password is too short. Must be between 7-15 characters.'} )
     }
 
     if (plainTextPassword.length > 15) {
-        return res.json( { status: 'error', error: 'Password is too long. Please enter a password between 7-15 characters.'} )
+        return res.json( { status: 'error', error: 'Password is too long. Must be between 7-15 characters.'} )
     }
 
     if (plainTextPassword !== confirmPassword) {
@@ -168,11 +136,6 @@ app.post('/api/signup', async (req, res) => {
         console.log("user ", user)
         console.log("User saved successfully: ", res)
         console.log("response: " + res)
-        //return res.json( { user_id: userId, username: username})
-        //const resp = res.json( { data: userId })
-        //console.log("resp123: ", resp)
-        //return resp
-        //return res.json(userId)
 
         const responseData = {
             user_id : userId
@@ -186,7 +149,6 @@ app.post('/api/signup', async (req, res) => {
         // duplicate key
         if (error.code === 11000) {
             return res.json( {status: 'error', error: 'Username or email address already in use' })
-            //return res.json( {status: 'error', error: userId })
         }
         console.log("error: " + error)
         throw error
@@ -200,32 +162,32 @@ app.post('/api/login', async (req, res) => {
     console.log('username: ', username)
     console.log('password: ', password)
 
-    try {
-        const user = await userModel.findOne({ username, password }).lean()
-    
-        console.log('user: ', user)
-        if(!user) {
-            return res.json({ status: "error", error: "Invalid username/password" })
-        }
-        console.log("test1")
-        if(bcrypt.compare(password, user.password)) {
-            // the username password combo is successfull
-            const token = jwt.sign(
-                { 
-                    id: user._id, 
-                    username: user.username
-                }, 
-                JWT_SECRET 
-            )
-            return res.json({ status: "ok", data: token, user_id: user._id })
-        }
-        res.json({ status: "error", data: "Invalid username/password" }) 
-        } catch (error) {
-        console.log("error", error)
-        throw error
-        }
-        console.log("test2")
-        res.json({status: "ok"})
+try {
+    const user = await userModel.findOne({ username, password }).lean()
+
+    console.log('user: ', user)
+    if(!user) {
+        return res.json({ status: "error", error: "Invalid username/password" })
+    }
+    console.log("test1")
+    if(bcrypt.compare(password, user.password)) {
+        // the username password combo is successful
+        const token = jwt.sign(
+            { 
+                id: user._id, 
+                username: user.username
+            }, 
+            JWT_SECRET 
+        )
+        return res.json({ status: "ok", data: token, user_id: user._id })
+    }
+    res.json({ status: "error", data: "Invalid username/password" }) 
+    } catch (error) {
+    console.log("error", error)
+    throw error
+    }
+    console.log("test2")
+    res.json({status: "ok"})
 })
     
 
@@ -282,24 +244,14 @@ app.get('/app/api/:userId/bookmarks', async (req, res) => {
     var user_id = req.params['userId']
     const bookmark = new bookmarkModel()
     console.log("userID: ", user_id)
-    //const bookmark = new bookmarkModel(req.body);
     var jsonContent;
     try {
-        //const userBookmarks = await db.getCollection('App_User_Bookmarks').findById(user_id)
         const userBookmarks = await bookmarkModel.findById('6385988e9cc70af0c207f746')
         console.log("userBookmarks: ", userBookmarks)
-        //const userBookmarks = await UserBookmark.findById(user_id);
-       //const userBookmarks = bookmarkModel.find({ _id: mongoose.Types.ObjectId(user_id) })
         //const userBookmarks = bookmarkModel.find({ '_id': user_id }, {lean: true})
         //var userBookmarks;
         // bookmarkModel.findById('userId', user_id, { lean: true }, function (err, userBookmarks) {
         //     console.log("res", userBookmarks);
-        // });
-        // bookmarkModel.findById('userId', user_id).toArray(function(error, userBookmarks) {
-        //     if (error) {
-        //         throw error;
-        //     }
-        //     res.send(userBookmarks);
         // });
         //userBookmarks = await bookmarkModel.findById({'_id': user_id}).lean()
         
@@ -312,12 +264,9 @@ app.get('/app/api/:userId/bookmarks', async (req, res) => {
         console.log("error: " + error)
         return res.json( { status: 'error', error: 'System error, please try again later'} )
     }
-    
     return jsonContent;
 
 })
-
-
 
 const userItinerarySchema = mongoose.Schema({
     imageURL: {type: String, required: true, unique: true},

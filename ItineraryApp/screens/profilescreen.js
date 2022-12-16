@@ -37,8 +37,8 @@ const ProfileScreen = () => {
       />
       <View style={styles.body}>
         <View style={styles.bodyContent}>
-          <Text style={styles.name}>Luke Smith</Text>
-          <Text style={styles.userName}>smith_00</Text>
+          <Text style={styles.name}>Test User</Text>
+          <Text style={styles.userName}>test_user</Text>
           <Text style={styles.myLikes}>My Likes</Text>
         </View>
       </View>
@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     color: '#858383',
     opacity: 0.95,
     fontWeight: 'bold',
+    marginTop: -15,
   },
   userName: {
     marginTop: 5,
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
   myLikes: {
     fontSize: 16,
     color: '#696969',
-    marginTop: 60,
+    marginTop: 20,
     textAlign: 'left',
     alignSelf: 'flex-start',
   },

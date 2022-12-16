@@ -10,7 +10,6 @@ import ProfileScreen from './screens/profilescreen';
 import ProfileSettings from './screens/profileSettings';
 import BookmarksScreen from './screens/bookmarksscreen';
 import ItineraryListScreen from './screens/itinerarylistscreen';
-import ActivityRecommendations from './screens/activityrecommendations';
 import ViewItinerary from './screens/viewitinerary';
 //Navigation Imports
 import {NavigationContainer} from '@react-navigation/native';
@@ -41,7 +40,7 @@ class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Tabs">
+        <Stack.Navigator initialRouteName="SignupScreen">
           <Stack.Screen name="Tabs" component={BottomNavigator} options={{headerShown: false}} />
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
           <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>
@@ -51,7 +50,6 @@ class App extends Component {
           {/* <Stack.Screen name="MoreInformation" component={MoreInformation} />
           <Stack.Screen name="MapTest" component={MapTest} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="ActivityRecommendations" component={ActivityRecommendations} />
           <Stack.Screen name="BookmarksScreen" component={BookmarksScreen} />
           <Stack.Screen name="ItineraryListScreen" component={ItineraryListScreen} /> */}
         </Stack.Navigator>
