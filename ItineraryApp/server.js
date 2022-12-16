@@ -43,42 +43,10 @@ mongoose.connect('mongodb+srv://PragyaK:772492@travelitineraryaccounts.yalqnry.m
     }
 })
 
-/* const username = "PragyaK";
-const password = "772492";
-const cluster = "Loyol/Travel_Itinerary_Accounts";
-const dbname = "travelitineraryaccounts";
-
-mongoose.connect(
-  `mongodb+srv://${username}:${password}@${cluster}.mongodb.net/${dbname}?retryWrites=true&w=majority`, 
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  }
-); */
 app.get('/', (req, res) => {
     res.send("Hello World");
 })
 
-
-
-/* const formData = (bodyData) => {
-    userModel ({data: bodyData}).save((err) => {
-        if (err) {
-            throw err;
-        }
-    
-    })
-} */
-
-/*
-app.use(bodyParser.json())
-app.use('/', express.static(path.join(__dirname, 'HTML')))
-app.use(express.static('HTML'))
-//app.use('/', express.static('HTML'))
-app.use('/', express.static(path.join(__dirname, 'CSS')))
-app.use(express.static('CSS'))
-//app.use('/', express.static('CSS')) */
 
 app.get('/hello', (req, res) => {
   res.send('Hi!')
@@ -168,11 +136,6 @@ app.post('/api/signup', async (req, res) => {
         console.log("user ", user)
         console.log("User saved successfully: ", res)
         console.log("response: " + res)
-        //return res.json( { user_id: userId, username: username})
-        //const resp = res.json( { data: userId })
-        //console.log("resp123: ", resp)
-        //return resp
-        //return res.json(userId)
 
         const responseData = {
             user_id : userId

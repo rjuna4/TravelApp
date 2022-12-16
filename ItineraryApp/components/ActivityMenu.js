@@ -5,10 +5,7 @@ import React from "react";
 const ActivityMenu = ({ name, image, activityType, changeActivityType}) => {
     const handlePress = () => {
         //const [borderColor, setBorderColor] = useState(false)
-        //const onPress = () => setBorderColor(!color)
         changeActivityType(name.toLowerCase());
-        //color: setBorderColor('#744578')
-        //color: borderColor ? '#744578' : '#FFFFFF'
     }    
     
     return (
