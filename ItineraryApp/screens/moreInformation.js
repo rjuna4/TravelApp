@@ -1,24 +1,12 @@
 import {Component, useLayoutEffect, useState, useEffect} from 'react';
 import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity, ScrollView, TextInput, Modal, Button} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import MapTest from './mapsTest';
 import DialogInput from 'react-native-dialog-input'
 import Dialog from 'react-native-dialog'
 import AsyncStorage from '@react-native-community/async-storage'
 import { getPlaceDetails } from 'ItineraryApp/api/index.js';
 
-//function map() { new Map();}
-
 function MoreInformation({route}) {
-
-    // async function saveUserId(userId) {
-    //   try {
-    //     await AsyncStorage.setItem('user_id', userId)
-    //     setUserId(userId)
-    //   } catch (e) {
-    //     console.log("e: ", e)
-    //   }
-    // }
 
     const [userId, setUserId] = useState('');
     var user_id;
@@ -157,7 +145,7 @@ function MoreInformation({route}) {
         <StatusBar style="dark-content" />
         <View style={styles.container}>
           <Image style={styles.activityImage}
-            source={{ uri: data?.photo?.images?.medium?.url }}
+            source={{ uri: data?.photo?.images?.large?.url }}
           />
             <View>
               <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>

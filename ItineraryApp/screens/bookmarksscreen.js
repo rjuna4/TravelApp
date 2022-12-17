@@ -19,51 +19,8 @@ const BookmarksScreen = ({route}) => {
   })
 
 
-  // async function saveUserBookmarks(userId, imageURL, title) {
-  //   alert("inside saveUserBookmarks, userId: " + userId)
-  //   try {
-  //     await AsyncStorage.setItem('user_id', bookmarkData.userId)
-  //     alert('user_id from async storage', AsyncStorage.setItem('user_id'))
-  //     await AsyncStorage.setItem('image_URL', bookmarkData.imageURL)
-  //     alert('user_id from async storage', AsyncStorage.setItem('image_URL'))
-  //     await AsyncStorage.setItem('_title', bookmarkData.title)
-  //     alert('user_id from async storage', AsyncStorage.setItem('_title'))
-  //     //setUserId(userId)
-  //     alert("user id after setting", userId)
-  //   } catch (e) {
-  //     console.error('Failed to save user id.')
-  //     console.log("e: ", e)
-  //   }
-  // }
-
-        const loadUserBookmarks = async() => {
-          await AsyncStorage.getItem('user_id').then(value => console.log("async storage user id after getItem: ", value));
-          await AsyncStorage.getItem('image_URL').then(value => console.log("async storage image URL after getItem: ", value));
-          await AsyncStorage.getItem('_title').then(value => console.log("async storage title after getItem: ", value));
-      };
-
-      useEffect(() => {
-      console.log("inside useEffect()")
-        user_id = loadUserBookmarks().then((userId) => {
-          //setUserId(user_id.userId)
-          console.log("userId in useEffect", userId )
-        })
-        _title = loadUserBookmarks().then((title) => {
-          //setUserId(user_id.userId)
-          console.log("userId in useEffect", title )
-        })
-        image_URL = loadUserBookmarks().then((imageURL) => {
-          //setUserId(user_id.userId)
-          console.log("userId in useEffect", imageURL )
-        })
-
-        //console.log("user inside useEffect: ", userId)
-      }, [setBookmarkData]) 
-
   async function getFromDatabase() {
 
-
-    console.log("data route", data)
     console.log("data name", bookmarkData.title)
     console.log("data image", bookmarkData.imageURL)
     console.log("user id bookmark data: ", bookmarkData.userId)
@@ -74,7 +31,6 @@ const BookmarksScreen = ({route}) => {
     console.log("inside getFromDatabase")
 
       const user_id = '6386857fce851928b24c6b4f';
-      console.log("user_id: ", user_id )
       alert("user_id: ", user_id )
       await fetch(`http://10.0.2.2:8000/app/api/${user_id}/bookmarks`, {
         method: 'GET',
@@ -86,12 +42,11 @@ const BookmarksScreen = ({route}) => {
         alert("data.errror: ", data.error)
         console.log("data.error: ", data.error)
         if(data.error) {
-          alert("inside error")
+
           setErrorMessage(data.error);
           alert("data error: " + data.error)
         } else {
               //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
-            console.log("inside else statement")
             alert('Bookmark retrieved successfully');
 
         }
@@ -134,12 +89,12 @@ const BookmarksScreen = ({route}) => {
   }
 
 
-  const retrieveBookmark = async () => {
-    storage = AsyncStorage();
-    await storage.getItem('bookmark').then(async (token) => {
-      response = JSON.parse(token);
-    })
-  }
+  // const retrieveBookmark = async () => {
+  //   storage = AsyncStorage();
+  //   await storage.getItem('bookmark').then(async (token) => {
+  //     response = JSON.parse(token);
+  //   })
+  // }
 
 export default BookmarksScreen
 

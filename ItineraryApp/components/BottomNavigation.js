@@ -8,7 +8,6 @@ import SignupScreen from '../screens/signupscreen';
 import SignupForm from '../screens/signupform';
 import LoginForm from '../screens/loginform';
 import MoreInformation from '../screens/moreInformation';
-import MapTest from '../screens/mapsTest';
 import HomeScreen from '../screens/homescreen';
 import ProfileScreen from '../screens/profilescreen';
 import BookmarksScreen from '../screens/bookmarksscreen';

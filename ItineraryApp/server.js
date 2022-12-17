@@ -57,20 +57,6 @@ app.get('/hello', (req, res) => {
 
 app.use(bodyParser.json())
 
-/*
-app.post("/add_user", async (request, response) => {
-    const user = new userModel(request.body);
-
-    console.log("req.body" + request.body)
-  
-    try {
-      await user.save();
-      response.send(user);
-    } catch (error) {
-      response.status(500).send(error);
-    }
-}); */
-
 
 
 app.post('/api/signup', async (req, res) => {
@@ -304,9 +290,6 @@ app.post('/app/api/itineraries', async (req, res) => {
     res.json({status: "ok"})
 
 })
-
-
-
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
