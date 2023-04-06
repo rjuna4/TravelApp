@@ -12,7 +12,7 @@ import HomeScreen from '../screens/homescreen';
 import ProfileScreen from '../screens/profilescreen';
 import BookmarksScreen from '../screens/bookmarksscreen';
 import ItineraryListScreen from '../screens/itinerarylistscreen';
-import ViewItinerary from '../screens/viewitinerary';
+import Itineraries from '../screens/Itineraries';
 import ProfileSettings from '../screens/profileSettings';
 import { cyan100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
@@ -24,12 +24,12 @@ const BookmarkStack = createNativeStackNavigator();
 
 const ItinerariesStackTab = () => {
     return(
-        <HomeStack.Navigator initialRouteName="ViewItinerary">
+        <HomeStack.Navigator initialRouteName="Itineraries">
          <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
-         <HomeStack.Screen name="ViewItinerary" component={ViewItinerary} options={{headerShown: false}}/>
+         <HomeStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
       </HomeStack.Navigator>
     )
 }

@@ -9,7 +9,7 @@ import ProfileScreen from './screens/profilescreen';
 import ProfileSettings from './screens/profileSettings';
 import BookmarksScreen from './screens/bookmarksscreen';
 import ItineraryListScreen from './screens/itinerarylistscreen';
-import ViewItinerary from './screens/viewitinerary';
+import Itineraries from './screens/Itineraries';
 //Navigation Imports
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -36,7 +36,7 @@ class App extends Component {
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
           <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>
           <Stack.Screen name="LoginForm" component={LoginForm} options={{headerShown: false}}/>
-          <Stack.Screen name="ViewItinerary" component={ViewItinerary} options={{headerShown: false}}/>
+          <Stack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
           <Stack.Screen name="ProfileSettings" component={ProfileSettings} options={{headerShown: false}}/>
         </Stack.Navigator>
         {/* <BottomNavigator /> */}
