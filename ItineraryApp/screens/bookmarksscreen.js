@@ -3,7 +3,7 @@ import React, { Component, useState, useEffect, useLayoutEffect} from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ItineraryContainer from 'ItineraryApp/components/ItineraryContainer';
 import ActivityContainer from '../components/ActivityContainer';
-import AsyncStorage from '@react-native-community/async-storage'
+//import AsyncStorage from '@react-native-community/async-storage'
 
 
 const BookmarksScreen = ({route}) => {

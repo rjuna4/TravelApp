@@ -2,7 +2,7 @@ import {Icon, SafeAreaView, TextInput, ImageBackground, StyleSheet, Text, Image,
 import React, { Component, useState, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { response } from 'express';
-import AsyncStorage from '@react-native-community/async-storage'
+//import AsyncStorage from '@react-native-community/async-storage'
 
 const localImage = require('ItineraryApp/assets/appimages/signupformbackground.png')
 

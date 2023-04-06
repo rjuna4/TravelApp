@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     activityImage: {
         width: 150,
         height: 140,
-        borderRadius: 13,
+        borderRadius: 4,
         marginHorizontal: 15,
         marginTop: 20,
     },

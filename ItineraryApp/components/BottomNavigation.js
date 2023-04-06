@@ -14,6 +14,7 @@ import BookmarksScreen from '../screens/bookmarksscreen';
 import ItineraryListScreen from '../screens/itinerarylistscreen';
 import ViewItinerary from '../screens/viewitinerary';
 import ProfileSettings from '../screens/profileSettings';
+import { cyan100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 const BottomNavBar = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -21,9 +22,9 @@ const ItineraryStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 const BookmarkStack = createNativeStackNavigator();
 
-const HomeStackTab = () => {
+const ItinerariesStackTab = () => {
     return(
-        <HomeStack.Navigator initialRouteName="HomeScreen">
+        <HomeStack.Navigator initialRouteName="ViewItinerary">
          <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
@@ -60,6 +61,16 @@ const ProfileStackTab = () => {
     )
 }
 
+const MessagesStackTab = () => {
+    return(
+        <ProfileStack.Navigator initialRouteName="ProfileScreen">
+         <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
+         <ProfileStack.Screen name="MoreInformation" component={MoreInformation} />
+         <ProfileStack.Screen name="ProfileSettings" component={ProfileSettings} />
+      </ProfileStack.Navigator>
+    )
+}
+
 
 export function BottomNavigator() {
     return (
@@ -68,93 +79,75 @@ export function BottomNavigator() {
                 "tabBarStyle": [{
                     position: 'absolute',
                     elevation: 0,
-
                     height: 60,
-                    backgroundColor: '#A067A5'
+                    backgroundColor: '#222222'
                 }]
             }}
             >
             
            
             
-            <BottomNavBar.Screen name="Home" component={HomeStackTab} 
+            <BottomNavBar.Screen name="Itineraries" component={ItinerariesStackTab}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({focused}) => (
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
                             <Image
-                                source={require('../assets/icons/Home_fill.png')}
+                                source={require('ItineraryApp/assets/icons/itineraries.png')}
                                 resizeMode='contain'
                                 style={{
-                                    width: 40,
-                                    height: 40,
-                                    tintColor: focused ? '#FF8BDF' : '#FFFFFF',
+                                    width: 30,
+                                    height: 30,
+                                    marginBottom: -5,
+                                    tintColor: focused ? '#00F3C8' : '#FFFFFF',
                                 }}
                             />    
                     </View>
                 ),    
                 tabBarLabelStyle: {
                     fontSize: 13,
-                    color: '#FFFFFF'
+                    //color: '#FFFFFF',
+                    //tintColor: focused ? '#00F3C8' : '#FFFFFF',
                 }
             }} />
 
 
-        <BottomNavBar.Screen name="Profile" component={ProfileStackTab}
+        <BottomNavBar.Screen name="People" component={ProfileStackTab}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({focused}) => (
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
                             <Image
-                                source={require('../assets/icons/User_fill(1).png')}
+                                source={require('ItineraryApp/assets/icons/User_alt_light.png')}
                                 resizeMode='contain'
                                 style={{
-                                    width: 40,
-                                    height: 40,
-                                    tintColor: focused ? '#FF8BDF' : '#FFFFFF',
-                                }}
-                        />    
-                    </View>
-                ),    
-                tabBarLabelStyle: {
-                    fontSize: 13,
-                    color: '#FFFFFF'
-                }
-            }} />
-
-            <BottomNavBar.Screen name="Itineraries" component={ItineraryStackTab} 
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({focused}) => (
-                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                            <Image
-                                source={require('../assets/icons/Map_fill.png')}
-                                resizeMode='contain'
-                                style={{
-                                    width: 40,
-                                    height: 38,
-                                    tintColor: focused ? '#FF8BDF':'#FFFFFF'
-                                }}
-                        />    
-                    </View>
-                ),    
-                tabBarLabelStyle: {
-                    fontSize: 13,
-                    color: '#FFFFFF'
-                }
-            }}/>
-            <BottomNavBar.Screen name="Bookmarks" component={BookmarksStackTab} 
-                options={{
-                    headerShown: false,
-                    tabBarIcon: ({focused}) => (
-                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                            <Image
-                                source={require('../assets/icons/Bookmark_fill(1).png')}
-                                resizeMode='contain'
-                                style={{
-                                    width: 40,
+                                    width: 35,
                                     height: 35,
-                                    tintColor: focused ? '#FF8BDF' : '#FFFFFF',
+                                    marginBottom: -5,
+                                    tintColor: focused ? '#00F3C8' : '#FFFFFF',
+                                }}
+                        />    
+                    </View>
+                ),    
+                tabBarLabelStyle: {
+                    fontSize: 13,
+                    color: '#FFFFFF'
+                }
+            }} />
+
+            <BottomNavBar.Screen name="Home" component={ItineraryStackTab} 
+                options={{
+                    headerShown: false,
+                    tabBarIcon: ({focused}) => (
+                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <Image
+                                source={require('ItineraryApp/assets/icons/home.png')}
+                                resizeMode='contain'
+                                style={{
+                                    width: 33,
+                                    height: 24,
+                                    marginBottom: -5,
+                                    tintColor: focused ? '#00F3C8':'#FFFFFF'
                                 }}
                         />    
                     </View>
@@ -164,6 +157,51 @@ export function BottomNavigator() {
                     color: '#FFFFFF'
                 }
             }}/>
+            <BottomNavBar.Screen name="Groups" component={BookmarksStackTab} 
+                options={{
+                    headerShown: false,
+                    tabBarIcon: ({focused}) => (
+                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <Image
+                                source={require('ItineraryApp/assets/icons/Group_add_light(1).png')}
+                                resizeMode='contain'
+                                style={{
+                                    width: 55,
+                                    height: 40,
+                                    marginBottom: -10,
+                                    tintColor: focused ? '#00F3C8' : '#FFFFFF',
+                                }}
+                        />    
+                    </View>
+                ),    
+                tabBarLabelStyle: {
+                    fontSize: 13,
+                    color: '#FFFFFF'
+                }
+            }}/>
+
+            <BottomNavBar.Screen name="Messages" component={MessagesStackTab}
+                options={{
+                    headerShown: false,
+                    tabBarIcon: ({focused}) => (
+                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <Image
+                                source={require('ItineraryApp/assets/icons/messages.png')}
+                                resizeMode='contain'
+                                style={{
+                                    width: 25,
+                                    height: 25,
+                                    marginBottom: -10,
+                                    tintColor: focused ? '#00F3C8' : '#FFFFFF',
+                                }}
+                        />    
+                    </View>
+                ),    
+                tabBarLabelStyle: {
+                    fontSize: 13,
+                    color: '#FFFFFF'
+                }
+            }} />
             </BottomNavBar.Navigator>
     )
 }

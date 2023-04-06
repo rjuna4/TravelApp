@@ -3,7 +3,7 @@ import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, To
 import { useNavigation } from '@react-navigation/native';
 import DialogInput from 'react-native-dialog-input'
 import Dialog from 'react-native-dialog'
-import AsyncStorage from '@react-native-community/async-storage'
+//import AsyncStorage from '@react-native-community/async-storage'
 import { getPlaceDetails } from 'ItineraryApp/api/index.js';
 
 function MoreInformation({route}) {

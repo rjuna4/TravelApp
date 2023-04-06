@@ -1,0 +1,19 @@
+{
+  "name": "travelapp",
+  "version": "1.0.0",
+  "description": "You may need to use the following commands to properly use this project:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjuna4/TravelApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjuna4/TravelApp/issues"
+  },
+  "homepage": "https://github.com/rjuna4/TravelApp#readme"
+}
