@@ -10,6 +10,9 @@ import ProfileSettings from './screens/profileSettings';
 import BookmarksScreen from './screens/bookmarksscreen';
 import ItineraryListScreen from './screens/itinerarylistscreen';
 import Itineraries from './screens/Itineraries';
+import Groups from './screens/Groups';
+import People from './screens/People';
+import Messages from './screens/Messages';
 //Navigation Imports
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -38,6 +41,9 @@ class App extends Component {
           <Stack.Screen name="LoginForm" component={LoginForm} options={{headerShown: false}}/>
           <Stack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
           <Stack.Screen name="ProfileSettings" component={ProfileSettings} options={{headerShown: false}}/>
+          <Stack.Screen name="Groups" component={Groups} options={{headerShown: false}}/>
+          <Stack.Screen name="People" component={People} options={{headerShown: false}}/>
+          <Stack.Screen name="Messages" component={Messages} options={{headerShown: false}}/>
         </Stack.Navigator>
         {/* <BottomNavigator /> */}
       </NavigationContainer>

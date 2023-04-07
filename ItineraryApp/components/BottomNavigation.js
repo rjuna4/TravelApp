@@ -14,17 +14,20 @@ import BookmarksScreen from '../screens/bookmarksscreen';
 import ItineraryListScreen from '../screens/itinerarylistscreen';
 import Itineraries from '../screens/Itineraries';
 import ProfileSettings from '../screens/profileSettings';
-import { cyan100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import Groups from '../screens/Groups';
+import People from '../screens/People';
+import Messages from '../screens/Messages';
 
 const BottomNavBar = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const ItineraryStack = createNativeStackNavigator();
-const ProfileStack = createNativeStackNavigator();
-const BookmarkStack = createNativeStackNavigator();
+const GroupStack = createNativeStackNavigator();
+const MessagesStack = createNativeStackNavigator();
+const PeopleStack = createNativeStackNavigator();
 
-const ItinerariesStackTab = () => {
+const HomeStackTab = () => {
     return(
-        <HomeStack.Navigator initialRouteName="Itineraries">
+        <HomeStack.Navigator initialRouteName="HomeScreen">
          <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
@@ -36,38 +39,32 @@ const ItinerariesStackTab = () => {
 
 const ItineraryStackTab = () => {
     return(
-        <ItineraryStack.Navigator initialRouteName="ItineraryListScreen">
-         <ItineraryStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
+        <ItineraryStack.Navigator initialRouteName="Itineraries">
+         <ItineraryStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
       </ItineraryStack.Navigator>
     )
 }
 
-const BookmarksStackTab = () => {
+const GroupsStackTab = () => {
     return(
-        <BookmarkStack.Navigator initialRouteName="BookmarksScreen">
-         <BookmarkStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
-         <BookmarkStack.Screen name="MoreInformation" component={MoreInformation} /> 
-      </BookmarkStack.Navigator>
-    )
-}
-
-const ProfileStackTab = () => {
-    return(
-        <ProfileStack.Navigator initialRouteName="ProfileScreen">
-         <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
-         <ProfileStack.Screen name="MoreInformation" component={MoreInformation} />
-         <ProfileStack.Screen name="ProfileSettings" component={ProfileSettings} />
-      </ProfileStack.Navigator>
+        <GroupStack.Navigator initialRouteName="Groups">
+         <GroupStack.Screen name="Groups" component={Groups} options={{headerShown: false}}/>
+      </GroupStack.Navigator>
     )
 }
 
 const MessagesStackTab = () => {
     return(
-        <ProfileStack.Navigator initialRouteName="ProfileScreen">
-         <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
-         <ProfileStack.Screen name="MoreInformation" component={MoreInformation} />
-         <ProfileStack.Screen name="ProfileSettings" component={ProfileSettings} />
-      </ProfileStack.Navigator>
+        <MessagesStack.Navigator initialRouteName="Messages">
+         <MessagesStack.Screen name="Messages" component={Messages} options={{headerShown: false}}/>
+      </MessagesStack.Navigator>
+    )
+}
+const PeopleStackTab = () => {
+    return(
+        <PeopleStack.Navigator initialRouteName="People">
+         <PeopleStack.Screen name="People" component={People} options={{headerShown: false}}/>
+      </PeopleStack.Navigator>
     )
 }
 
@@ -87,7 +84,7 @@ export function BottomNavigator() {
             
            
             
-            <BottomNavBar.Screen name="Itineraries" component={ItinerariesStackTab}
+            <BottomNavBar.Screen name="Itineraries" component={ItineraryStackTab}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({focused}) => (
@@ -106,13 +103,13 @@ export function BottomNavigator() {
                 ),    
                 tabBarLabelStyle: {
                     fontSize: 13,
-                    //color: '#FFFFFF',
-                    //tintColor: focused ? '#00F3C8' : '#FFFFFF',
+                    color: '#FFFFFF',
+                    marginBottom: 5,
                 }
             }} />
 
 
-        <BottomNavBar.Screen name="People" component={ProfileStackTab}
+        <BottomNavBar.Screen name="People" component={PeopleStackTab}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({focused}) => (
@@ -131,11 +128,12 @@ export function BottomNavigator() {
                 ),    
                 tabBarLabelStyle: {
                     fontSize: 13,
-                    color: '#FFFFFF'
+                    color: '#FFFFFF',
+                    marginBottom: 5,
                 }
             }} />
 
-            <BottomNavBar.Screen name="Home" component={ItineraryStackTab} 
+            <BottomNavBar.Screen name="Home" component={HomeStackTab} 
                 options={{
                     headerShown: false,
                     tabBarIcon: ({focused}) => (
@@ -154,10 +152,11 @@ export function BottomNavigator() {
                 ),    
                 tabBarLabelStyle: {
                     fontSize: 13,
-                    color: '#FFFFFF'
+                    color: '#FFFFFF',
+                    marginBottom: 5
                 }
             }}/>
-            <BottomNavBar.Screen name="Groups" component={BookmarksStackTab} 
+            <BottomNavBar.Screen name="Groups" component={GroupsStackTab} 
                 options={{
                     headerShown: false,
                     tabBarIcon: ({focused}) => (
@@ -176,7 +175,8 @@ export function BottomNavigator() {
                 ),    
                 tabBarLabelStyle: {
                     fontSize: 13,
-                    color: '#FFFFFF'
+                    color: '#FFFFFF',
+                    marginBottom: 5,
                 }
             }}/>
 
@@ -199,7 +199,8 @@ export function BottomNavigator() {
                 ),    
                 tabBarLabelStyle: {
                     fontSize: 13,
-                    color: '#FFFFFF'
+                    color: '#FFFFFF',
+                    marginBottom: 5,
                 }
             }} />
             </BottomNavBar.Navigator>

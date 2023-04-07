@@ -6,6 +6,7 @@ import ActivityContainer from '../components/ActivityContainer';
 //import { AsyncStorage } from '@react-native-async-storage/async-storage';
 //import AsyncStorage from '@react-native-community/async-storage';
 import { getPlaceDetails } from '../api';
+import HeaderBanner from '../components/HeaderBanner';
 
 
 const Itineraries = ({route}) => {
@@ -31,58 +32,43 @@ const Itineraries = ({route}) => {
 
 ])
 
+const changeTab = () => {
+  const [tabColor, changeColor] = useState("#FFFFFF");
+  const bodyText = 'This is not really a bird nest.';
+
+  const changeTab = () => {
+    setTitleText("Bird's Nest [pressed]");
+  }}
+
     return (
       <View style={styles.container}>
+        <View>
+          <HeaderBanner heading = "Itineraries" style={styles.banner}>
+          </HeaderBanner>
+        </View>
 
-{/* <FlatList
-            style={styles.section}
-            horizontal
-            data={data}
-            renderItem={({item, index}) => (
-                <View>
-                    <View>
-                        <Text style={styles.description}>{item}</Text>
-                        <View> {item}</View>
-                    </View>
-                    <View>
-                    </View>
-                </View>
-            )}
-      /> */}
-          <View>
-            {/* {itineraryInfo ?
-              itineraryInfo.map((data,index) => {
-                return  {data}
-              }) 
-              : null} */}
-              <View style={styles.banner}>
-            <Text style={styles.title}>My Itineraries</Text>
-            </View>
-            <Text style={styles.title}> {}</Text>
-          </View>
+        <View >
+          <Text style={styles.tabs} onPress={changeTab}> Plan A Trip </Text>
+          <Text style={styles.tabs} onPress={changeTab}> My Trips </Text>
+        </View>
     </View>  
     )  
   }
+
 export default Itineraries
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
+    backgroundColor: "#232020",
   },
   banner: {
-    flex: 1,
-    backgroundColor: 'blue',
     justifyContent: "center",
-    height: 195,
-    width: 415,
   },
-  title: {
+  tabs: {
     fontFamily: 'ABeeZee',
-    fontSize: 38,
-    color: "#744578",
-    textAlign: "center",
-    marginTop: 25,
+    fontSize: 18,
+    color: "#FFFFFF"
   },
   activityImage: {
     width: '85%',
@@ -100,4 +86,4 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     top: 16
   }
-});
+})
