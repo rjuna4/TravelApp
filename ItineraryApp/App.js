@@ -28,6 +28,7 @@ import {
   View,
 } from 'react-native';
 
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 class App extends Component {

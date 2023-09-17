@@ -1,0 +1,9 @@
+{
+    "name": "Outfit Medium",
+    "src": "./",
+    "fonts": [
+      {
+        "asset": "Outfit-Medium.ttf"
+      }
+    ]
+  }
