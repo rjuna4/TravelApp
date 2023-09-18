@@ -3,8 +3,6 @@ import React, { Component, useState, useLayoutEffect} from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ItineraryContainer from 'travel-app/components/ItineraryContainer';
 import ActivityContainer from '../components/ActivityContainer';
-//import { AsyncStorage } from '@react-native-async-storage/async-storage';
-//import AsyncStorage from '@react-native-community/async-storage';
 import { getPlaceDetails } from '../api';
 import HeaderBanner from '../components/HeaderBanner';
 import imgOne from '../assets/appimages/Santorini.png'
@@ -12,7 +10,8 @@ import imgOne from '../assets/appimages/Santorini.png'
 import font from '../assets/fonts/Outfit-Medium.ttf'
 import ActivityRecommendations from './activityRecommendations';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { useLoadFonts, fonts } from '../components/FontLoader';
+
+import SearchBar from '../components/SearchBar';
 
 const Itineraries = ({route}) => {
     const navigation = useNavigation();
@@ -37,15 +36,16 @@ const Itineraries = ({route}) => {
 
 ])
 
-const changeTab = () => {
-  const [tabColor, changeColor] = useState("#FFFFFF");
-  const bodyText = 'This is not really a bird nest.';
+const [tabColor, changeColor] = useState("#00F3C8");
+const [tab2Color, changeColor2] = useState("#FFFFFF");
+const [activeTab, setActiveTab] = useState(1);
 
-  const changeTab = () => {
-    setTitleText("Bird's Nest [pressed]");
-  }}
+const changeTab = (tabNum) => {
+  setActiveTab(tabNum);
+  changeColor(tabNum === 1 ? '#00F3C8' : "#00F3C8");
+  changeColor2(tabNum === 2 ? '#00F3C8' : "#FFFFFF");
 
-    useLoadFonts(); 
+}
 
     return (
       <View style={styles.container}>
@@ -53,12 +53,47 @@ const changeTab = () => {
           <HeaderBanner heading = "Itineraries" style={styles.banner}>
           </HeaderBanner>
         </View>
-        <View >
-          <Text style={styles.tabs} onPress={changeTab}> Plan A Trip </Text>
-          <Text style={styles.tabs} onPress={changeTab}> My Trips </Text>
+        <View style={styles.tabs}>
+          <View style={styles.tabContainer}>
+                <Text
+                  style={[
+                    styles.tab1,
+                    {
+                      color: activeTab === 1 ? tabColor : '#FFFFFF',
+                    },
+                  ]}
+                  onPress={() => changeTab(1)}
+                >
+                  Plan A Trip
+                </Text>
+                {activeTab === 1 && (
+                  <View style={styles.underline} />
+                )}
+              </View>
+              <View style={styles.tabContainer}>
+                <Text
+                  style={[
+                    styles.tabs,
+                    {
+                      color: activeTab === 2 ? tab2Color : '#FFFFFF',
+                    }
+                  ]}
+                  onPress={() => changeTab(2)}
+                >
+                  My Trips
+                </Text>
+                {activeTab === 2 && (
+                  <View style={styles.underline2} />
+                )}
+              </View>
+            </View>
+
+            <View>
+            <SearchBar style ={styles.search}></SearchBar>
         </View>
-      
-        <Text style={styles.header}>Trending Destinations</Text>
+        <View style={{marginTop: 60}}>
+        <ScrollView>
+          <Text style={{color: '#FFFFFF', fontSize: 20}}>Trending Destinations</Text>
         <View style={{height: 270, backgroundColor: '#000000', marginTop: 10}}>
           <ScrollView horizontal={true}>
             <View style={{display: 'flex', alignItems: 'flex-start', flexDirection: 'row', marginTop: 20}}>
@@ -66,10 +101,10 @@ const changeTab = () => {
                 <Image 
                   source={require('../assets/appimages/Seoul.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Seoul, South Korea
                   </Text>
-                  <Text style={styles.locationDescription}>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
                     Seoul is a bewitching mix of ancient and modern, packaged in a surprisingly...
                   </Text>
               </View>
@@ -77,10 +112,10 @@ const changeTab = () => {
                   <Image 
                   source={require('../assets/appimages/Tokyo.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Tokyo, Japan
                   </Text>
-                  <Text style={styles.locationDescription}>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
                     Tokyo, one of the world's largest cities, offers a uniquely eclectic mix of traditional...
                   </Text>
               </View>    
@@ -88,10 +123,10 @@ const changeTab = () => {
                 <Image 
                   source={require('../assets/appimages/Santorini.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Santorini, Greece
                   </Text>
-                  <Text style={styles.locationDescription}>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
                   Santorini is a fantastic Cycladic island in the southern Aegean Sea with astonishing...
                   </Text>
               </View>   
@@ -99,10 +134,10 @@ const changeTab = () => {
                 <Image 
                   source={require('../assets/appimages/bangkok.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Bangkok, Thailand
                   </Text>
-                  <Text style={styles.locationDescription}>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
                     Bangkok is the larger-than-life city where magnificent temples, historic markets...
                   </Text>
               </View>   
@@ -110,10 +145,10 @@ const changeTab = () => {
                 <Image 
                   source={require('../assets/appimages/newYork.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     New York, USA
                   </Text>
-                  <Text style={styles.locationDescription}>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
                     New York City is a major centre for international business and commerce and...
                   </Text>
               </View>   
@@ -121,10 +156,10 @@ const changeTab = () => {
                 <Image 
                   source={require('../assets/appimages/barcelona.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Barcelona, Spain
                   </Text>
-                  <Text style={styles.locationDescription}>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
                     Barcelona is the second-largest metropolis in Spain and a world class city, vibrant...
                   </Text>
               </View>   
@@ -132,17 +167,17 @@ const changeTab = () => {
                 <Image 
                   source={require('../assets/appimages/bali.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Bali, Indonesia
                   </Text>
-                  <Text style={styles.locationDescription}>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
                     Bali appeals through its sheer natural beauty of looming volcanoes and lush terraced...
                   </Text>
               </View>
               </View>
           </ScrollView>
         </View>
-        <Text style={styles.header}>Popular Attractions Worldwide</Text>
+        <Text style={{color: '#FFFFFF', fontSize: 20, paddingTop: 10}}>Popular Attractions Worldwide</Text>
         <View style={{height: 270, marginTop: 10}}>
           <ScrollView horizontal={true}>
             <View style={{display: 'flex', alignItems: 'flex-start', flexDirection: 'row', marginTop: 20}}>
@@ -150,21 +185,29 @@ const changeTab = () => {
                   <Image 
                   source={require('../assets/appimages/colosseum.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
-                    The Colosseum
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
+                    Tokyo, Japan
+                  </Text>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
+                    Tokyo, one of the world's largest cities, offers a uniquely eclectic mix of traditional...
                   </Text>
               </View>    
               <View style={{display: 'flex', width: 302}}>
                 <Image 
                   source={require('../assets/appimages/angkorWat.png')}
                   style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
-                  <Text style={styles.locationTitle}>
-                    Angkor Wat
+                  <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
+                    Santorini, Greece
+                  </Text>
+                  <Text style={{fontSize: 14, color: '#D9D9D9', marginLeft: 23}}>
+                  Santorini is a fantastic Cycladic island in the southern Aegean Sea with astonishing...
                   </Text>
               </View>   
            
               </View>
           </ScrollView>
+        </View>
+        </ScrollView>
         </View>
     </View>  
     )  
@@ -177,32 +220,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#232020",
   },
-  header: {
-    color: '#FFFFFF', 
-    fontSize: 20, 
-    fontFamily: fonts.outfitSemiBold, 
-  },
-  locationTitle: {
-    color: '#00F3C8', 
-    fontSize: 18, 
-    alignSelf: 'flex-start', 
-    paddingTop: 5, 
-    marginLeft: 23,
-    fontFamily: fonts.outfitMedium,
-  },
-  locationDescription: {
-    fontSize: 14, 
-    color: '#D9D9D9', 
-    marginLeft: 23,
-    fontFamily: fonts.outfitRegular,
-  },
   banner: {
     justifyContent: "center",
   },
   tabs: {
     fontFamily: 'Outfit-Medium',
     fontSize: 18,
-    color: "#FFFFFF"
+    color: "#FFFFFF",
+    justifyContent: 'center',
+    flexDirection: 'row',
+    top: 10,
+    marginHorizontal: 55,
+  },
+  tab1: {
+    fontFamily: 'Outfit Medium',
+    fontSize: 20,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    top: 10,
+    marginHorizontal: 55,
   },
   activityImage: {
     width: '85%',
@@ -213,13 +249,32 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    fontFamily: fonts.outfitBold,
     marginLeft: 25,
     top: '40%'
   },
-  location: {
-    marginLeft: 20,
-    top: 16
+  tabContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-
+  underline: {
+    height: 3, // Adjust the thickness here
+    backgroundColor: '#00F3C8', // Adjust the color here
+    position: 'absolute',
+    top: 42,
+    left: 49,
+    right: 0,
+    width: 110
+  },
+  underline2: {
+    height: 3, // Adjust the thickness here
+    backgroundColor: '#00F3C8', // Adjust the color here
+    position: 'absolute',
+    top: 42,
+    left: 41,
+    right: 0,
+    width: 105
+  },
+  search: {
+    width: 350
+  }
 })
