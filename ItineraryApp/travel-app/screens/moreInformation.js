@@ -5,8 +5,9 @@ import DialogInput from 'react-native-dialog-input'
 import Dialog from 'react-native-dialog'
 //import AsyncStorage from '@react-native-community/async-storage'
 import { getPlaceDetails } from 'travel-app/api/index.js';
+import { useLoadFonts, fonts } from '../components/FontLoader';
 
-function MoreInformation({route}) {
+const MoreInformation = ({route}) => {
 
     const [userId, setUserId] = useState('');
     var user_id;
@@ -139,6 +140,9 @@ function MoreInformation({route}) {
         }
       )
     }
+
+    useLoadFonts(); 
+
     return (
       <>
       <ScrollView>
@@ -149,17 +153,17 @@ function MoreInformation({route}) {
           />
             <View>
               <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
-              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View>
+              {/* <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View> */}
                 <Image style={styles.backButton}
-                  source={require('travel-app/assets/icons/Refund_back.png')}
+                  source={require('travel-app/assets/icons/backIcon.png')}
                  />   
               </TouchableOpacity>
             </View>
             <View>
               <TouchableOpacity onPress={() => handleModal()}>
-              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: -50}]}></View>
+              {/* <View style={[styles.box1, {marginHorizontal: 18, marginBottom: -50}]}></View> */}
                 <Image style={styles.addButton}
-                  source={require('travel-app/assets/icons/Map_fill.png')}
+                  source={require('travel-app/assets/icons/addToItinerary.png')}
                  /> 
               </TouchableOpacity>
                 <Modal 
@@ -179,9 +183,9 @@ function MoreInformation({route}) {
                   </View>
                 </Modal>
               <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
-              <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View>
+              {/* <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View> */}
                 <Image style={styles.saveButton}
-                  source={require('travel-app/assets/icons/Bookmark_fill(1).png')}
+                  source={require('travel-app/assets/icons/bookmarkIcon.png')}
                  /> 
               </TouchableOpacity>
             </View>
@@ -208,18 +212,18 @@ function MoreInformation({route}) {
               </View>
             )}
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 3, tintColor: '#0C2D5C'}}
+                <Image style={{marginHorizontal: 3, tintColor: '#FFFFFF'}}
                   source={require('travel-app/assets/icons/Pin_fill.png')}
                 />  
-                <Text style={{fontSize: 17, color: '#0C2D5C'}}>Location</Text>
+                <Text style={{fontSize: 17, color: '#FFFFFF', fontFamily: fonts.outfitBold}}>Location</Text>
               </View>
               <Text style={styles.location}>{data?.location_string}</Text>
             </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 5, tintColor: '#0C2D5C'}}
+                <Image style={{marginHorizontal: 5, tintColor: '#FFFFFF'}}
                   source={require('travel-app/assets/icons/File_dock.png')}
                 />  
-                <Text style={{fontSize: 17, color: '#0C2D5C'}}>Description</Text>
+                <Text style={{fontSize: 17, color: '#FFFFFF', fontFamily: fonts.outfitBold}}>Description</Text>
               </View>
             <View>
               <Text style={styles.description} numberOfLines={10} renderTruncatedFooter>{data?.description}</Text>
@@ -237,7 +241,7 @@ function MoreInformation({route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#322F2F',
   },
   text: {
     fontFamily: 'ABeeZee-Regular',
@@ -263,47 +267,57 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   addButton: {
-    width: 35,
-    height: 45,
+    width: 30,
+    height: 35,
     tintColor: '#FFFFFF',
     marginTop: -40,
     marginHorizontal: 25,
   },
   saveButton: {
-    width: 30,
-    height: 45,
+    width: 22,
+    height: 30,
     tintColor: '#FFFFFF',
-    marginHorizontal: 355,
-    marginTop: -45,
+    marginHorizontal: 330,
+    marginTop: -36,
   },
   name: {
-    fontSize: 30,
+    fontSize: 24,
+    fontFamily: fonts.outfitMedium,
     marginTop: 7,
     marginHorizontal: 10,
-    color: '#744578'
+    color: '#57C2AF',
   },
   location: {
     fontSize: 18,
     marginHorizontal: 10,
     marginBottom: 8,
+    color: '#FFFFFF',
+    fontFamily: fonts.outfitRegular,
   },
   description: {
     fontSize: 18,
     marginHorizontal: 10,
     marginTop: 2,
+    color: '#FFFFFF',
+    fontFamily: fonts.outfitRegular,
   },
   ranking: {
     marginHorizontal: 5,
     fontSize: 18,
     marginTop: 5,
+    color: '#FFFFFF',
+    fontFamily: fonts.outfitRegular,
   },
   rating: {
     fontSize: 20,
+    color: '#FFFFFF',
+    fontFamily: fonts.outfitRegular,
   },
   priceLevel: {
     fontSize: 20,
-    fontWeight: 'bold',
     marginHorizontal: 10,
+    color: '#FFFFFF',
+    fontFamily: fonts.outfitRegular,
   },
   cuisine: {
     alignItems: 'center',

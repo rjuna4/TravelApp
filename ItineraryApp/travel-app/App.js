@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect } from 'react';
 import {Button} from 'react-native';
 import SignupScreen from './screens/signupscreen';
 import SignupForm from './screens/signupform';
@@ -13,6 +13,7 @@ import Itineraries from './screens/Itineraries';
 import Groups from './screens/Groups';
 import People from './screens/People';
 import Messages from './screens/Messages';
+import * as Font from 'expo-font';
 //Navigation Imports
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -31,8 +32,24 @@ import {
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-class App extends Component {
-  render() {
+const App = () => {
+    useEffect(() => {
+      async function loadFont() {
+        await Font.loadAsync({
+          'outfit-black': require('travel-app/assets/fonts/Outfit-Black.ttf'),
+          'outfit-bold': require('travel-app/assets/fonts/Outfit-Bold.ttf'),
+          'outfit-extraBold': require('travel-app/assets/fonts/Outfit-ExtraBold.ttf'),
+          'outfit-extraLight': require('travel-app/assets/fonts/Outfit-ExtraLight.ttf'),
+          'outfit-light': require('travel-app/assets/fonts/Outfit-Light.ttf'),
+          'outfit-medium': require('travel-app/assets/fonts/Outfit-Medium.ttf'),
+          'outfit-regular': require('travel-app/assets/fonts/Outfit-Regular.ttf'),
+          'outfit-semiBold': require('travel-app/assets/fonts/Outfit-SemiBold.ttf'),
+          'outfit-thin': require('travel-app/assets/fonts/Outfit-Thin.ttf'),
+        })
+      }
+      loadFont();
+    }, []);
+    
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Tabs">
@@ -49,7 +66,6 @@ class App extends Component {
         {/* <BottomNavigator /> */}
       </NavigationContainer>
     );
-  }
 }
 
 const styles = StyleSheet.create({
