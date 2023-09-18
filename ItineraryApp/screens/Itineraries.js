@@ -3,8 +3,6 @@ import React, { Component, useState, useLayoutEffect} from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ItineraryContainer from 'ItineraryApp/components/ItineraryContainer';
 import ActivityContainer from '../components/ActivityContainer';
-//import { AsyncStorage } from '@react-native-async-storage/async-storage';
-//import AsyncStorage from '@react-native-community/async-storage';
 import { getPlaceDetails } from '../api';
 import HeaderBanner from '../components/HeaderBanner';
 import imgOne from '../assets/appimages/Santorini.png'
@@ -13,6 +11,7 @@ import font from '../assets/fonts/Outfit-Medium.ttf'
 import ActivityRecommendations from './activityRecommendations';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
+import SearchBar from '../components/SearchBar';
 
 const Itineraries = ({route}) => {
     const navigation = useNavigation();
@@ -37,19 +36,60 @@ const Itineraries = ({route}) => {
 
 ])
 
-const changeTab = () => {
-  const [tabColor, changeColor] = useState("#FFFFFF");
-  const bodyText = 'This is not really a bird nest.';
+const [tabColor, changeColor] = useState("#00F3C8");
+const [tab2Color, changeColor2] = useState("#FFFFFF");
+const [activeTab, setActiveTab] = useState(1);
 
-  const changeTab = () => {
-    setTitleText("Bird's Nest [pressed]");
-  }}
+const changeTab = (tabNum) => {
+  setActiveTab(tabNum);
+  changeColor(tabNum === 1 ? '#00F3C8' : "#00F3C8");
+  changeColor2(tabNum === 2 ? '#00F3C8' : "#FFFFFF");
+
+}
 
     return (
       <View style={styles.container}>
         <View>
           <HeaderBanner heading = "Itineraries" style={styles.banner}>
           </HeaderBanner>
+        </View>
+        <View style={styles.tabs}>
+          <View style={styles.tabContainer}>
+                <Text
+                  style={[
+                    styles.tab1,
+                    {
+                      color: activeTab === 1 ? tabColor : '#FFFFFF',
+                    },
+                  ]}
+                  onPress={() => changeTab(1)}
+                >
+                  Plan A Trip
+                </Text>
+                {activeTab === 1 && (
+                  <View style={styles.underline} />
+                )}
+              </View>
+              <View style={styles.tabContainer}>
+                <Text
+                  style={[
+                    styles.tabs,
+                    {
+                      color: activeTab === 2 ? tab2Color : '#FFFFFF',
+                    }
+                  ]}
+                  onPress={() => changeTab(2)}
+                >
+                  My Trips
+                </Text>
+                {activeTab === 2 && (
+                  <View style={styles.underline2} />
+                )}
+              </View>
+            </View>
+
+            <View>
+            <SearchBar style ={styles.search}></SearchBar>
         </View>
         <View >
           <Text style={styles.tabs} onPress={changeTab}> Plan A Trip </Text>
@@ -187,7 +227,19 @@ const styles = StyleSheet.create({
   tabs: {
     fontFamily: 'Outfit-Medium',
     fontSize: 18,
-    color: "#FFFFFF"
+    color: "#FFFFFF",
+    justifyContent: 'center',
+    flexDirection: 'row',
+    top: 10,
+    marginHorizontal: 55,
+  },
+  tab1: {
+    fontFamily: 'Outfit Medium',
+    fontSize: 20,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    top: 10,
+    marginHorizontal: 55,
   },
   activityImage: {
     width: '85%',
@@ -201,9 +253,29 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     top: '40%'
   },
-  location: {
-    marginLeft: 20,
-    top: 16
+  tabContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-
+  underline: {
+    height: 3, // Adjust the thickness here
+    backgroundColor: '#00F3C8', // Adjust the color here
+    position: 'absolute',
+    top: 42,
+    left: 49,
+    right: 0,
+    width: 110
+  },
+  underline2: {
+    height: 3, // Adjust the thickness here
+    backgroundColor: '#00F3C8', // Adjust the color here
+    position: 'absolute',
+    top: 42,
+    left: 41,
+    right: 0,
+    width: 105
+  },
+  search: {
+    width: 350
+  }
 })

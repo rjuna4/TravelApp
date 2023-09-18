@@ -15,15 +15,15 @@ const HeaderBanner = ({heading}) => {
 
 const styles = StyleSheet.create({
     banner:{
-        height: 80,
+        height: 70,
         width: 420,
         backgroundColor: '#57C2AF',
     },
     heading:{
         color: '#FFFFFF',
         fontSize: 30,
-        marginLeft: 70,
-        marginVertical: 18
+        marginLeft: 30,
+        marginVertical: 15
     }
 })
 
