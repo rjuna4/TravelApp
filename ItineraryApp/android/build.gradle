@@ -29,6 +29,10 @@ buildscript {
 }
 
 allprojects {
+    project.ext.vectoricons = [
+        iconFontNames: [ 'Outfit-Medium.ttf'] // Add your custom font filenames here
+    ]
+
     repositories {
         exclusiveContent {
            filter {
