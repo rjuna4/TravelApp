@@ -2,9 +2,11 @@ import {View, Text, TouchableOpacity, Image, ImageBackground, StyleSheet } from 
 import React from 'react';
 import { useNavigation } from "@react-navigation/native";
 import MoreInformation from "../screens/moreInformation";
+import { useLoadFonts, fonts } from '../components/FontLoader';
 
 const ActivityContainer = ({image, name, location, data}) => {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+    useLoadFonts();
     return (
         <TouchableOpacity onPress={() => navigation.navigate("MoreInformation", {param : data})}>
             <Image style = {styles.activityImage}
@@ -46,11 +48,13 @@ const styles = StyleSheet.create({
     nameText: {
         fontSize: 19,
         marginHorizontal: 15,
+        fontFamily: fonts.outfitMedium,
     },
 
     locationText: {
         fontSize: 16,
         marginHorizontal: 32,
+        fontFamily: fonts.outfitRegular,
     }
 
 });

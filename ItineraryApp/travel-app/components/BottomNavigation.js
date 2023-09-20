@@ -18,6 +18,7 @@ import Groups from '../screens/Groups';
 import People from '../screens/People';
 import Messages from '../screens/Messages';
 import ActivityRecommendations from '../screens/activityRecommendations';
+import { useLoadFonts, fonts } from './FontLoader';
 
 const BottomNavBar = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -72,13 +73,14 @@ const PeopleStackTab = () => {
 
 
 export function BottomNavigator() {
+    useLoadFonts();
     return (
         <BottomNavBar.Navigator
             screenOptions={{
                 "tabBarStyle": [{
                     position: 'absolute',
                     elevation: 0,
-                    height: 60,
+                    height: 85,
                     backgroundColor: '#222222'
                 }]
             }}
@@ -95,8 +97,8 @@ export function BottomNavigator() {
                                 source={require('travel-app/assets/icons/itineraries.png')}
                                 resizeMode='contain'
                                 style={{
-                                    width: 30,
-                                    height: 30,
+                                    width: 27,
+                                    height: 27,
                                     marginBottom: -5,
                                     tintColor: focused ? '#00F3C8' : '#FFFFFF',
                                 }}
@@ -104,9 +106,11 @@ export function BottomNavigator() {
                     </View>
                 ),    
                 tabBarLabelStyle: {
+                    fontFamily: fonts.outfitRegular,
                     fontSize: 13,
                     color: '#FFFFFF',
                     marginBottom: 5,
+                    paddingTop: 5,
                 }
             }} />
 
@@ -120,8 +124,9 @@ export function BottomNavigator() {
                                 source={require('travel-app/assets/icons/User_alt_light.png')}
                                 resizeMode='contain'
                                 style={{
-                                    width: 35,
-                                    height: 35,
+                                    width: 30,
+                                    height: 30,
+                                    marginTop: 7,
                                     marginBottom: -5,
                                     tintColor: focused ? '#00F3C8' : '#FFFFFF',
                                 }}
@@ -129,9 +134,12 @@ export function BottomNavigator() {
                     </View>
                 ),    
                 tabBarLabelStyle: {
+                    fontFamily: fonts.outfitRegular,
                     fontSize: 13,
                     color: '#FFFFFF',
+                    marginTop: 5,
                     marginBottom: 5,
+                    paddingTop: 5,
                 }
             }} />
 
@@ -144,8 +152,8 @@ export function BottomNavigator() {
                                 source={require('travel-app/assets/icons/home.png')}
                                 resizeMode='contain'
                                 style={{
-                                    width: 33,
-                                    height: 24,
+                                    width: 30,
+                                    height: 20,
                                     marginBottom: -5,
                                     tintColor: focused ? '#00F3C8':'#FFFFFF'
                                 }}
@@ -153,9 +161,11 @@ export function BottomNavigator() {
                     </View>
                 ),    
                 tabBarLabelStyle: {
+                    fontFamily: fonts.outfitRegular,
                     fontSize: 13,
                     color: '#FFFFFF',
-                    marginBottom: 5
+                    marginBottom: 5,
+                    paddingTop: 5,
                 }
             }}/>
             <BottomNavBar.Screen name="Groups" component={GroupsStackTab} 
@@ -167,8 +177,8 @@ export function BottomNavigator() {
                                 source={require('travel-app/assets/icons/Group_add_light(1).png')}
                                 resizeMode='contain'
                                 style={{
-                                    width: 55,
-                                    height: 40,
+                                    width: 50,
+                                    height: 35,
                                     marginBottom: -10,
                                     tintColor: focused ? '#00F3C8' : '#FFFFFF',
                                 }}
@@ -176,9 +186,11 @@ export function BottomNavigator() {
                     </View>
                 ),    
                 tabBarLabelStyle: {
+                    fontFamily: fonts.outfitRegular,
                     fontSize: 13,
                     color: '#FFFFFF',
                     marginBottom: 5,
+                    paddingTop: 5,
                 }
             }}/>
 
@@ -191,8 +203,8 @@ export function BottomNavigator() {
                                 source={require('travel-app/assets/icons/messages.png')}
                                 resizeMode='contain'
                                 style={{
-                                    width: 25,
-                                    height: 25,
+                                    width: 22,
+                                    height: 22,
                                     marginBottom: -10,
                                     tintColor: focused ? '#00F3C8' : '#FFFFFF',
                                 }}
@@ -200,9 +212,11 @@ export function BottomNavigator() {
                     </View>
                 ),    
                 tabBarLabelStyle: {
+                    fontFamily: fonts.outfitRegular,
                     fontSize: 13,
                     color: '#FFFFFF',
                     marginBottom: 5,
+                    paddingTop: 5,
                 }
             }} />
             </BottomNavBar.Navigator>

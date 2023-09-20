@@ -12,21 +12,21 @@ const MoreInformation = ({route}) => {
     const [userId, setUserId] = useState('');
     var user_id;
 
-    async function loadUserId() {
-      try {
-        await AsyncStorage.getItem('user_id').then(value => console.log("user id in async storage after getItem: ", value));
-        //user_id = value;
-        //AsyncStorage.getItem('user_id').then(value => {user_id = value});
+    // async function loadUserId() {
+    //   try {
+    //     await AsyncStorage.getItem('user_id').then(value => console.log("user id in async storage after getItem: ", value));
+    //     //user_id = value;
+    //     //AsyncStorage.getItem('user_id').then(value => {user_id = value});
 
-        // await AsyncStorage.getItem('user_id').then(function(value) {
-        //   console.log("user ID after getItem: ", value); 
-        //   //setUserId(value)
-        // });
-      } catch (e) {
-          console.error('Failed to load user id.')
-          console.log("e: ", e)
-      }
-    }
+    //     // await AsyncStorage.getItem('user_id').then(function(value) {
+    //     //   console.log("user ID after getItem: ", value); 
+    //     //   //setUserId(value)
+    //     // });
+    //   } catch (e) {
+    //       console.error('Failed to load user id.')
+    //       console.log("e: ", e)
+    //   }
+    // }
     //console.log("user_id", user_id)
 
       useEffect(() => {
