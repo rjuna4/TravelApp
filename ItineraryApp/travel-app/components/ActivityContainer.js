@@ -3,12 +3,14 @@ import React from 'react';
 import { useNavigation } from "@react-navigation/native";
 import MoreInformation from "../screens/moreInformation";
 import { useLoadFonts, fonts } from '../components/FontLoader';
+import ActivityRecommendations from "../screens/activityRecommendations";
+
 
 const ActivityContainer = ({image, name, location, data}) => {
     const navigation = useNavigation();
     useLoadFonts();
     return (
-        <TouchableOpacity onPress={() => navigation.navigate("MoreInformation", {param : data})}>
+        <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations", {param : data})}>
             <Image style = {styles.activityImage}
                 source={{uri: image}}
             />

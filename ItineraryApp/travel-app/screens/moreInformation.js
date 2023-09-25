@@ -29,11 +29,11 @@ const MoreInformation = ({route}) => {
     // }
     //console.log("user_id", user_id)
 
-      useEffect(() => {
-        console.log("inside useEffect()")
-          user_id = loadUserId().then((userId) => {
-          })
-      }, [setUserId]) 
+      // useEffect(() => {
+      //   console.log("inside useEffect()")
+      //     user_id = loadUserId().then((userId) => {
+      //     })
+      // }, [setUserId]) 
 
   const navigation = useNavigation();
       useLayoutEffect(() => {
@@ -107,7 +107,8 @@ const MoreInformation = ({route}) => {
       time: ''
     })
 
-
+    console.log("description:  " + data?.description);
+    console.log("name: " + data?.name);
     async function sendItineraryToDatabase() {
         if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
           alert('Itinerary data does not exist');

@@ -31,6 +31,7 @@ const HomeStackTab = () => {
     return(
         <HomeStack.Navigator initialRouteName="HomeScreen">
          <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
+         <HomeStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} /> 
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
@@ -42,8 +43,8 @@ const HomeStackTab = () => {
 const ItineraryStackTab = () => {
     return(
         <ItineraryStack.Navigator initialRouteName="Itineraries">
-         <ItineraryStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
-         <HomeStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} /> 
+            <ItineraryStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
+            <ItineraryStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} options={{headerShown: false}} />
       </ItineraryStack.Navigator>
     )
 }

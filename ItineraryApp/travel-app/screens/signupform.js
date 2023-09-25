@@ -2,9 +2,10 @@ import {Icon, SafeAreaView, TextInput, ImageBackground, StyleSheet, Text, Image,
 import React, { Component, useState, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { response } from 'express';
+import { useLoadFonts, fonts } from '../components/FontLoader';
 //import AsyncStorage from '@react-native-community/async-storage'
 
-const localImage = require('travel-app/assets/appimages/signupformbackground.png')
+const localImage = require('travel-app/assets/appimages/background1.png')
 
 const changeVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -201,8 +202,8 @@ const styles = StyleSheet.create({
   localImage: {
     flex: 1,
     justifyContent: "center",
-    height: 660,
-    width: 420,
+    height: 812,
+    width: 375,
   },
   text: {
     fontSize: 38,

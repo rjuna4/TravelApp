@@ -37,6 +37,8 @@ const HomeScreen = ({data}) => {
      })
      }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
 
+     
+   
  
  return (
   <SafeAreaView>
@@ -138,6 +140,7 @@ const HomeScreen = ({data}) => {
  )
 }
  
+
  
 export default HomeScreen
  

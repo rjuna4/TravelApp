@@ -2,10 +2,12 @@ import {Button, ImageBackground, StyleSheet, Text, View, Image, Platform, Dimens
 import React, { Component, useLayoutEffect } from 'react';
 import SignupForm from './signupform'
 import { useNavigation } from '@react-navigation/native'
+import { useLoadFonts, fonts } from '../components/FontLoader';
 
 
 //const image = { uri: "https://images.unsplash.com/photo-1526482312921-58d5666a52c0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2130&q=80" };
-const localImage = require('travel-app/assets/appimages/signupscreenbackground.png')
+const localImage = require('travel-app/assets/appimages/background.png')
+
 
 const SignupScreen = () => {
 
@@ -16,16 +18,18 @@ const SignupScreen = () => {
           headerShown: false,
       })
     }, []);
+  
+  useLoadFonts();
 
   return(
       <View style={styles.container}>
         <ImageBackground source={localImage} resizeMode="cover" style={styles.image}>
         </ImageBackground>
         <Image source = {require('travel-app/assets/appimages/wanderlist_logo-removebg-preview.png')} style={styles.logo}/>
-        <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('SignupForm')}>
+        <TouchableOpacity style={styles.signUpButton} onPress={() => navigation.navigate('SignupForm')}>
           <Text style={styles.custom}>Sign Up</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button2} onPress={() => navigation.navigate('LoginForm')}>
+        <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('LoginForm')}>
           <Text style={styles.custom}>Login</Text>
         </TouchableOpacity>
       </View> 
@@ -43,41 +47,44 @@ const styles = StyleSheet.create({
     image: {
       flex: 1,
       justifyContent: "center",
-      height: 670,
-      width: 500,
+      height: 812,
+      width: 375,
       justifyContent: "center"
     },
     logo: {
       flex: 1,
       height: 100,
       width: 440,
-      marginHorizontal: -15,
-      marginBottom: 100,
+      marginTop: 100,
+      marginBottom: 60,
+      marginHorizontal: -30,
       //tintColor: '#FFFFFF'
     },
     custom: {
-      fontFamily: 'ABeeZee',
-      fontSize: 28,
+      fontFamily: fonts.outfitRegular,
+      fontSize: 24,
       color: "white",
       textAlign: "center",
     },
-    button1: {
+    signUpButton: {
+      borderRadius: 35,
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 13,
-      backgroundColor: "#1D54A6",
-      width: 205,
-      height: 56,
+      backgroundColor: "#57C2AF",
+      width: 160,
+      height: 43,
       bottom: 20,
       marginHorizontal: 100,
     },
-    button2: {
+    loginButton: {
+      borderRadius: 35,
       justifyContent: 'center',
       borderRadius: 13,
-      backgroundColor: "#E8358B",
-      width: 205,
-      height: 56,
-      marginBottom: 140,
+      backgroundColor: "#1D54A6",
+      width: 160,
+      height: 43,
+      marginBottom: 240,
       marginHorizontal: 100
     },
 

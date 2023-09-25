@@ -1,13 +1,25 @@
 import {Component, useLayoutEffect, useState, useEffect} from 'react';
-import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity, ScrollView, TextInput, Modal, Button} from 'react-native';
+import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity, ScrollView, TextInput, Modal, Button, ActivityIndicator} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DialogInput from 'react-native-dialog-input'
 import Dialog from 'react-native-dialog'
+import HeaderBanner from '../components/HeaderBanner';
 //import AsyncStorage from '@react-native-community/async-storage'
 import { getPlaceDetails } from 'travel-app/api/index.js';
+import Itineraries from './Itineraries';
+import SearchBar from '../components/SearchBar';
+import ActivityContainer from '../components/ActivityContainer';
+import FiltersScreen from './filtersScreen';
 
-function ActivityRecommendations() {
+const ActivityRecommendations = ({route}) => {
+  const [isFiltersVisible, setFiltersVisible] = useState(false);
+  const {placeData, placeDetails} = route.params;
+  console.log("placeData: " + placeData);
+  console.log("placeDetails: " + placeDetails);
 
+  const toggleFilters = () => {
+    setFiltersVisible(!isFiltersVisible);
+  }
 
 
   const navigation = useNavigation();
@@ -62,6 +74,10 @@ function ActivityRecommendations() {
       time: ''
     })
 
+    console.log("description:  " + data?.description);
+    console.log("name: " + data?.name);
+  
+
 
     async function sendItineraryToDatabase() {
         if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
@@ -100,24 +116,32 @@ function ActivityRecommendations() {
       <ScrollView>
         <StatusBar style="dark-content" />
         <View style={styles.container}>
-          <Image style={styles.activityImage}
-            source={{ uri: data?.photo?.images?.large?.url }}
-          />
-            <View>
-              <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
-              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View>
+        <View>
+          <HeaderBanner heading = "Recommendations" style={styles.banner}>
+          <View>
+              <TouchableOpacity onPress={() => navigation.navigate('Itineraries')}>
                 <Image style={styles.backButton}
                   source={require('travel-app/assets/icons/Refund_back.png')}
                  />   
               </TouchableOpacity>
             </View>
+          </HeaderBanner>
+        </View>
+          <SearchBar></SearchBar>
+          <View>
+            <TouchableOpacity onPress={toggleFilters}>
+              <Image style={styles.filterIcon}
+                source ={require('travel-app/assets/icons/Filter.png')} 
+              />
+            </TouchableOpacity>  
+
+            <FiltersScreen visible={isFiltersVisible} onClose={toggleFilters} />
+          </View>
+          <Image style={styles.activityImage}
+            source={{ uri: data?.photo?.images?.large?.url }}
+          />
+         
             <View>
-              <TouchableOpacity onPress={() => handleModal()}>
-              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: -50}]}></View>
-                <Image style={styles.addButton}
-                  source={require('travel-app/assets/icons/Map_fill.png')}
-                 /> 
-              </TouchableOpacity>
                 <Modal 
                   animationType="slide"
                   transparent={true}
@@ -134,19 +158,19 @@ function ActivityRecommendations() {
                   </TouchableOpacity>
                   </View>
                 </Modal>
-              <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
+              {/* <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
               <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View>
                 <Image style={styles.saveButton}
                   source={require('travel-app/assets/icons/Bookmark_fill(1).png')}
                  /> 
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View>
               <Text style={styles.name}>{data?.name}</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 3, tintColor: '#E7BB20', width: 30, height: 30}}
+                {/* <Image style={{marginHorizontal: 3, tintColor: '#E7BB20', width: 30, height: 30}}
                   source={require('travel-app/assets/icons/star-regular-24(1).png')}
-                />  
+                />   */}
                 <Text style={styles.rating}>{data?.rating}</Text>
                 <Text style={styles.priceLevel}>{data?.price_level}</Text>
               </View>
@@ -185,6 +209,39 @@ function ActivityRecommendations() {
               {/*<Text style={styles.hours}>{data?.hours}</Text> */}
             </View>
         </View>
+        <View style={{top: 180}}>
+       <ScrollView>
+       {loading ?
+         <View>
+           <ActivityIndicator visible ={loading} size="large" color="#A067A5" />
+         </View> :
+       <View style={styles.activitiesContainer}>
+         {mainData?.length > 0 ? (
+           <>
+           {mainData?.map((data, i) => (
+             <ActivityContainer
+               key={i}
+               image={
+                 data?.photo?.images?.medium?.url
+                 //? data?.photo?.images?.medium?.url
+                 //: 'ItineraryApp/assets/icons/restaurant(1).png'
+               }
+               name={data?.name}
+               location={data?.location_string}
+               data={data}
+             />  
+             ))}
+             </>
+             ) : (
+             <>
+               <View>
+                 <Text style={styles.noResults}>No results found</Text>
+               </View>
+             </>
+             )}
+           </View> }
+           </ScrollView>
+           </View>
       </ScrollView>  
       </>
     );
@@ -193,7 +250,7 @@ function ActivityRecommendations() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#232020",
   },
   text: {
     fontFamily: 'ABeeZee-Regular',
@@ -296,6 +353,17 @@ const styles = StyleSheet.create({
     opacity: 0.80,
     bottom: 45,
     position: 'absolute'
+  },
+  banner: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  filterIcon: {
+    width: 28,
+    height: 28,
+    marginTop: 70,
+    marginLeft: 20
   }
 
   

@@ -28,6 +28,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import ActivityRecommendations from './screens/activityRecommendations';
 
 
 const Stack = createNativeStackNavigator();
@@ -49,10 +50,10 @@ const App = () => {
       }
       loadFont();
     }, []);
-    
+
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Tabs">
+        <Stack.Navigator initialRouteName="SignupScreen">
           <Stack.Screen name="Tabs" component={BottomNavigator} options={{headerShown: false}} />
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
           <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>
