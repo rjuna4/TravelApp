@@ -13,9 +13,9 @@ import FiltersScreen from './filtersScreen';
 
 const ActivityRecommendations = ({route}) => {
   const [isFiltersVisible, setFiltersVisible] = useState(false);
-  const {placeData, placeDetails} = route.params;
-  console.log("placeData: " + placeData);
-  console.log("placeDetails: " + placeDetails);
+  // const {placeData, placeDetails} = route.params;
+  // console.log("placeData: " + placeData);
+  // console.log("placeDetails: " + placeDetails);
 
   const toggleFilters = () => {
     setFiltersVisible(!isFiltersVisible);

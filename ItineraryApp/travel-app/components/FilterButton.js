@@ -1,16 +1,39 @@
-import {View, Text, TouchableOpacity, Image, ImageBackground, StyleSheet } from "react-native";
-import React from 'react';
+import {View, Text, TouchableOpacity, Image, ImageBackground, StyleSheet, TouchableHighlight } from "react-native";
+import React, {useState} from 'react';
 import { useNavigation } from "@react-navigation/native";
 import MoreInformation from "../screens/moreInformation";
 import { useLoadFonts, fonts } from '../components/FontLoader';
 
 const FilterButton = ({text}) => {
+    const [isSelected, setIsSelected] = useState(false);
+
+    const handleSelect = () => {
+        setIsSelected(true);
+    }
+
+    const handleUnselect = () => {
+        setIsSelected(false);
+    }
+
     useLoadFonts();
     return (
         <View>
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>{text}</Text>
-            </TouchableOpacity>
+            <TouchableHighlight 
+                onPressIn={handleSelect}
+                //onPressOut={handleUnselect}
+                underlayColor="transparent"
+                style={[
+                    styles.button,
+                    isSelected ? styles.buttonPressed : null, 
+                ]}
+            >
+                <Text style={[
+                        styles.buttonText,
+                        isSelected ? styles.buttonPressedText : null, 
+                    ]}
+                >{text}
+                </Text>
+            </TouchableHighlight>
         </View>
     )
 }
@@ -29,11 +52,17 @@ const styles = StyleSheet.create({
         width: 170,
         margin: 8,
     },
+    buttonPressed: {
+        backgroundColor: '#57C2AF',
+    },
     buttonText: {
         fontSize: 18,
         fontFamily: fonts.outfitRegular,
         color: '#6C696C',
         padding: 5,
         alignSelf: 'center',
+    },
+    buttonPressedText: {
+        color: '#FFFFFF',
     }
 })

@@ -18,6 +18,7 @@ import Groups from '../screens/Groups';
 import People from '../screens/People';
 import Messages from '../screens/Messages';
 import ActivityRecommendations from '../screens/activityRecommendations';
+import CreateGroup from '../screens/createGroup';
 import { useLoadFonts, fonts } from './FontLoader';
 
 const BottomNavBar = createBottomTabNavigator();
@@ -53,6 +54,7 @@ const GroupsStackTab = () => {
     return(
         <GroupStack.Navigator initialRouteName="Groups">
          <GroupStack.Screen name="Groups" component={Groups} options={{headerShown: false}}/>
+         <GroupStack.Screen name="CreateGroup" component={CreateGroup} options={{headerShown: false}}/>
       </GroupStack.Navigator>
     )
 }

@@ -52,12 +52,11 @@ const styles = StyleSheet.create({
       justifyContent: "center"
     },
     logo: {
-      flex: 1,
+      top: 20,
       height: 100,
-      width: 440,
-      marginTop: 100,
-      marginBottom: 60,
-      marginHorizontal: -30,
+      width: 390,
+      marginBottom: 160,
+      marginHorizontal: -10,
       //tintColor: '#FFFFFF'
     },
     custom: {

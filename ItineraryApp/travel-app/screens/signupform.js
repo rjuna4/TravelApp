@@ -5,7 +5,7 @@ import { response } from 'express';
 import { useLoadFonts, fonts } from '../components/FontLoader';
 //import AsyncStorage from '@react-native-community/async-storage'
 
-const localImage = require('travel-app/assets/appimages/background1.png')
+const localImage = require('travel-app/assets/appimages/signup.png')
 
 const changeVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -17,8 +17,14 @@ const SignupForm = () => {
   const navigation = useNavigation();
 
   const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessageEmail, setErrorMessageEmail] = useState(null);
+  const [errorMessagePswdMismatch, setErrorMessagePswdMismatch] = useState(null);
+  const [errorMessagePswdTooShort, setErrorMessagePswdTooShort] = useState(null);
+  const [errorMessagePswdTooLong, setErrorMessagePswdTooLong] = useState(null);
+
   const [userId, setUserId] = useState(null);
 
+  useLoadFonts();
 
   async function saveUserId(userId) {
     try {
@@ -50,20 +56,20 @@ const SignupForm = () => {
       }
       // check for valid email address
       else if (!formData.emailAddress.includes('@')) {
-        setErrorMessage('Invalid email address.');
+        setErrorMessageEmail('Invalid email address.');
         return;
       }
       // password validation
       else if (formData.password !== formData.confirmPassword) {
-        setErrorMessage("Passwords do not match.")
+        setErrorMessagePswdMismatch("Passwords do not match.")
         return;
       }
       else if (formData.password.length < 7 || formData.confirmPassword.length < 7) {
-          setErrorMessage('Password is too short. Must be between 7-15 characters.');
+          setErrorMessagePswdTooShort('Password must be between 7-15 characters.');
       }
 
       else if (formData.password.length > 15 || formData.confirmPassword.length > 15) {
-          setErrorMessage('Password is too long. Must be between 7-15 characters.');
+          setErrorMessagePswdTooLong('Password must be between 7-15 characters.');
       }
       await fetch('http://10.0.2.2:8000/api/signup', {
         method: 'POST',
@@ -104,53 +110,74 @@ const SignupForm = () => {
     return (
     <View style={styles.container}>
       <ImageBackground source={localImage} resizeMode="cover" style={styles.localImage}>
-        <Text style={styles.text}>Create Account</Text>
+        <Text style={styles.text}>Sign Up</Text>
         {
           errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
         }
         <View style={styles.inputContainer}>
         <Image style={styles.userIcon}
-                source={require('travel-app/assets/icons/User_fill(1).png')}
+                resizeMode="contain"
+                source={require('travel-app/assets/icons/user.png')}
         />
         <TextInput
           placeholder="Full Name"
+          placeholderTextColor='#FFFFFF'
           style={styles.input}
           onChangeText={(text) => setFormData( {...formData, fullName: text})}
+          
           //value={}
         />
          {/* {
           errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null
         } */}
         </View>
+        <View>
+          <View style={styles.separator}/>
+        </View>
         <View style={styles.inputContainer}>
         <Image style={styles.emailIcon}
-                source={require('travel-app/assets/icons/Message_alt_fill.png')}
+                resizeMode="contain"
+                source={require('travel-app/assets/icons/email.png')}
         />   
         <TextInput
           placeholder="Email Address"
+          placeholderTextColor='#FFFFFF'
           style={styles.input}
           onChangeText={(text) => setFormData( {...formData, emailAddress: text})}
           //value={}
         />
         </View>
+        <View>
+          <View style={styles.separator}/>
+        </View>
+        {
+          errorMessageEmail ? <Text style={styles.errorMessage}>{errorMessageEmail}</Text> : null
+        }
         <View style={styles.inputContainer}>
         <Image style={styles.userIcon}
-                source={require('travel-app/assets/icons/User_fill(1).png')}
+                resizeMode="contain"
+                source={require('travel-app/assets/icons/user.png')}
         />   
         <TextInput
           placeholder="Username"
+          placeholderTextColor='#FFFFFF'
           style={styles.input}
           onChangeText={(text) => setFormData( {...formData, username: text})}
           //value={}
         />
         </View>
+        <View>
+          <View style={styles.separator}/>
+        </View>
         <View style={styles.inputContainer}>
         <Image style={styles.passwordIcon}
-                source={require('travel-app/assets/icons/Lock_fill.png')}
+                resizeMode="contain"
+                source={require('travel-app/assets/icons/password.png')}
         />     
         <TextInput
           onChangeText={(text) => setFormData( {...formData, password: text})}
           placeholder="Password"
+          placeholderTextColor='#FFFFFF'
           secureTextEntry
           secure={true}
           style={styles.input}
@@ -162,13 +189,24 @@ const SignupForm = () => {
         onPress={() => setSecure(!secure)} />
         } */}
         </View>
+        <View>
+          <View style={styles.separator}/>
+        </View>
+        {
+          errorMessagePswdTooShort ? <Text style={styles.errorMessage}>{errorMessagePswdTooShort}</Text> : null
+        }
+        {
+          errorMessagePswdTooLong ? <Text style={styles.errorMessage}>{errorMessagePswdTooLong}</Text> : null
+        }
         <View style={styles.inputContainer}>
         <Image style={styles.passwordIcon}
-                source={require('travel-app/assets/icons/Lock_fill.png')}
+                resizeMode="contain"
+                source={require('travel-app/assets/icons/password.png')}
         />       
         <TextInput
           onChangeText={(text) => setFormData( {...formData, confirmPassword: text})}
           placeholder=" Confirm Password"
+          placeholderTextColor='#FFFFFF'
           secureTextEntry
           secure={true}
           style={styles.input}
@@ -180,16 +218,23 @@ const SignupForm = () => {
         onPress={() => setSecure(!secure)} />
         } */}
         </View>
-      </ImageBackground>
-      <TouchableOpacity style={styles.button1} onPress={() => {sendToDatabase()}}>
+        <View>
+          <View style={styles.separator}/>
+        </View>
+        {
+          errorMessagePswdMismatch ? <Text style={styles.errorMessage}>{errorMessagePswdMismatch}</Text> : null
+        }
+          <TouchableOpacity style={styles.button1} onPress={() => {sendToDatabase()}}>
           <Text style={styles.custom}>Sign Up</Text>
-      </TouchableOpacity>
-      <View style={styles.box}>
-      </View>  
+      </TouchableOpacity> 
+      </ImageBackground>
+    
+      <View style={{bottom: 65}}>
         <Text style={[styles.text1, {bottom: 60} ]}>Already have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('LoginForm')}>
           <Text style={[styles.text2, {bottom: 60} ]}>Login here.</Text>
         </TouchableOpacity>  
+      </View>  
     </View>  
     )  
   }
@@ -206,6 +251,7 @@ const styles = StyleSheet.create({
     width: 375,
   },
   text: {
+    fontFamily: fonts.outfitMedium,
     fontSize: 38,
     textAlign: "center",
     color: "#FFFFFF",
@@ -214,75 +260,90 @@ const styles = StyleSheet.create({
 
   text1: {
     textAlign: "center",
-    color: "#FFFFFF",
+    color: "#6C696C",
     fontSize: 17,
+    fontFamily: fonts.outfitRegular,
   },
   text2: {
     textAlign: "center",
-    color: "#FFFFFF",
+    color: "#6C696C",
     textDecorationLine: 'underline',
     fontWeight: 'bold',
     fontSize: 17,
+    fontFamily: fonts.outfitSemiBold,
   },
   custom: {
-    fontFamily: 'ABeeZee',
-    fontSize: 25,
+    fontFamily: fonts.outfitRegular,
+    fontSize: 22,
     color: "white",
     textAlign: "center",
   },
   inputContainer: {
-    backgroundColor: 'white',
+    //backgroundColor: 'white',
     width: '75%',
     height: 45,
     borderRadius: 13,
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#d7d7d7',
+    //borderWidth: 1,
+    //borderColor: '#FFFFFF',
     marginHorizontal: 50,
     marginTop: 5,
     marginBottom: 5,
+    color: '#FFFFFF',
     // bottom: -50
+  },
+  separator: {
+    height: 1,
+    marginTop: -10,
+    width: 270,
+    alignSelf: 'center',
+    backgroundColor: '#FFFFFF'
   },
   input: {
     fontSize: 18,
     marginTop: -4,
-    color: '#685F5F',
+    color: '#FFFFFF',
+    fontFamily: fonts.outfitRegular,
   },
 
   button1: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 13,
-    backgroundColor: "#CE80D4",
-    width: 205,
-    height: 56,
-    bottom: 80,
+    borderRadius: 30,
+    backgroundColor: "#1D54A6",
+    width: 160,
+    marginTop: 10,
+    height: 46,
+    marginBottom: 10,
     // marginBottom: 75,
-    marginHorizontal: 105,
+    marginHorizontal: 110,
   },
   userIcon: {
-    tintColor: '#000000',
-    opacity: 0.45,
     width: 30,
     height: 30,
+    marginLeft: 6,
   },
   emailIcon: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
+    marginLeft: 8,
+    marginRight: 6,
   },
   passwordIcon: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
+    marginLeft: 8,
+    marginRight: 6,
+    //padding: 15,
   },
   errorMessage: {
-    color: '#FFFFFF',
+    fontFamily: fonts.outfitMedium,
+    color: '#930000',
     width: 250,
-    height: 50,
-    fontSize: 18,
+    fontSize: 16,
     borderRadius: 8,
-    backgroundColor: '#DA5263',
-    left: 85,
+    left: 60,
     marginBottom: 10
   },
   box: {

@@ -69,7 +69,6 @@ const changeTab = (tabNum) => {
   setActiveTab(tabNum);
   changeColor(tabNum === 1 ? '#00F3C8' : "#00F3C8");
   changeColor2(tabNum === 2 ? '#00F3C8' : "#FFFFFF");
-
 }
 
     useLoadFonts(); 
