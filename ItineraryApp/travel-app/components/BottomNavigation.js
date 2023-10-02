@@ -42,7 +42,7 @@ const ItineraryStackTab = () => {
     return(
         <ItineraryStack.Navigator initialRouteName="Itineraries">
          <ItineraryStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
-         <HomeStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} /> 
+         <ItineraryStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} /> 
       </ItineraryStack.Navigator>
     )
 }

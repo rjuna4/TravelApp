@@ -15,7 +15,7 @@ const HeaderBanner = ({heading}) => {
 
 const styles = StyleSheet.create({
     banner:{
-        height: 70,
+        height: 100,
         width: 420,
         backgroundColor: '#57C2AF',
     },
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 30,
         marginLeft: 30,
-        marginVertical: 15
+        top: 50
     }
 })
 
