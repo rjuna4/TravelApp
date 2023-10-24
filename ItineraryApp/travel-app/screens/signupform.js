@@ -71,7 +71,7 @@ const SignupForm = () => {
       else if (formData.password.length > 15 || formData.confirmPassword.length > 15) {
           setErrorMessagePswdTooLong('Password must be between 7-15 characters.');
       }
-      await fetch('http://10.0.2.2:8000/api/signup', {
+      await fetch('http://10.24.66.78:8081/api/signup', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

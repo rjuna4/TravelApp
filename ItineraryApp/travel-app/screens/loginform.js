@@ -9,11 +9,6 @@ const image = {
 
 const localImage = require('travel-app/assets/appimages/loginBackground.png')
 
-const changeVisibility = () => {
-  const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [rightIcon, setRightIcon] = useState('eye');
-};
-
 const LoginForm = () => {
   const navigation = useNavigation();
 
@@ -30,34 +25,70 @@ const LoginForm = () => {
     password: '',
   });
 
-    async function sendToDatabase() {
-      //console.log(formData)
-        // check if all fields are filled out
-        if (!formData.username|| !formData.password) {
-          setErrorMessage('All fields are required.');
-          return;
-        }
 
-        await fetch('http://10.0.2.2:8000/api/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
+//   async function sendToDatabase() {
+//     //console.log(formData)
+//       // check if all fields are filled out
+//       if (!formData.username|| !formData.password) {
+//         setErrorMessage('All fields are required.');
+//         return;
+//       }
 
-            }, 
-            body: JSON.stringify(formData)
-          }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-            //}).then().catch(error=>console.log(error)).then(
-              data => {
-                // alert("data: ", data.json);
-                if(data.error) {
-                  setErrorMessage(data.error);
-                } else {
-                  navigation.navigate('Tabs')
-                }  
-          }
-        )
-    
+//       await fetch('http://10.24.66.78:8081/api/login', {
+//           method: 'POST',
+//           headers: {
+//               'Accept': 'application/json',
+//               'Content-Type': 'application/json',
+
+//           }, 
+//           body: JSON.stringify(formData)
+//         }).then().catch(error=>console.log(error)).then(res => res.json()).then(
+//           //}).then().catch(error=>console.log(error)).then(
+//             data => {
+//               // alert("data: ", data.json);
+//               if(data.error) {
+//                 setErrorMessage(data.error);
+//               } else {
+//                 navigation.navigate('Tabs')
+//               }  
+//         }
+//       )
+// }
+
+async function sendToDatabase() {
+  if (!formData.username || !formData.password) {
+    setErrorMessage('All fields are required.');
+    return;
+  }
+
+  // try {
+    const response = await fetch('http://10.24.66.78:8081/api/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+      //timeout: 30000,
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+
+    if (data.error) {
+      setErrorMessage(data.error);
+      console.log(errorMessage);
+    } else {
+      navigation.navigate('Tabs');
+    }
+  // } catch (error) {
+  //   console.error('Network request error:', error);
+  //   setErrorMessage('Network request error');
+  // }
+// }
   }
 
   return (
@@ -118,9 +149,9 @@ const LoginForm = () => {
       </TouchableOpacity>
       <View>
         <Text style={[styles.text, {top: 75}]}>Don't have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('SignupForm')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('SignupForm')}>
           <Text style={[styles.text2, {top: 80}]}>Sign up here.</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       </View>
       </ImageBackground>

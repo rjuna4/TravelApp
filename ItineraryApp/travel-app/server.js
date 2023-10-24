@@ -1,11 +1,12 @@
 const { application } = require('express')
 const express = require('express')
 const app = express()
-const port = 8000
+const port = 8081
 const path = require('path')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 //const User = require('../model/user.js')
+//const userGroupsCreated = require('ItineraryApp/travel-app/models/groupsCreatedModel.js')
 const bcrypt = require('bcryptjs')
 const http = require('http')
 const url = require('url')
@@ -52,6 +53,10 @@ app.get('/hello', (req, res) => {
   res.send('Hi!')
 }) 
 
+
+app.get('/api/login', (req, res) => {
+    res.send('This is the login page for GET requests');
+  });
 
 
 
@@ -109,7 +114,8 @@ app.post('/api/signup', async (req, res) => {
     console.log("userId1: " + userId)
     try {
         /*
-        const response = await userModel.create({
+        const response = await 
+        .create({
             fullName,
             emailAddress,
             username,

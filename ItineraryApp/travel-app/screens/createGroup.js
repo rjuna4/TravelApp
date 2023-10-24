@@ -1,16 +1,22 @@
 import React, { Component, useState, useLayoutEffect} from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View, TouchableOpacity, Image} from 'react-native';
+import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
+import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, useColorScheme, View, TouchableOpacity, Image} from 'react-native';
 import HeaderBanner from '../components/HeaderBanner';
 import Groups from './Groups';
 import { fonts } from '../components/FontLoader';
 import * as ImagePicker from 'expo-image-picker';
-import DatePicker from 'react-native-datepicker';
-//import DatePicker from '@react-native-community/datetimepicker'
+import DatePicker from '@react-native-community/datetimepicker';
+import redMarker from 'travel-app/assets/icons/redMarker.png'
+import greenMarker from 'travel-app/assets/icons/greenMarker.png'
 
 const CreateGroup = ({route}) => {
+    
     const navigation = useNavigation();
+    //const {groupData, setGroupData } = route.params;
+    //const {groupData} = route.params;
+    //const [groupData, setGroupData] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [activityTitle, setActivityTitle] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
 
@@ -29,6 +35,20 @@ const CreateGroup = ({route}) => {
         if (!result.canceled) {
             setSelectedImage(result.uri);
         }
+    }
+
+    const saveGroup = () => {
+      if (selectedImage && activityTitle) {
+        const newGroup = {
+          selectedImage,
+          activityTitle,
+        };
+        //setGroupData([...groupData, newGroup]);
+        //const updatedGroupData = [...groupData, newGroup]
+        setSelectedImage(null);
+        setActivityTitle('');
+        //navigation.navigate('Groups', {groupData: updatedGroupData})
+      }
     }
 
     useLayoutEffect(() => {
@@ -57,7 +77,14 @@ const CreateGroup = ({route}) => {
                  />   
               </TouchableOpacity>
               <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                  <Text style={styles.heading}>Add Title</Text>
+              <TextInput
+                    placeholder="Add Title"
+                    placeholderTextColor='#FFFFFF'
+                    style={styles.heading}
+                    value={activityTitle}
+                    onChangeText={(text => setActivityTitle(text))}
+                    //onChangeText={(text) => setFormData( {...formData, fullName: text})}
+              />
               </View>
               <View>
                   <View style={styles.imageContainer}>
@@ -134,6 +161,30 @@ const CreateGroup = ({route}) => {
                     }}
                     />
             )}
+            <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 18}}>Set Capacity:</Text>
+            <TextInput
+                    placeholder="__"
+                    placeholderTextColor='#FFFFFF'
+                    style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 14}}
+                    //onChangeText={(text) => setFormData( {...formData, fullName: text})}
+              />
+            <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 18}}>Description</Text>
+            <View style={styles.descriptionContainer}>
+              <TextInput
+                placeholder="Enter a description here..."
+                placeholderTextColor='#D9D9D9'
+                style={styles.input}
+              />
+            </View>
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              {/* <Image>{greenMarker}</Image> */}
+              <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 20, marginLeft: 10}}>Activity Location</Text>
+              <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 20, marginLeft: 30}}>Custom Marker</Text>
+            </View>
+            {/* <TouchableOpacity style={styles.saveButton} onPress={() => navigation.navigate('Groups', {groupData: groupData})}> */}
+            <TouchableOpacity style={styles.saveButton} onPress={saveGroup}>
+              <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitMedium, fontSize: 18}}>Save</Text>
+            </TouchableOpacity>
             </View>
           </View>
       </View>  
@@ -145,6 +196,25 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#232020",
+    },
+    descriptionContainer: {
+      width: 327,
+      height: 87,
+      borderRadius: 13,
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: '#D9D9D9',
+      marginHorizontal: 10,
+      marginTop: 5,
+      marginBottom: 5,
+      color: '#FFFFFF',
+      // bottom: -50
+    },
+    input: {
+      color: '#FFFFFF',
+      marginBottom: 50,
+      marginLeft: 10,
     },
     heading: {
         fontFamily: fonts.outfitMedium,
@@ -214,6 +284,17 @@ const styles = StyleSheet.create({
           height: 20,
           marginTop: 40,
           marginLeft: 20,
+      },
+      saveButton: {
+        backgroundColor: '#57C2AF',
+        width: 114,
+        height: 37,
+        borderRadius: 22,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 130,
+        marginTop: 40,
       }
 
 })
