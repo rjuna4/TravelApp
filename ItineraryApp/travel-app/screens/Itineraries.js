@@ -9,6 +9,7 @@ import imgOne from '../assets/appimages/Santorini.png'
 //import { Text } from 'react-native-elements';
 import font from '../assets/fonts/Outfit-Medium.ttf'
 import ActivityRecommendations from './activityRecommendations';
+import CreateItinerary from './CreateItinerary';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import SearchBar from '../components/SearchBar';
 
@@ -59,25 +60,45 @@ const changeTab = (tabNum) => {
 const [searchQuery, setSearchQuery] = useState('');
 const [filteredResults, setFilteredResults] = useState([...myTripsContent]);
 
-const filterContent = (searchQuery, content) => {
-  const filteredResults = content.filter((myTripsContent) =>
-    myTripsContent.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  return filteredResults;
-};
-
 const handleSearch = () => {
-  const results = filterContent(searchQuery, filteredResults);
+  const results = myTripsContent.filter((content) =>
+    content.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   setFilteredResults(results);
 };
+
 
 const [isMyTripsActive, setMyTripsActive] = useState(false);
 
     return (
       <View style={styles.container}>
         <View>
-          <HeaderBanner heading = "Itineraries" style={styles.banner}>
-          </HeaderBanner>
+          <View>
+            <HeaderBanner heading = "Itineraries" style={styles.banner}>
+              <View style={styles.iconContainer}>
+                  <TouchableOpacity
+                    onPress={() => {navigation.navigate("CreateItinerary")
+                    }}
+                  >
+                    <Image
+                      source={require('../assets/appimages/Add_round.png')}
+                      resizeMode='contain'
+                      style={{ width: 80, height: 51}}
+                    />
+                </TouchableOpacity>
+              </View>
+            </HeaderBanner>
+            <TouchableOpacity
+              onPress={() => {navigation.navigate("CreateItinerary")
+              }}
+            >
+              <Image
+                source={require('../assets/appimages/Add_round.png')}
+                resizeMode='contain'
+                style={{ width: 80, height: 51 }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.tabs}>
           <View style={styles.tabContainer}>
@@ -122,13 +143,13 @@ const [isMyTripsActive, setMyTripsActive] = useState(false);
           <View>
             <View>
             <SearchBar placeholder="Search My Itineraries" 
-              onChangeText={filterContent}
+              onChangeText={setSearchQuery}
               value={searchQuery}
               myTripsContent={myTripsContent}
-              setFilteredResults={setFilteredResults}>
+              handleSearch={handleSearch}
+              >
               </SearchBar>
               </View>
-
               <View style={styles.cards}>
                 <ScrollView>
                   {searchQuery
@@ -152,6 +173,7 @@ const [isMyTripsActive, setMyTripsActive] = useState(false);
                     ))
                   : 
                   myTripsContent.map((content, index) => (
+                    <View>
                     <View key={index} style={{display: 'flex', width: 302, marginTop: 55, paddingBottom: 25, flexDirection: 'row', marginHorizontal: 20}}>
                       <Image
                         source={content.imageSource}
@@ -162,8 +184,9 @@ const [isMyTripsActive, setMyTripsActive] = useState(false);
                         <Text style={{fontSize: 16, color: '#D9D9D9', alignSelf: 'center', padding: 10,}}>{content.date}</Text>
                       </View>
                     </View>
+                     <View style={styles.separator} />
+                     </View>
                   ))}
-                  <View style={styles.separator} />
                 </ScrollView>
               </View>
           </View>
@@ -301,9 +324,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#232020",
+    position: 'relative'
   },
   banner: {
-    justifyContent: "center",
+    //justifyContent: "center",
+    zIndex: 0
+  },
+  iconContainer: {
+    position: 'absolute',
+    top: 20,
+    right: 50,
+    zIndex: 15, // Set a higher zIndex than the header banner
   },
   tabs: {
     fontFamily: 'Outfit-Medium',

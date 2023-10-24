@@ -4,18 +4,7 @@
 	import Itineraries from '../screens/Itineraries';
 
 
-	const SearchBar = ({placeholder, onChangeText, value, myTripsContent, setFilteredResults,}) => {
-	  const [query, setQuery] = useState('');
-	  const filterContent = (query, content) => {
-	  const filteredResults = content.filter((item) =>
-		item.title.toLowerCase().includes(query.toLowerCase())
-	  );
-	  return filteredResults;
-	  };
-	  const handleSearch = () => {
-		const results = filterContent(query, myTripsContent);
-		setFilteredResults(results);
-	  };
+	const SearchBar = ({placeholder, onChangeText, value, handleSearch}) => {
 	  return (
 		<View style={styles.outercontainer}>
 			<View style = {styles.container}>
@@ -23,8 +12,8 @@
 				style = {styles.textInput}
 				placeholder = {placeholder}
 				placeholderTextColor = "#6C696C"
-				onChangeText = {text => setQuery(text)}
-				value = {query}
+				onChangeText={onChangeText}
+          		value={value}
 				onSubmitEditing = {handleSearch}
 			/>
 			<Image

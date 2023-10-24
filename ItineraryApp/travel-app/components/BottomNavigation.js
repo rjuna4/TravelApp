@@ -18,6 +18,7 @@ import Groups from '../screens/Groups';
 import People from '../screens/People';
 import Messages from '../screens/Messages';
 import ActivityRecommendations from '../screens/activityRecommendations';
+import CreateItinerary from '../screens/CreateItinerary';
 
 const BottomNavBar = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -43,6 +44,7 @@ const ItineraryStackTab = () => {
         <ItineraryStack.Navigator initialRouteName="Itineraries">
          <ItineraryStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
          <ItineraryStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} /> 
+         <ItineraryStack.Screen name="CreateItinerary" component={CreateItinerary} options={{headerShown: false}}/>
       </ItineraryStack.Navigator>
     )
 }
