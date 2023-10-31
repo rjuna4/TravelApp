@@ -24,7 +24,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-dialog": "^9.3.0",
     "react-native-dialog-input": "^1.0.8",
-    "react-native-google-places-autocomplete": "^2.5.1"
+    "react-native-google-places-autocomplete": "^2.5.1",
     "react-native-google-places-autocomplete": "^2.5.1"
   },
   "devDependencies": {
