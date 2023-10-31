@@ -1,7 +1,8 @@
 import {Icon, SafeAreaView, TextInput, ImageBackground, Image, StyleSheet, Text, View, Platform, Dimensions, TouchableOpacity, Pressable, } from 'react-native';
 import React, {Component, useState, useLayoutEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import { fonts } from '../components/FontLoader';
+import { useLoadFonts, fonts } from '../components/FontLoader';
+import SignupForm from './signupform';
 
 const image = {
   uri: 'https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=998&q=80',
@@ -19,6 +20,8 @@ const LoginForm = () => {
   }, []);
 
   const [errorMessage, setErrorMessage] = useState(null);
+
+  useLoadFonts();
 
   const [formData, setFormData] = useState({
     username: '',
@@ -61,15 +64,15 @@ async function sendToDatabase() {
     return;
   }
 
-  // try {
-    const response = await fetch('http://10.24.66.78:8081/api/login', {
+  try {
+    const response = await fetch('http://172.20.10.7:8082/api/login', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
-      //timeout: 30000,
+      timeout: 30000,
     });
 
     if (!response.ok) {
@@ -84,11 +87,10 @@ async function sendToDatabase() {
     } else {
       navigation.navigate('Tabs');
     }
-  // } catch (error) {
-  //   console.error('Network request error:', error);
-  //   setErrorMessage('Network request error');
-  // }
-// }
+  } catch (error) {
+    console.error('Network request error:', error);
+    setErrorMessage('Network request error');
+  }
   }
 
   return (
@@ -243,15 +245,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   errorMessage: {
-    color: '#FFFFFF',
-    width: 278,
-    height: 50,
-    fontSize: 18,
-    borderRadius: 13,
-    backgroundColor: '#DA5263',
-    marginHorizontal: 70,
-    marginBottom: 5,
-    textAlign: 'center'
+    fontFamily: fonts.outfitMedium,
+    color: '#930000',
+    width: 250,
+    fontSize: 16,
+    borderRadius: 8,
+    left: 60,
+    marginBottom: 10
   },
   box: {
     width: 212,

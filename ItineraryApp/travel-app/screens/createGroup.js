@@ -8,21 +8,49 @@ import * as ImagePicker from 'expo-image-picker';
 import DatePicker from '@react-native-community/datetimepicker';
 import redMarker from 'travel-app/assets/icons/redMarker.png'
 import greenMarker from 'travel-app/assets/icons/greenMarker.png'
+import { format } from 'date-fns';
 
 const CreateGroup = ({route}) => {
     
     const navigation = useNavigation();
     //const {groupData, setGroupData } = route.params;
     //const {groupData} = route.params;
-    //const [groupData, setGroupData] = useState([]);
+    const {groupData: existingGroupData } = route.params || { groupData: [] };
+    const [groupData, setGroupData] = useState(existingGroupData);
+    //const [newGroup, setNewGroup] = useState({ selectedImage: null, activityTitle: ''})
     const [selectedImage, setSelectedImage] = useState(null);
     const [activityTitle, setActivityTitle] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
+ 
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
+    const [isTimePickerVisible, setTimePickerVisible] = useState(false);
+    const initialDate = new Date();
+    initialDate.setHours(0, 0, 0, 0);
+    const [selectedDate, setSelectedDate] = useState(initialDate);
+    const [selectedStartTime, setSelectedStartTime] = useState(initialDate);
+
+    const handleDateChange = (event, selected) => {
+      if (selected) {
+        setSelectedDate(selected);
+        console.log(selected);
+      }
+    }
+
+    const handleTimeChange = (event, selected) => {
+      if (selected) {
+        const newDate = new Date(selected);
+        setSelectedStartTime(newDate);
+        console.log(selected);
+      }
+    }
 
     const toggleDatePicker = () => {
-        setDatePickerVisible(!isDatePickerVisible);
+      setDatePickerVisible(!isDatePickerVisible);
     }
+
+    const toggleTimePicker = () => {
+      setTimePickerVisible(!isTimePickerVisible);
+    }
+  
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -39,17 +67,69 @@ const CreateGroup = ({route}) => {
 
     const saveGroup = () => {
       if (selectedImage && activityTitle) {
+        const formattedDate = format(selectedDate, 'MM-dd-yyyy')
+        const formattedTime = format(selectedStartTime, 'HH:mm')
         const newGroup = {
           selectedImage,
           activityTitle,
+          selectedDate: formattedDate,
+          selectedStartTime: formattedTime,
         };
-        //setGroupData([...groupData, newGroup]);
-        //const updatedGroupData = [...groupData, newGroup]
+        //console.log(newGroup.selectedImage);
+        //console.log(newGroup.activityTitle);
+        const updatedGroupData = [...groupData, newGroup];
+        //console.log(updatedGroupData);
         setSelectedImage(null);
         setActivityTitle('');
-        //navigation.navigate('Groups', {groupData: updatedGroupData})
+        setGroupData(updatedGroupData);
+        navigation.navigate('Groups', { 
+          groupData: updatedGroupData, 
+          selectedDate: selectedDate, 
+          selectedStartTime: selectedStartTime });
+        //console.log(updatedGroupData);
       }
     }
+
+    async function saveCreatedGroupToDatabase() {
+      if (selectedImage && activityTitle && selectedDate && selectedStartTime) {
+        const formattedDate = format(selectedDate, 'MM-dd-yyyy');
+        const formattedTime = format(selectedStartTime, 'HH:mm');
+        const newGroup = {
+          groupImageFilename: selectedImage,
+          groupTitle: activityTitle,
+          groupActivityDate: formattedDate,
+          groupActivityTime: formattedTime,
+        };
+    
+        try {
+          const response = await fetch('http://172.20.10.7:8082/api/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: '6386857fce851928b24c6b4f',
+              ...newGroup,
+            }),
+          });
+    
+          if (response.status === 200) {
+            alert('Group saved successfully');
+          } else {
+            const data = await response.json();
+            alert(`Error: ${data.error}`);
+          }
+        } catch (error) {
+          console.error(error);
+          alert('An error occurred while saving the group.');
+        }
+      } else {
+        alert('Please fill in all the required fields.');
+      }
+    }
+    
+
+  
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -69,6 +149,7 @@ const CreateGroup = ({route}) => {
 
     return (
         <View style={styles.container}>
+          <ScrollView>
           <View>
             <View>
               <TouchableOpacity onPress={() => navigation.navigate('Groups')}>
@@ -134,15 +215,27 @@ const CreateGroup = ({route}) => {
                 )}
               </View>
             </View>
-            <TouchableOpacity onPress={() => toggleDatePicker()}>
-                <Image style={styles.dateIcon}
-                  source={require('travel-app/assets/icons/date.png')}
-                 />   
-            </TouchableOpacity>
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <TouchableOpacity onPress={() => toggleDatePicker()}>
+                  <Image style={styles.dateIcon}
+                    source={require('travel-app/assets/icons/date.png')}
+                  />   
+                  <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, marginLeft: 50}}> Add Date</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <TouchableOpacity onPress={() => toggleTimePicker()}>
+                  <Image style={styles.timeIcon}
+                    source={require('travel-app/assets/icons/time.png')}
+                  />   
+                  <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular}}> Add Time</Text>
+              </TouchableOpacity>
+            </View>
             {isDatePickerVisible && (
                 <DatePicker
-                    style={{width: 200, zIndex: 5,}}
-                    date={selectedDate}
+                    style={{width: 200, zIndex: 5}}
+                    value={selectedDate}
+                    //date={selectedDate}
                     mode="date"
                     placeholder="Select date"
                     format="YYYY-MM-DD"
@@ -155,10 +248,27 @@ const CreateGroup = ({route}) => {
                             borderWidth: 0,
                         },
                     }}
-                    onDateChange={(date) => {
-                        setSelectedDate(date);
-                        toggleDatePicker();
+                    onDateChange={handleDateChange}
+                    />
+            )}
+            {isTimePickerVisible && (
+                <DatePicker
+                    style={{width: 200, zIndex: 5}}
+                    value={selectedDate}
+                    //date={selectedDate}
+                    mode="time"
+                    placeholder="Select time"
+                    format="YYYY-MM-DD"
+                    minDate="2020-01-01"
+                    maxDate="2030-12-31"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                        dateInput: {
+                            borderWidth: 0,
+                        },
                     }}
+                    onDateChange={handleTimeChange}
                     />
             )}
             <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 18}}>Set Capacity:</Text>
@@ -182,12 +292,15 @@ const CreateGroup = ({route}) => {
               <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 20, marginLeft: 30}}>Custom Marker</Text>
             </View>
             {/* <TouchableOpacity style={styles.saveButton} onPress={() => navigation.navigate('Groups', {groupData: groupData})}> */}
+            {/* <TouchableOpacity style={styles.saveButton} onPress={saveGroup}> */}
             <TouchableOpacity style={styles.saveButton} onPress={saveGroup}>
               <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitMedium, fontSize: 18}}>Save</Text>
             </TouchableOpacity>
             </View>
           </View>
+          </ScrollView>
       </View>  
+    
     )  
 }
 
@@ -285,6 +398,12 @@ const styles = StyleSheet.create({
           marginTop: 40,
           marginLeft: 20,
       },
+      timeIcon: {
+        width: 20,
+        height: 20,
+        //marginTop: 40,
+        marginLeft: 140,
+    },
       saveButton: {
         backgroundColor: '#57C2AF',
         width: 114,
@@ -294,7 +413,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 130,
-        marginTop: 40,
+        marginBottom: 200,
       }
 
 })

@@ -11,6 +11,7 @@ import BookmarksScreen from './screens/bookmarksscreen';
 import ItineraryListScreen from './screens/itinerarylistscreen';
 import Itineraries from './screens/Itineraries';
 import Groups from './screens/Groups';
+import CreateGroup from './screens/createGroup';
 import People from './screens/People';
 import Messages from './screens/Messages';
 import * as Font from 'expo-font';
@@ -53,7 +54,7 @@ const App = () => {
 
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Tabs">
+        <Stack.Navigator initialRouteName="LoginForm">
           <Stack.Screen name="Tabs" component={BottomNavigator} options={{headerShown: false}} />
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown: false}}/>
           <Stack.Screen name="SignupForm" component={SignupForm} options={{headerShown: false}}/>

@@ -152,7 +152,13 @@ const changeTab = (tabNum) => {
                     set_sw_lat(details?.geometry?.viewport?.southwest?.lat)
                     set_sw_lng(details?.geometry?.viewport?.southwest?.lng)
                     // navigation.navigate('ActivityRecommendations', {placeData: data, placeDetails: details});
-                    navigation.navigate('ActivityRecommendations');
+                    navigation.navigate('ActivityRecommendations', {
+                      ne_lat,
+                      ne_lng,
+                      sw_lat,
+                      sw_lng,
+                      activityType,
+                    });
                 }}
                 onFail={error => console.log(error)}
                 onNotFound={() => console.log('No search results found')}

@@ -16,6 +16,7 @@ const ActivityRecommendations = ({route}) => {
   // const {placeData, placeDetails} = route.params;
   // console.log("placeData: " + placeData);
   // console.log("placeDetails: " + placeDetails);
+  const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
 
   const toggleFilters = () => {
     setFiltersVisible(!isFiltersVisible);
@@ -30,15 +31,15 @@ const ActivityRecommendations = ({route}) => {
       }, []);
 
 
-      const[activityType, changeActivityType] = useState("attractions");
+      //const[activityType, changeActivityType] = useState("attractions");
       const[searchItem, setSearchItem] = useState("");
       const[clicked, setClicked] = useState(false);
       const[mainData, setMainData] = useState([])
       const[loading, setLoading] = useState(false)
-      const[ne_lat, set_ne_lat] = useState(null);
-      const[ne_lng, set_ne_lng] = useState(null);
-      const[sw_lat, set_sw_lat] = useState(null);
-      const[sw_lng, set_sw_lng] = useState(null);
+      //const[ne_lat, set_ne_lat] = useState(null);
+      //const[ne_lng, set_ne_lng] = useState(null);
+      //const[sw_lat, set_sw_lat] = useState(null);
+      //const[sw_lng, set_sw_lng] = useState(null);
       
       
         useLayoutEffect(() => {
@@ -54,7 +55,13 @@ const ActivityRecommendations = ({route}) => {
           setLoading(false);
           }, 3000)
           })
-          }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+          .catch((error) => {
+            console.error("Error fetching data", error);
+            setLoading(false);
+          });
+        }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+
+    console.log("mainData: " + mainData);
   
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -79,38 +86,38 @@ const ActivityRecommendations = ({route}) => {
   
 
 
-    async function sendItineraryToDatabase() {
-        if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
-          alert('Itinerary data does not exist');
-          return;
-        }
-        setItineraryData( {...itineraryData, imageURL: data?.photo?.images?.medium?.url} )
-        setItineraryData( {...itineraryData, title:  data?.name} )
-        await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-          }, 
-          body: JSON.stringify(bookmarkData)
-      }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-        data => {
-          //alert("data.errror: ", data.error)
-          if(data.error) {
-            alert("inside error")
-            setErrorMessage(data.error);
-            alert("data error: " + data.error)
-            console.log("error")
-          } else {
-              alert("inside else statement")
-                //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
-                alert("inside else statement")
-                console.log("inside else statement")
-            alert('Itinerary activity saved successfully');
-          }
-        }
-      )
-    }
+    // async function sendItineraryToDatabase() {
+    //     if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
+    //       alert('Itinerary data does not exist');
+    //       return;
+    //     }
+    //     setItineraryData( {...itineraryData, imageURL: data?.photo?.images?.medium?.url} )
+    //     setItineraryData( {...itineraryData, title:  data?.name} )
+    //     await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
+    //       method: 'POST',
+    //       headers: {
+    //           'Content-Type': 'application/json',
+    //           'Accept': 'application/json'
+    //       }, 
+    //       body: JSON.stringify(bookmarkData)
+    //   }).then().catch(error=>console.log(error)).then(res => res.json()).then(
+    //     data => {
+    //       //alert("data.errror: ", data.error)
+    //       if(data.error) {
+    //         alert("inside error")
+    //         setErrorMessage(data.error);
+    //         alert("data error: " + data.error)
+    //         console.log("error")
+    //       } else {
+    //           alert("inside else statement")
+    //             //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
+    //             alert("inside else statement")
+    //             console.log("inside else statement")
+    //         alert('Itinerary activity saved successfully');
+    //       }
+    //     }
+    //   )
+    // }
     return (
       <>
       <ScrollView>
@@ -165,51 +172,8 @@ const ActivityRecommendations = ({route}) => {
                  /> 
               </TouchableOpacity> */}
             </View>
-            <View>
-              <Text style={styles.name}>{data?.name}</Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                {/* <Image style={{marginHorizontal: 3, tintColor: '#E7BB20', width: 30, height: 30}}
-                  source={require('travel-app/assets/icons/star-regular-24(1).png')}
-                />   */}
-                <Text style={styles.rating}>{data?.rating}</Text>
-                <Text style={styles.priceLevel}>{data?.price_level}</Text>
-              </View>
-              <Text style={styles.ranking}>{data?.ranking}</Text>
-
-              {data?.cuisine && (
-                <View style={styles.cuisine}>
-                      {data?.cuisine.map((n) => (
-                  <View
-                     key={n.key}
-                  >
-                  <Text style={{fontSize: 18}}>{n.name + ', '}</Text>
-                </View>
-                      ))}
-              </View>
-            )}
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 3, tintColor: '#0C2D5C'}}
-                  source={require('travel-app/assets/icons/Pin_fill.png')}
-                />  
-                <Text style={{fontSize: 17, color: '#0C2D5C'}}>Location</Text>
-              </View>
-              <Text style={styles.location}>{data?.location_string}</Text>
-            </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 5, tintColor: '#0C2D5C'}}
-                  source={require('travel-app/assets/icons/File_dock.png')}
-                />  
-                <Text style={{fontSize: 17, color: '#0C2D5C'}}>Description</Text>
-              </View>
-            <View>
-              <Text style={styles.description} numberOfLines={10} renderTruncatedFooter>{data?.description}</Text>
-            </View>
-            <View>
-              <Text style={styles.price}>{data?.price}</Text>
-              {/*<Text style={styles.hours}>{data?.hours}</Text> */}
-            </View>
-        </View>
-        <View style={{top: 180}}>
+        
+        <View>
        <ScrollView>
        {loading ?
          <View>
@@ -242,6 +206,7 @@ const ActivityRecommendations = ({route}) => {
            </View> }
            </ScrollView>
            </View>
+          </View>
       </ScrollView>  
       </>
     );
@@ -251,6 +216,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#232020",
+  },
+  activitiesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    marginBottom: 50
   },
   text: {
     fontFamily: 'ABeeZee-Regular',

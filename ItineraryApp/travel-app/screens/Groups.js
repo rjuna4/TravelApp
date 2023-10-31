@@ -5,11 +5,10 @@ import HeaderBanner from '../components/HeaderBanner';
 import CreateGroup from './createGroup';
 import { fonts } from '../components/FontLoader';
 
-const Groups = () => {
+const Groups = ({ route }) => {
     const navigation = useNavigation();
-    const route = useRoute();
-    //const { selectedImage, activityTitle } = route.params || {}
-    const { updatedGroupData } = route.params || {};
+    const { groupData, selectedDate, selectedStartTime } = route.params || {groupData: [] };
+    console.log(groupData);
       useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
@@ -23,7 +22,7 @@ const Groups = () => {
             <HeaderBanner heading = "Groups" style={styles.banner}>
             </HeaderBanner>
             <View>
-              <TouchableOpacity onPress={() => navigation.navigate('CreateGroup')}>
+              <TouchableOpacity onPress={() => navigation.navigate('CreateGroup', {groupData: groupData})}>
                 <Image style={styles.addButton}
                   source={require('travel-app/assets/icons/add.png')}
                  />   
@@ -31,44 +30,42 @@ const Groups = () => {
             </View>
             <View>
               <FlatList
-                data={updatedGroupData}
+                style={{height: 550}}
+                data={groupData}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item}) => (
-                  <View>
-                    {item.selectedImage && (
-                      <Image style={styles.selectedImage}
-                             source={{uri: item.selectedImage}}
-                      />      
-                    )}
-                    {item.activityTitle && (
-                      <Text style={styles.activityTitle}>
-                        {item.activityTitle}
-                        </Text>
-                    )}
-                    </View>
+                renderItem={({ item }) => (
+                    <View style={{display: 'flex', flexDirection: 'row', marginBottom: 20}}>
+                      {item.selectedImage && (
+                        <Image style={styles.selectedImage}
+                              source={{uri: item.selectedImage}}
+                        />      
+                      )}
+                        <View style={{display: 'flex', flexDirection: 'column'}}>
+                          {item.activityTitle && (
+                            <Text style={styles.activityTitle}>{item.activityTitle}</Text>
+                          )}
+                          <View style={{display: 'flex', flexDirection: 'row'}}>
+                            <Image style={styles.dateIcon}
+                            source={require('travel-app/assets/icons/date.png')}
+                            />   
+                            {item.selectedDate && (
+                              <Text style={{color: '#D9D9D9', fontSize: 16, fontFamily: fonts.outfitRegular, marginTop: 15, marginLeft: 5}}>{item.selectedDate}</Text>
+                            )}
+                          </View>
+                          <View style={{display: 'flex', flexDirection: 'row'}}>
+                            <Image style={styles.timeIcon}
+                            source={require('travel-app/assets/icons/time.png')}
+                            />   
+                            {item.selectedStartTime && (
+                              <Text style={{color: '#D9D9D9', fontSize: 16, fontFamily: fonts.outfitRegular, marginTop: 15, marginLeft: 5}}>{item.selectedStartTime}</Text>
+                            )}
+                          </View>
+                        </View>
+                        <View style={styles.line} />
+                      </View>
                 )}
                />
             </View>
-            <View style={{display: 'flex', flexDirection: 'row'}}>
-              {/* <View>
-              {selectedImage && (
-                <Image
-                  style={styles.selectedImage}
-                  source={{ uri: selectedImage }}
-                />
-              )}
-            </View> */}
-            {/* <View style={{display: 'flex', flexDirection: 'column'}}>
-                {activityTitle && (
-                  <Text style={styles.activityTitle}>
-                    {activityTitle}
-                  </Text>
-                )}
-                <TouchableOpacity onPress={() => navigation.navigate('CreateGroup')}>
-                  <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 18}}>Edit</Text>
-                </TouchableOpacity>
-            </View> */}
-          </View>
           </View>
       </View>  
     )  
@@ -97,10 +94,29 @@ const styles = StyleSheet.create({
     },
     activityTitle: {
       color: '#00F3C8',
-      fontSize: 18,
+      fontSize: 20,
       fontFamily: fonts.outfitMedium,
       marginTop: 10,
       marginLeft: 10,
+    },
+    dateIcon: {
+      width: 20,
+      height: 20,
+      marginTop: 15,
+      marginLeft: 8,
+    },
+    timeIcon: {
+      width: 20,
+      height: 20,
+      marginTop: 15,
+      marginLeft: 8,
+    },
+    line: {
+      borderBottomColor: '#818181',
+      width: 334,
+      borderBottomWidth: 1,
+      marginTop: 130,
+      marginRight: 100,
     }
 })
 

@@ -46,6 +46,7 @@ const ItineraryStackTab = () => {
         <ItineraryStack.Navigator initialRouteName="Itineraries">
             <ItineraryStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
             <ItineraryStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} options={{headerShown: false}} />
+            <ItineraryStack.Screen name="MoreInformation" component={MoreInformation} options={{headerShown: false}} />
       </ItineraryStack.Navigator>
     )
 }
