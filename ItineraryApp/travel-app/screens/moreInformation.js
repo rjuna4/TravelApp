@@ -6,34 +6,37 @@ import Dialog from 'react-native-dialog'
 //import AsyncStorage from '@react-native-community/async-storage'
 import { getPlaceDetails } from 'travel-app/api/index.js';
 import { useLoadFonts, fonts } from '../components/FontLoader';
+import Itineraries from './Itineraries';
+import ActivityRecommendations from './activityRecommendations';
+import ActivityContainer from '../components/ActivityContainer';
 
 const MoreInformation = ({route}) => {
 
     const [userId, setUserId] = useState('');
     var user_id;
 
-    async function loadUserId() {
-      try {
-        await AsyncStorage.getItem('user_id').then(value => console.log("user id in async storage after getItem: ", value));
-        //user_id = value;
-        //AsyncStorage.getItem('user_id').then(value => {user_id = value});
+    // async function loadUserId() {
+    //   try {
+    //     await AsyncStorage.getItem('user_id').then(value => console.log("user id in async storage after getItem: ", value));
+    //     //user_id = value;
+    //     //AsyncStorage.getItem('user_id').then(value => {user_id = value});
 
-        // await AsyncStorage.getItem('user_id').then(function(value) {
-        //   console.log("user ID after getItem: ", value); 
-        //   //setUserId(value)
-        // });
-      } catch (e) {
-          console.error('Failed to load user id.')
-          console.log("e: ", e)
-      }
-    }
+    //     // await AsyncStorage.getItem('user_id').then(function(value) {
+    //     //   console.log("user ID after getItem: ", value); 
+    //     //   //setUserId(value)
+    //     // });
+    //   } catch (e) {
+    //       console.error('Failed to load user id.')
+    //       console.log("e: ", e)
+    //   }
+    // }
     //console.log("user_id", user_id)
 
-      useEffect(() => {
-        console.log("inside useEffect()")
-          user_id = loadUserId().then((userId) => {
-          })
-      }, [setUserId]) 
+      // useEffect(() => {
+      //   console.log("inside useEffect()")
+      //     user_id = loadUserId().then((userId) => {
+      //     })
+      // }, [setUserId]) 
 
   const navigation = useNavigation();
       useLayoutEffect(() => {
@@ -107,7 +110,8 @@ const MoreInformation = ({route}) => {
       time: ''
     })
 
-
+    console.log("description:  " + data?.description);
+    console.log("name: " + data?.name);
     async function sendItineraryToDatabase() {
         if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
           alert('Itinerary data does not exist');
@@ -152,7 +156,7 @@ const MoreInformation = ({route}) => {
             source={{ uri: data?.photo?.images?.large?.url }}
           />
             <View>
-              <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+              <TouchableOpacity onPress={() => navigation.navigate('Itineraries')}>
               {/* <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View> */}
                 <Image style={styles.backButton}
                   source={require('travel-app/assets/icons/backIcon.png')}
@@ -169,16 +173,17 @@ const MoreInformation = ({route}) => {
                 <Modal 
                   animationType="slide"
                   transparent={true}
+                  height="150"
                   visible={isModalVisible}>
                     <View style={styles.modalContainer}>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
-                    <Text style={[styles.text, {color:"#A067A5"}]}>Add to Itinerary</Text>
+                    <Text style={[styles.text, {color:"#57C2AF"}]}>Add to Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('Iineraries')}>
-                    <Text style={[styles.text, {color:"#A067A5"}]}>Create new Itinerary</Text>
+                    <Text style={[styles.text, {color:"#57C2AF"}]}>Create new Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>
-                    <Text style={[styles.text, {color:"red"}]}>Cancel</Text>
+                    <Text style={[styles.text, {color:"#930000"}]}>Cancel</Text>
                   </TouchableOpacity>
                   </View>
                 </Modal>
@@ -241,11 +246,12 @@ const MoreInformation = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: 800,
     backgroundColor: '#322F2F',
   },
   text: {
-    fontFamily: 'ABeeZee-Regular',
-    fontSize: 25,
+    fontFamily: fonts.outfitRegular,
+    fontSize: 18,
     textAlign: 'center',
     paddingVertical: 11,
   },
@@ -257,20 +263,20 @@ const styles = StyleSheet.create({
     height: 260,
     borderRadius: 13,
     marginHorizontal: 10,
-    top: 10
+    top: 40
   },
   backButton: {
     width: 35,
     height: 35,
     tintColor: '#FFFFFF',
-    marginTop: -235,
+    marginTop: -210,
     marginHorizontal: 25,
   },
   addButton: {
     width: 30,
     height: 35,
     tintColor: '#FFFFFF',
-    marginTop: -40,
+    marginTop: -10,
     marginHorizontal: 25,
   },
   saveButton: {
@@ -278,12 +284,12 @@ const styles = StyleSheet.create({
     height: 30,
     tintColor: '#FFFFFF',
     marginHorizontal: 330,
-    marginTop: -36,
+    marginTop: -30,
   },
   name: {
     fontSize: 24,
     fontFamily: fonts.outfitMedium,
-    marginTop: 7,
+    marginTop: 17,
     marginHorizontal: 10,
     color: '#57C2AF',
   },
@@ -295,11 +301,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.outfitRegular,
   },
   description: {
-    fontSize: 18,
+    fontSize: 16,
     marginHorizontal: 10,
     marginTop: 2,
     color: '#FFFFFF',
-    fontFamily: fonts.outfitRegular,
+    fontFamily: fonts.outfitLight,
   },
   ranking: {
     marginHorizontal: 5,
@@ -328,20 +334,20 @@ const styles = StyleSheet.create({
   },
 
   modalContainer: {
-    backgroundColor:"#FFFFFF", 
+    backgroundColor:"#121010", 
     margin: 50, 
     padding: 40, 
     borderRadius: 13, 
     flex:.35,
-    top: 100,
+    top: 150,
     borderWidth: .5,
-    borderColor: '#A067A5',
+    borderColor: '#57C2AF',
   },
 
   menuOptions: {
     borderRadius: 13,
     borderWidth: .5,
-    borderColor: '#A067A5',
+    borderColor: '#57C2AF',
     marginBottom: 10,
     bottom: 12
   },

@@ -1,11 +1,12 @@
 const { application } = require('express')
 const express = require('express')
 const app = express()
-const port = 8000
+const port = 8082
 const path = require('path')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 //const User = require('../model/user.js')
+//const userGroupsCreated = require('ItineraryApp/travel-app/models/groupsCreatedModel.js')
 const bcrypt = require('bcryptjs')
 const http = require('http')
 const url = require('url')
@@ -13,6 +14,7 @@ const fs = require("fs")
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'epiurfgiwfbjw!@#^&&*%%dsfiuwqopqsm'
 const querystring = require('querystring');
+//import UserGroupsCreated from 'groupsCreatedModel'
 
 
   const userSchema = mongoose.Schema({
@@ -52,6 +54,10 @@ app.get('/hello', (req, res) => {
   res.send('Hi!')
 }) 
 
+
+app.get('/api/login', (req, res) => {
+    res.send('This is the login page for GET requests');
+  });
 
 
 
@@ -109,7 +115,8 @@ app.post('/api/signup', async (req, res) => {
     console.log("userId1: " + userId)
     try {
         /*
-        const response = await userModel.create({
+        const response = await 
+        .create({
             fullName,
             emailAddress,
             username,
@@ -175,6 +182,8 @@ try {
     console.log("test2")
     res.json({status: "ok"})
 })
+
+
     
 
 
@@ -222,6 +231,61 @@ app.post('/app/api/bookmarks', async (req, res) => {
     
     res.json({status: "ok"})
 
+})
+
+const userCreatedGroupsSchema = new mongoose.Schema({
+    userId: {type: String, required: true, unique: false},
+    groupImageFilename: {type: String, required: true, unique: false },
+    groupTitle: { type: String, required: true, unique: false },
+    groupActivityDate: { type: String, required: true, unique: false},
+    groupActivityTime: { type: String, required: true, unique: false},
+    //groupDescription: { type: String, required: false, unique: false },
+    //groupCapacity: { type: Number, required: false, unique: false },
+  }, { collection: 'User_CreatedGroups' });
+  
+  const UserGroupsCreated = mongoose.model('UserGroup', userCreatedGroupsSchema);
+  
+  module.exports = UserGroupsCreated;
+
+
+app.post('/app/api/createdGroups', async (req, res) => {
+    console.log('inside created groups');
+    const { userId, groupImageFilename, groupTitle, groupActivityDate, groupActivityTime} = req.body
+
+    console.log("request body: ", req.body)
+
+    console.log("userId: ", userId)
+    //console.log("title: ", title)
+    //console.log("imageURL: ", imageURL)
+    
+    if (!userId || !groupImageFilename || !groupTitle || !groupActivityDate || !groupActivityTime || typeof groupImageFilename != 'string' || 
+        typeof groupTitle != 'string' || typeof groupActivityDate != 'string' || typeof groupActivityTime != 'string' || typeof userId != 'string') {
+        return res.status(400).json( { status: 'error', error: 'Invalid or empty data'})
+    }
+
+    const createdGroup = new UserGroupsCreated({
+        groupImageFilename,
+        groupTitle,
+        groupActivityDate,
+        groupActivityTime,
+    });
+    try {
+        await createdGroup.save()
+        .then(result => {
+            console.log("Save result:", result);
+            res.status(200).json({ status: 'ok' });
+          })
+        console.log("Group saved successfully: ", res)
+        console.log("response: " + res)
+    } catch(error) {
+        if (error.code === 11000) {
+            return res.status(400).json( {status: 'error', error: 'Group could not be saved' })
+        }
+        console.log("error: " + error)
+        //throw error
+        res.status(500).json({ status: 'error', error: 'Internal server error'})
+    }
+    res.json({status: "ok"})
 })
 
 

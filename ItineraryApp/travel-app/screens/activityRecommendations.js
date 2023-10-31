@@ -1,13 +1,26 @@
 import {Component, useLayoutEffect, useState, useEffect} from 'react';
-import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity, ScrollView, TextInput, Modal, Button} from 'react-native';
+import {Text, View, StyleSheet, StatusBar, Pressable, Image, FlatList, Alert, TouchableOpacity, ScrollView, TextInput, Modal, Button, ActivityIndicator} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DialogInput from 'react-native-dialog-input'
 import Dialog from 'react-native-dialog'
+import HeaderBanner from '../components/HeaderBanner';
 //import AsyncStorage from '@react-native-community/async-storage'
 import { getPlaceDetails } from 'travel-app/api/index.js';
+import Itineraries from './Itineraries';
+import SearchBar from '../components/SearchBar';
+import ActivityContainer from '../components/ActivityContainer';
+import FiltersScreen from './filtersScreen';
 
-function ActivityRecommendations() {
+const ActivityRecommendations = ({route}) => {
+  const [isFiltersVisible, setFiltersVisible] = useState(false);
+  // const {placeData, placeDetails} = route.params;
+  // console.log("placeData: " + placeData);
+  // console.log("placeDetails: " + placeDetails);
+  const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
 
+  const toggleFilters = () => {
+    setFiltersVisible(!isFiltersVisible);
+  }
 
 
   const navigation = useNavigation();
@@ -18,15 +31,15 @@ function ActivityRecommendations() {
       }, []);
 
 
-      const[activityType, changeActivityType] = useState("attractions");
+      //const[activityType, changeActivityType] = useState("attractions");
       const[searchItem, setSearchItem] = useState("");
       const[clicked, setClicked] = useState(false);
       const[mainData, setMainData] = useState([])
       const[loading, setLoading] = useState(false)
-      const[ne_lat, set_ne_lat] = useState(null);
-      const[ne_lng, set_ne_lng] = useState(null);
-      const[sw_lat, set_sw_lat] = useState(null);
-      const[sw_lng, set_sw_lng] = useState(null);
+      //const[ne_lat, set_ne_lat] = useState(null);
+      //const[ne_lng, set_ne_lng] = useState(null);
+      //const[sw_lat, set_sw_lat] = useState(null);
+      //const[sw_lng, set_sw_lng] = useState(null);
       
       
         useLayoutEffect(() => {
@@ -42,7 +55,13 @@ function ActivityRecommendations() {
           setLoading(false);
           }, 3000)
           })
-          }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+          .catch((error) => {
+            console.error("Error fetching data", error);
+            setLoading(false);
+          });
+        }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+
+    console.log("mainData: " + mainData);
   
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -62,62 +81,74 @@ function ActivityRecommendations() {
       time: ''
     })
 
+    console.log("description:  " + data?.description);
+    console.log("name: " + data?.name);
+  
 
-    async function sendItineraryToDatabase() {
-        if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
-          alert('Itinerary data does not exist');
-          return;
-        }
-        setItineraryData( {...itineraryData, imageURL: data?.photo?.images?.medium?.url} )
-        setItineraryData( {...itineraryData, title:  data?.name} )
-        await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-          }, 
-          body: JSON.stringify(bookmarkData)
-      }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-        data => {
-          //alert("data.errror: ", data.error)
-          if(data.error) {
-            alert("inside error")
-            setErrorMessage(data.error);
-            alert("data error: " + data.error)
-            console.log("error")
-          } else {
-              alert("inside else statement")
-                //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
-                alert("inside else statement")
-                console.log("inside else statement")
-            alert('Itinerary activity saved successfully');
-          }
-        }
-      )
-    }
+
+    // async function sendItineraryToDatabase() {
+    //     if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
+    //       alert('Itinerary data does not exist');
+    //       return;
+    //     }
+    //     setItineraryData( {...itineraryData, imageURL: data?.photo?.images?.medium?.url} )
+    //     setItineraryData( {...itineraryData, title:  data?.name} )
+    //     await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
+    //       method: 'POST',
+    //       headers: {
+    //           'Content-Type': 'application/json',
+    //           'Accept': 'application/json'
+    //       }, 
+    //       body: JSON.stringify(bookmarkData)
+    //   }).then().catch(error=>console.log(error)).then(res => res.json()).then(
+    //     data => {
+    //       //alert("data.errror: ", data.error)
+    //       if(data.error) {
+    //         alert("inside error")
+    //         setErrorMessage(data.error);
+    //         alert("data error: " + data.error)
+    //         console.log("error")
+    //       } else {
+    //           alert("inside else statement")
+    //             //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
+    //             alert("inside else statement")
+    //             console.log("inside else statement")
+    //         alert('Itinerary activity saved successfully');
+    //       }
+    //     }
+    //   )
+    // }
     return (
       <>
       <ScrollView>
         <StatusBar style="dark-content" />
         <View style={styles.container}>
-          <Image style={styles.activityImage}
-            source={{ uri: data?.photo?.images?.large?.url }}
-          />
-            <View>
-              <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
-              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View>
+        <View>
+          <HeaderBanner heading = "Recommendations" style={styles.banner}>
+          <View>
+              <TouchableOpacity onPress={() => navigation.navigate('Itineraries')}>
                 <Image style={styles.backButton}
                   source={require('travel-app/assets/icons/Refund_back.png')}
                  />   
               </TouchableOpacity>
             </View>
+          </HeaderBanner>
+        </View>
+          <SearchBar></SearchBar>
+          <View>
+            <TouchableOpacity onPress={toggleFilters}>
+              <Image style={styles.filterIcon}
+                source ={require('travel-app/assets/icons/Filter.png')} 
+              />
+            </TouchableOpacity>  
+
+            <FiltersScreen visible={isFiltersVisible} onClose={toggleFilters} />
+          </View>
+          <Image style={styles.activityImage}
+            source={{ uri: data?.photo?.images?.large?.url }}
+          />
+         
             <View>
-              <TouchableOpacity onPress={() => handleModal()}>
-              <View style={[styles.box1, {marginHorizontal: 18, marginBottom: -50}]}></View>
-                <Image style={styles.addButton}
-                  source={require('travel-app/assets/icons/Map_fill.png')}
-                 /> 
-              </TouchableOpacity>
                 <Modal 
                   animationType="slide"
                   transparent={true}
@@ -134,57 +165,48 @@ function ActivityRecommendations() {
                   </TouchableOpacity>
                   </View>
                 </Modal>
-              <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
+              {/* <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
               <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View>
                 <Image style={styles.saveButton}
                   source={require('travel-app/assets/icons/Bookmark_fill(1).png')}
                  /> 
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
-            <View>
-              <Text style={styles.name}>{data?.name}</Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 3, tintColor: '#E7BB20', width: 30, height: 30}}
-                  source={require('travel-app/assets/icons/star-regular-24(1).png')}
-                />  
-                <Text style={styles.rating}>{data?.rating}</Text>
-                <Text style={styles.priceLevel}>{data?.price_level}</Text>
-              </View>
-              <Text style={styles.ranking}>{data?.ranking}</Text>
-
-              {data?.cuisine && (
-                <View style={styles.cuisine}>
-                      {data?.cuisine.map((n) => (
-                  <View
-                     key={n.key}
-                  >
-                  <Text style={{fontSize: 18}}>{n.name + ', '}</Text>
-                </View>
-                      ))}
-              </View>
-            )}
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 3, tintColor: '#0C2D5C'}}
-                  source={require('travel-app/assets/icons/Pin_fill.png')}
-                />  
-                <Text style={{fontSize: 17, color: '#0C2D5C'}}>Location</Text>
-              </View>
-              <Text style={styles.location}>{data?.location_string}</Text>
-            </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image style={{marginHorizontal: 5, tintColor: '#0C2D5C'}}
-                  source={require('travel-app/assets/icons/File_dock.png')}
-                />  
-                <Text style={{fontSize: 17, color: '#0C2D5C'}}>Description</Text>
-              </View>
-            <View>
-              <Text style={styles.description} numberOfLines={10} renderTruncatedFooter>{data?.description}</Text>
-            </View>
-            <View>
-              <Text style={styles.price}>{data?.price}</Text>
-              {/*<Text style={styles.hours}>{data?.hours}</Text> */}
-            </View>
-        </View>
+        
+        <View>
+       <ScrollView>
+       {loading ?
+         <View>
+           <ActivityIndicator visible ={loading} size="large" color="#A067A5" />
+         </View> :
+       <View style={styles.activitiesContainer}>
+         {mainData?.length > 0 ? (
+           <>
+           {mainData?.map((data, i) => (
+             <ActivityContainer
+               key={i}
+               image={
+                 data?.photo?.images?.medium?.url
+                 //? data?.photo?.images?.medium?.url
+                 //: 'ItineraryApp/assets/icons/restaurant(1).png'
+               }
+               name={data?.name}
+               location={data?.location_string}
+               data={data}
+             />  
+             ))}
+             </>
+             ) : (
+             <>
+               <View>
+                 <Text style={styles.noResults}>No results found</Text>
+               </View>
+             </>
+             )}
+           </View> }
+           </ScrollView>
+           </View>
+          </View>
       </ScrollView>  
       </>
     );
@@ -193,7 +215,13 @@ function ActivityRecommendations() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#232020",
+  },
+  activitiesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    marginBottom: 50
   },
   text: {
     fontFamily: 'ABeeZee-Regular',
@@ -296,6 +324,17 @@ const styles = StyleSheet.create({
     opacity: 0.80,
     bottom: 45,
     position: 'absolute'
+  },
+  banner: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  filterIcon: {
+    width: 28,
+    height: 28,
+    marginTop: 70,
+    marginLeft: 20
   }
 
   
