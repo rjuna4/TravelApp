@@ -172,6 +172,7 @@ try {
             }, 
             JWT_SECRET 
         )
+        console.log("token: ", token)
         return res.json({ status: "ok", data: token, user_id: user._id })
     }
     res.json({ status: "error", data: "Invalid username/password" }) 
@@ -233,8 +234,80 @@ app.post('/app/api/bookmarks', async (req, res) => {
 
 })
 
+const userProfileSchema = new mongoose.Schema({
+    userId: {type: String, requied: true, unique: true},
+    firstName: {type: String, required: true, unique: false},
+    lastName: {type: String, required: true, unique: false},
+    username: {type: String, required: true, unique: true},
+    pictures: [{type: String, required: true, unique: false}],
+    gender: {type: String, required: true, unique: false},
+    age: {type: Number, required: true},
+    travelBucketList: [{listItem: {type: String, required: true}, 
+        listItemPicture: {type: String, required: false}}],
+    favoriteTravelLocation: {type: String, required: true},
+    }, { collection: 'User_Profiles' })
+
+const UserProfile = mongoose.model('UserProfile', userProfileSchema);
+
+module.exports = UserProfile
+
+
+app.post('/api/userProfiles', async (req, res) => {
+    console.log('inside user profiles');
+    const { userId, firstName, lastName, username, pictures, gender, age, travelBucketList, favoriteTravelLocation} = req.body
+
+    console.log("request body: ", req.body)
+
+    console.log("userId: ", userId);
+    console.log("firstName: ", firstName);
+    console.log("lastName: ", lastName);
+    console.log("username: ", username);
+    console.log("pictures: ", pictures);
+    console.log("gender: ", gender);
+    console.log("age: ", age);
+    console.log("travelBucketList: ", travelBucketList);
+    console.log("favoriteTravelLocation: ", favoriteTravelLocation);
+    
+    if (!userId || !firstName || !lastName || !username || !pictures || !gender || !age || !travelBucketList 
+        || !favoriteTravelLocation || typeof userId != 'string' || typeof firstName != 'string' || 
+        typeof lastName != 'string' || typeof username != 'string' || typeof pictures != [] ||
+        typeof gender != 'string' || typeof age != 'string' || typeof travelBucketList != [] || typeof favoriteTravelLocation != 'string') {
+            return res.status(400).json( { status: 'error', error: 'Invalid or empty data'})
+    }
+
+    const userProfile = new UserProfile({
+        userId,
+        firstName,
+        lastName,
+        username,
+        pictures,
+        gender,
+        age,
+        travelBucketList,
+        favoriteTravelLocation
+    });
+    try {
+        await userProfile.save()
+        .then(result => {
+            console.log("Save result:", result);
+            res.status(200).json({ status: 'ok' });
+          })
+        console.log("Profile info saved successfully: ", res)
+        console.log("response: " + res)
+    } catch(error) {
+        if (error.code === 11000) {
+            return res.status(400).json( {status: 'error', error: 'Profile info could not be saved' })
+        }
+        console.log("error: " + error)
+        //throw error
+        res.status(500).json({ status: 'error', error: 'Internal server error'})
+    }
+})
+
+
+
 const userCreatedGroupsSchema = new mongoose.Schema({
-    userId: {type: String, required: true, unique: true},
+    userId: {type: String, required: true, unique: false},
     groupImageFilename: {type: String, required: true, unique: false },
     groupTitle: { type: String, required: true, unique: false },
     groupActivityDate: { type: String, required: true, unique: false},
@@ -292,13 +365,28 @@ app.post('/api/createdGroups', async (req, res) => {
     }
 })
 
-app.get('api/userGroups/:userId', async (req, res) => {
+app.get('/api/createdGroups/:userId', async (req, res) => {
     const userId = req.params.userId;
     try {
         const userGroupsCreated = await UserGroupsCreated.find({ userId });
         res.status(200).json(userGroupsCreated);
     }  catch (error) {
         res.status(500).json({ error: "Internal server error"});
+    }
+})
+
+app.delete('/api/createdGroups/:groupId', async (req, res) => {
+    const groupId = req.params.groupId;
+    try {
+        const result = await UserGroupsCreated.findOneAndRemove({ _id: groupId });
+        if (result) {
+            res.status(200).json({ status: 'ok', message: 'Group deleted successfully'});
+        } else {
+            res.status(400).json({ status: 'error', message: 'Group not found'})
+        }
+    } catch (error) {
+        console.error("Error deleting group: ", error);
+        res.status(500).json({ status: 'error', message: 'Internal server error'});
     }
 })
 

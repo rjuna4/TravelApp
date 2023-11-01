@@ -108,7 +108,7 @@ const CreateGroup = ({route}) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              userId: '6386857fce851928b24c6b4w',
+              userId: '6386857fce851928b24c6b4f',
               ...newGroup,
             }),
           });

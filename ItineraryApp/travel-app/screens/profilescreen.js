@@ -115,7 +115,7 @@ const ProfileScreen = () => {
         </View>
       </View>
       <ScrollView>
-        <View style={styles.listView}>
+        {/* <View style={styles.listView}>
           <Image
             style={styles.myLikesPicsLeft}
             source={{
@@ -152,7 +152,7 @@ const ProfileScreen = () => {
               uri: 'https://portal.ehawaii.gov/assets/webp/page/government/counties/honolulu.webp',
             }}
           />
-        </View>
+        </View> */}
         <View style={styles.bottomSpace}></View>
       </ScrollView>
     </View>

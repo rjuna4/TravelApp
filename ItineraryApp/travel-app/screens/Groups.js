@@ -1,28 +1,107 @@
 import React, { Component, useState, useEffect, useLayoutEffect} from 'react';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
-import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, FlatList, useColorScheme, View, TouchableOpacity, Image} from 'react-native';
+import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, FlatList, useColorScheme, View, TouchableOpacity, Image, ImageBackground} from 'react-native';
 import HeaderBanner from '../components/HeaderBanner';
 import CreateGroup from './createGroup';
 import { fonts } from '../components/FontLoader';
+const User = require('../models/userModel')
 
 const Groups = ({ route }) => {
     const navigation = useNavigation();
     const { groupData, selectedDate, selectedStartTime } = route.params || {groupData: [], selectedDate: null, selectedStartTime: null };
-    console.log("groupData on groups screen: ", groupData);
+    //console.log("groupData on groups screen: ", groupData);
     const [updatedGroupData, setUpdatedGroupData] = useState(groupData);
+    const [userGroups, setUserGroups] = useState([]);
+
+    // useEffect(() => {
+    //   // This effect will be triggered whenever groupData changes.
+    //   setUpdatedGroupData(groupData);
+    // }, [groupData]);
+
+    // useEffect(() => {
+    //   const userId = '6386857fce851928b24c6b4f';
+    //   fetchUserGroupsCreated(userId)
+    //   //   .then((data) => {
+    //   //     setUserGroups(data);
+    //   //   })
+    //   //   .catch((error) => {
+    //   //     console.error(error);
+    //   //   })
+    //   // setUpdatedGroupData(groupData);
+    // }, [groupData]);
 
     useEffect(() => {
-      // This effect will be triggered whenever groupData changes.
-      setUpdatedGroupData(groupData);
-    }, [groupData]);
-    console.log('groupData in Groups component: ', groupData);
-    console.log(groupData);
+      const userId = '6386857fce851928b24c6b4f';
+      fetchUserGroupsCreated(userId)
+      .then((data) => {
+        setUserGroups(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    }, []);
+
+
+    //console.log('groupData in Groups component: ', groupData);
+    //console.log(groupData);
       useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
         })
     }, [])
 
+    async function getUserIdByEmail(username) {
+      try {
+        const user = await User.findOne({ username });
+        if (user) {
+          const userId = user._id;
+          return userId;
+        } else {
+          return null;
+        }
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+
+    async function fetchUserGroupsCreated(userId) {
+      try {
+        const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${userId}`);
+        if (response.status === 200) {
+          const data = await response.json();
+          console.log("data: ", data);
+          return data;
+        } else {
+          console.error("Error response: ", response);
+          throw new Error("Error fetching data");
+        }
+      } catch (error) {
+        console.error("Netwok request error: ", error);
+        throw error;
+      }
+    }
+    console.log('userGroups:', userGroups);
+
+    const groupId = '6542d013a9d7b257d699e51b';
+    async function handleDeleteGroup(groupId) {
+      try {
+        const response = await fetch('http://172.20.10.7:8082/api/createdGroups/6542d013a9d7b257d699e51b', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        if (response.status === 200) {
+          const updatedUserGroups = userGroups.filter((group) => group._id !== groupId);
+          setUserGroups(updatedUserGroups);
+        } else {
+          console.error("Error deleting group");
+        }
+       } catch (error) {
+          console.error("Netwok request error: ", error);
+        }
+      };
 
     return (
         <View style={styles.container}>
@@ -37,6 +116,26 @@ const Groups = ({ route }) => {
               </TouchableOpacity>
             </View>
             <View>
+            <FlatList
+                  data={userGroups}
+                  keyExtractor={(item) => item._id} // Replace with the actual unique key
+                  renderItem={({ item }) => (
+                    <View style={{marginBottom: 40}}>
+                      <Text style={{color: '#FFFFFF'}}>{item.groupActivityDate}</Text>
+                      <Text style={{color: '#FFFFFF'}}>{item.groupActivityTime}</Text>
+                      <Text style={styles.activityTitle}>{item.groupTitle}</Text>
+                      <Image
+                        source={{ uri: item.groupImageFilename }} // Provide the image URL
+                        style={styles.selectedImage} // Adjust the dimensions as needed
+                      />
+                     <TouchableOpacity onPress={handleDeleteGroup}>
+                       <Image style={styles.trashIcon}
+                          source={require('travel-app/assets/icons/Trash_duotone_line.png')}
+                        />  
+                     </TouchableOpacity>
+                    </View>
+                  )}
+              />
               <FlatList
                 style={{height: 550}}
                 data={groupData}
@@ -73,6 +172,7 @@ const Groups = ({ route }) => {
                       </View>
                 )}
                />
+             
             </View>
           </View>
       </View>  
@@ -118,6 +218,10 @@ const styles = StyleSheet.create({
       height: 20,
       marginTop: 15,
       marginLeft: 8,
+    },
+    trashIcon: {
+      width: 30,
+      height: 30,
     },
     line: {
       borderBottomColor: '#818181',
