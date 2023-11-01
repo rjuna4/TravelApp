@@ -1,34 +1,74 @@
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput} from 'react-native';
 import React, {Component, useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const [selectedProfilePicture, setSelectedProfilePicture] = useState(null);
+  const [selectedHeaderPicture, setSelectedHeaderPicture] = useState(null);
+
+  const pickProfilePicture = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
+
+    if (!result.canceled) {
+        setSelectedProfilePicture(result.uri);
+    }
+  }
+
+  const pickHeaderPicture = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
+
+    if (!result.canceled) {
+        setSelectedHeaderPicture(result.uri);
+    }
+  }
+
+
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={styles.backgroundPicture}
-        source={{
-          uri: 'https://cdn2.hometogo.net/assets/media/pics/1500_500/611b25bfdeedb.jpg',
-        }}
-      />
-      <TouchableOpacity onPress={() => navigation.navigate('ProfileSettings')}>
-        <Image
-          style={styles.settingsIcon}
-          source={{
-            uri: 'https://i.stack.imgur.com/oLA6F.png',
-          }}
-        />
+      <TouchableOpacity onPress={pickHeaderPicture} style={styles.headerPictureContainer}>
+        {selectedHeaderPicture ? (
+            <ImageBackground
+            style={styles.selectedHeaderPicture}
+            source={{ uri: selectedHeaderPicture }} />
+        ) : (
+          <Image style={styles.cameraIcon}
+            source={require('travel-app/assets/icons/camera.png')} />
+        )}
+        
       </TouchableOpacity>
-      <View style={styles.overlay}></View>
+      <View>
+        <TouchableOpacity onPress={pickProfilePicture} style={styles.profilePictureContainer}>
+            {selectedProfilePicture ? (
+                <Image style={styles.selectedProfilePicture} source={{uri: selectedProfilePicture }} />
+            ) : (
+                <Image style={styles.cameraIcon}
+                source={require('travel-app/assets/icons/camera.png')}
+            />   
+            )}
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ProfileSettings')}>
+          <Image
+            style={styles.settingsIcon}
+            source={{
+              uri: 'https://i.stack.imgur.com/oLA6F.png',
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+     
+  
       <Image
         style={styles.profilePicture}
         source={{
@@ -39,7 +79,39 @@ const ProfileScreen = () => {
         <View style={styles.bodyContent}>
           <Text style={styles.name}>Test User</Text>
           <Text style={styles.userName}>test_user</Text>
-          <Text style={styles.myLikes}>My Likes</Text>
+          <Text>Age: </Text>
+          <TextInput
+                    placeholderTextColor='#FFFFFF'
+                    //style={styles.heading}
+                    //value={activityTitle}
+                    //onChangeText={(text => setActivityTitle(text))}
+                    //onChangeText={(text) => setFormData( {...formData, fullName: text})}
+              />
+          <Text>Gender: </Text>
+          <TextInput
+                    placeholderTextColor='#FFFFFF'
+                    //style={styles.heading}
+                    //value={activityTitle}
+                    //onChangeText={(text => setActivityTitle(text))}
+                    //onChangeText={(text) => setFormData( {...formData, fullName: text})}
+              />
+          <View>
+            <Text style={styles.myLikes}>Travel Bucket List</Text>
+          </View>
+          <View>
+            <Text style={styles.myLikes}>Favorite Travel Location</Text>
+            <TextInput
+                    placeholder="Favorite Travel Location"
+                    placeholderTextColor='#FFFFFF'
+                    //style={styles.heading}
+                    //value={activityTitle}
+                    //onChangeText={(text => setActivityTitle(text))}
+                    //onChangeText={(text) => setFormData( {...formData, fullName: text})}
+              />
+          </View>
+          <View>
+            <Text>My Bookmarks</Text>
+          </View>
         </View>
       </View>
       <ScrollView>
@@ -101,13 +173,14 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#232020",
   },
   header: {
     width: 775,
     height: 273,
   },
-  backgroundPicture: {
-    height: 200,
+  selectedHeaderPicture: {
+    height: 250,
   },
   body: {
     marginTop: 20,
@@ -117,16 +190,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 30,
   },
-  profilePicture: {
+  selectedProfilePicture: {
     width: 130,
     height: 130,
-    borderWidth: 2,
-    borderRadius: 65,
-    borderColor: '#A067A5',
-    marginBottom: 10,
-    alignSelf: 'center',
-    position: 'absolute',
-    marginTop: 130,
+    borderRadius: '65%',
+    zIndex: 3,
+  },
+  imageContainer: {
+    width: 328,
+    height: 186,
+    borderRadius: 4,
+    backgroundColor: '#D9D9D9',
+    marginLeft: 22,
+    marginTop: 15,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  // profilePicture: {
+  //   width: 130,
+  //   height: 130,
+  //   borderWidth: 2,
+  //   borderRadius: 65,
+  //   borderColor: '#A067A5',
+  //   marginBottom: 10,
+  //   alignSelf: 'center',
+  //   position: 'absolute',
+  //   marginTop: 130,
+  // },
+  cameraIcon: {
+    width: 70,
+    height: 60,
+    zIndex: 2,
   },
   listView: {
     flexDirection: 'row',

@@ -1,4 +1,4 @@
-import React, { Component, useState, useLayoutEffect} from 'react';
+import React, { Component, useState, useEffect, useLayoutEffect} from 'react';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, FlatList, useColorScheme, View, TouchableOpacity, Image} from 'react-native';
 import HeaderBanner from '../components/HeaderBanner';
@@ -7,7 +7,15 @@ import { fonts } from '../components/FontLoader';
 
 const Groups = ({ route }) => {
     const navigation = useNavigation();
-    const { groupData, selectedDate, selectedStartTime } = route.params || {groupData: [] };
+    const { groupData, selectedDate, selectedStartTime } = route.params || {groupData: [], selectedDate: null, selectedStartTime: null };
+    console.log("groupData on groups screen: ", groupData);
+    const [updatedGroupData, setUpdatedGroupData] = useState(groupData);
+
+    useEffect(() => {
+      // This effect will be triggered whenever groupData changes.
+      setUpdatedGroupData(groupData);
+    }, [groupData]);
+    console.log('groupData in Groups component: ', groupData);
     console.log(groupData);
       useLayoutEffect(() => {
         navigation.setOptions({

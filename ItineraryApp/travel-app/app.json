@@ -14,8 +14,14 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "permissions": [
+      "LOCATION"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.myapp",
+      "supportsApplePay": true,
+      "usesAppleMaps": true
     },
     "android": {
       "adaptiveIcon": {

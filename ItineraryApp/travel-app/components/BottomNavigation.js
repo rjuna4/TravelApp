@@ -71,6 +71,7 @@ const PeopleStackTab = () => {
     return(
         <PeopleStack.Navigator initialRouteName="People">
          <PeopleStack.Screen name="People" component={People} options={{headerShown: false}}/>
+         <PeopleStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
       </PeopleStack.Navigator>
     )
 }

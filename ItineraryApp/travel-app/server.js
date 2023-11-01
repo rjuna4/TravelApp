@@ -234,13 +234,11 @@ app.post('/app/api/bookmarks', async (req, res) => {
 })
 
 const userCreatedGroupsSchema = new mongoose.Schema({
-    userId: {type: String, required: true, unique: false},
+    userId: {type: String, required: true, unique: true},
     groupImageFilename: {type: String, required: true, unique: false },
     groupTitle: { type: String, required: true, unique: false },
     groupActivityDate: { type: String, required: true, unique: false},
     groupActivityTime: { type: String, required: true, unique: false},
-    //groupDescription: { type: String, required: false, unique: false },
-    //groupCapacity: { type: Number, required: false, unique: false },
   }, { collection: 'User_CreatedGroups' });
   
   const UserGroupsCreated = mongoose.model('UserGroup', userCreatedGroupsSchema);
@@ -248,15 +246,21 @@ const userCreatedGroupsSchema = new mongoose.Schema({
   module.exports = UserGroupsCreated;
 
 
-app.post('/app/api/createdGroups', async (req, res) => {
+app.post('/api/createdGroups', async (req, res) => {
     console.log('inside created groups');
     const { userId, groupImageFilename, groupTitle, groupActivityDate, groupActivityTime} = req.body
 
     console.log("request body: ", req.body)
 
     console.log("userId: ", userId)
-    //console.log("title: ", title)
-    //console.log("imageURL: ", imageURL)
+    console.log("groupImageFilename: ", groupImageFilename)
+    console.log("groupTitle: ", groupTitle)
+    console.log("groupActivityDate: ", groupActivityDate)
+    console.log("groupActivityTime: ", groupActivityTime)
+
+    if (!userId) {
+        return res.status(400).json({ status: 'error', error: 'userId is required' });
+    }
     
     if (!userId || !groupImageFilename || !groupTitle || !groupActivityDate || !groupActivityTime || typeof groupImageFilename != 'string' || 
         typeof groupTitle != 'string' || typeof groupActivityDate != 'string' || typeof groupActivityTime != 'string' || typeof userId != 'string') {
@@ -264,6 +268,7 @@ app.post('/app/api/createdGroups', async (req, res) => {
     }
 
     const createdGroup = new UserGroupsCreated({
+        userId,
         groupImageFilename,
         groupTitle,
         groupActivityDate,
@@ -285,7 +290,16 @@ app.post('/app/api/createdGroups', async (req, res) => {
         //throw error
         res.status(500).json({ status: 'error', error: 'Internal server error'})
     }
-    res.json({status: "ok"})
+})
+
+app.get('api/userGroups/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const userGroupsCreated = await UserGroupsCreated.find({ userId });
+        res.status(200).json(userGroupsCreated);
+    }  catch (error) {
+        res.status(500).json({ error: "Internal server error"});
+    }
 })
 
 

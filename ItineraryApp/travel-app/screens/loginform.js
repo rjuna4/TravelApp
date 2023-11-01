@@ -75,6 +75,8 @@ async function sendToDatabase() {
       timeout: 30000,
     });
 
+    console.log('response status: ', response.status);
+
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }

@@ -102,28 +102,42 @@ const CreateGroup = ({route}) => {
         };
     
         try {
-          const response = await fetch('http://172.20.10.7:8082/api/login', {
+          const response = await fetch('http://172.20.10.7:8082/api/createdGroups', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              userId: '6386857fce851928b24c6b4f',
+              userId: '6386857fce851928b24c6b4w',
               ...newGroup,
             }),
           });
+
+          console.log('response status: ', response.status);
     
           if (response.status === 200) {
+            console.log("Group saved successfully");
             alert('Group saved successfully');
+            const updatedGroupData = [...groupData, newGroup];
+            setSelectedImage(null);
+            setActivityTitle('');
+            setGroupData(updatedGroupData);
+            navigation.navigate('Groups', { 
+              groupData: updatedGroupData, 
+              selectedDate: selectedDate, 
+              selectedStartTime: selectedStartTime 
+            });
           } else {
             const data = await response.json();
+            console.error("Error response: ", data);
             alert(`Error: ${data.error}`);
           }
         } catch (error) {
-          console.error(error);
+          console.error("Netwowrk request error: ", error);
           alert('An error occurred while saving the group.');
         }
       } else {
+        console.log("Please fill in all the required fields");
         alert('Please fill in all the required fields.');
       }
     }
@@ -293,7 +307,7 @@ const CreateGroup = ({route}) => {
             </View>
             {/* <TouchableOpacity style={styles.saveButton} onPress={() => navigation.navigate('Groups', {groupData: groupData})}> */}
             {/* <TouchableOpacity style={styles.saveButton} onPress={saveGroup}> */}
-            <TouchableOpacity style={styles.saveButton} onPress={saveGroup}>
+            <TouchableOpacity style={styles.saveButton} onPress={saveCreatedGroupToDatabase}>
               <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitMedium, fontSize: 18}}>Save</Text>
             </TouchableOpacity>
             </View>
