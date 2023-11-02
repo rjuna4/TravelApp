@@ -5,6 +5,7 @@ const port = 8082
 const path = require('path')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 //const User = require('../model/user.js')
 //const userGroupsCreated = require('ItineraryApp/travel-app/models/groupsCreatedModel.js')
 const bcrypt = require('bcryptjs')
@@ -304,6 +305,16 @@ app.post('/api/userProfiles', async (req, res) => {
     }
 })
 
+app.get('/api/userProfiles/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const userProfile = await UserProfile.find({ userId });
+        res.status(200).json(userProfile);
+    }  catch (error) {
+        res.status(500).json({ error: "Internal server error"});
+    }
+})
+
 
 
 const userCreatedGroupsSchema = new mongoose.Schema({
@@ -376,19 +387,39 @@ app.get('/api/createdGroups/:userId', async (req, res) => {
 })
 
 app.delete('/api/createdGroups/:groupId', async (req, res) => {
+    console.log("inside delete method for created groups");
     const groupId = req.params.groupId;
+    console.log("groupId: ", groupId)
     try {
         const result = await UserGroupsCreated.findOneAndRemove({ _id: groupId });
+        console.log("result: ", result);
         if (result) {
             res.status(200).json({ status: 'ok', message: 'Group deleted successfully'});
         } else {
             res.status(400).json({ status: 'error', message: 'Group not found'})
+            console.log("Group not found")
         }
     } catch (error) {
-        console.error("Error deleting group: ", error);
+        console.error("Error deleting serverside: ", error);
         res.status(500).json({ status: 'error', message: 'Internal server error'});
     }
 })
+
+app.put('/api/createdGroups/:groupId', async (req, res) => {
+    const groupId = req.params.groupId;
+    const updatedGroupData = req.body;
+    try {
+        const updatedGroup = await UserGroupsCreated.findByIdAndUpdate(groupId, updatedGroupData, {new: true});
+        if (updatedGroup) {
+            res.status(200).json({ status: 'ok', group: updatedGroup })
+        } else {
+            res.status(404).json({ status: 'error', message: 'Group not found'});
+        }
+    } catch (error) {
+        console.error("Error updating group: ", error);
+        res.status(500).json({ status: 'error', message: 'Internal server error'})
+    }
+});
 
 
 app.get('/app/api/:userId/bookmarks', async (req, res) => {
@@ -420,42 +451,85 @@ app.get('/app/api/:userId/bookmarks', async (req, res) => {
 
 })
 
+
 const userItinerarySchema = mongoose.Schema({
-    imageURL: {type: String, required: true, unique: true},
-    title: {type: String, required: true, unique: false},
-    time: {type: String, required: true, unique: false},
-    //date: {type: String, required: true, unique: false},
-},
-{ collection: 'User_Itineraries'} 
-)
+    userId: {type: String, required: true, unique: false},
+    firstName: {type: String, required: true, unique: false},
+    lastName: {type: String, required: true, unique: false},
+	username: {type: String, required: true, unique: true},
+	itineraryName: {type: String, required: true, unique: false},
+    itineraryDescription: {type: String, required: false, unique: false},
+	itineraryPlaces: [{
+      placePictureURL: {type: String, required: true},
+      placeLocation: {type: String, required: true},
+      placeDescription: {type: String, required: false}
+     }],
+	itineraryDates: [{
+      date: {type: String, required: true}
+    }],
+	itineraryTimes: [{
+      time: {type: String, required: true}
+    }],
+  },{ collection: 'User_Itineraries'})
 
-
-const itineraryModel = mongoose.model('UserItinerary', userItinerarySchema)
+const UserItinerary = mongoose.model('UserItinerary', userItinerarySchema)
   
-module.exports = itineraryModel
+module.exports = UserItinerary
 
-app.post('/app/api/itineraries', async (req, res) => {
-    const { imageURL, title, time } = req.body
-
-    if (!imageURL || !title || !time || typeof time !== 'string' || typeof title !== 'string' || typeof imageURL !== 'string') {
-        return res.json( { status: 'error', error: 'Invalid or empty data'})
+app.post('/api/userItineraries', async (req, res) => {
+    console.log('inside user itineraries');
+    const { userId, firstName, lastName, username, itineraryName, itineraryDescription, itineraryPlaces, itineraryDates, itineraryTimes} = req.body
+    console.log("request body: ", req.body)
+    
+    if (!userId || !firstName || !lastName || !username || !itineraryName || !itineraryDescription || !itineraryPlaces 
+        || !itineraryDates || !itineraryTimes || typeof userId != 'string' || typeof firstName != 'string' || 
+        typeof lastName != 'string' || typeof username != 'string' || typeof itineraryName != 'string' ||
+        typeof itineraryDescription != 'string' || typeof itineraryPlaces != [] || typeof itineraryDates != [] || 
+        typeof itineraryTimes != []) {
+            return res.status(400).json( { status: 'error', error: 'Invalid or empty data'})
     }
 
-    const itinerary = new itineraryModel(req.body);
+    const userItinerary = new UserItinerary({
+        userId,
+        firstName,
+        lastName,
+        username,
+        itineraryName,
+        itineraryDescription,
+        itineraryPlaces,
+        itineraryDates,
+        itineraryTimes
+    });
     try {
-        await itinerary.save();
-        console.log("Itinerary created successfully: ", res)
+        await userItinerary.save()
+        .then(result => {
+            console.log("Save result:", result);
+            res.status(200).json({ status: 'ok' });
+          })
+        console.log("Itinerary info saved successfully: ", res)
         console.log("response: " + res)
     } catch(error) {
         if (error.code === 11000) {
-            return res.json( {status: 'error', error: 'Activity already added to itinerary' })
+            return res.status(400).json( {status: 'error', error: 'Itinerary info could not be saved' })
         }
         console.log("error: " + error)
-        throw error
+        //throw error
+        res.status(500).json({ status: 'error', error: 'Internal server error'})
     }
-    res.json({status: "ok"})
-
 })
+
+app.get('/api/userItineraries/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const userItinerary = await UserItinerary.find({ userId });
+        res.status(200).json(userItinerary);
+    }  catch (error) {
+        res.status(500).json({ error: "Internal server error"});
+    }
+})
+
+
+
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)

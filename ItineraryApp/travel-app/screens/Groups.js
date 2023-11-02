@@ -5,6 +5,8 @@ import HeaderBanner from '../components/HeaderBanner';
 import CreateGroup from './createGroup';
 import { fonts } from '../components/FontLoader';
 const User = require('../models/userModel')
+//const mongoose = require('mongoose')
+//const ObjectId = mongoose.Types.ObjectId
 
 const Groups = ({ route }) => {
     const navigation = useNavigation();
@@ -83,10 +85,12 @@ const Groups = ({ route }) => {
     }
     console.log('userGroups:', userGroups);
 
-    const groupId = '6542d013a9d7b257d699e51b';
+    const groupId = '65430d2a06dd93511c2dc226';
+    //const groupIdObject = new ObjectId(groupIdString)
+
     async function handleDeleteGroup(groupId) {
       try {
-        const response = await fetch('http://172.20.10.7:8082/api/createdGroups/6542d013a9d7b257d699e51b', {
+        const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${groupId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -96,12 +100,34 @@ const Groups = ({ route }) => {
           const updatedUserGroups = userGroups.filter((group) => group._id !== groupId);
           setUserGroups(updatedUserGroups);
         } else {
-          console.error("Error deleting group");
+          console.error("Error deleting group clientside");
         }
        } catch (error) {
           console.error("Netwok request error: ", error);
         }
       };
+
+      async function updateGroupsCreatedData(groupId, updatedData) {
+        try {
+          const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${groupId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedData)
+          });
+          if (response.status === 200) {
+            const updatedGroup = await response.json();
+            return updatedGroup;
+          } else {
+              const errorData = await response.json();
+              throw new Error(`Error updating group: ${errorData.message}`)
+          }
+        } catch (error) {
+          console.error("Network request error: ", error);
+          throw error;
+        }
+      }
 
     return (
         <View style={styles.container}>
@@ -128,7 +154,7 @@ const Groups = ({ route }) => {
                         source={{ uri: item.groupImageFilename }} // Provide the image URL
                         style={styles.selectedImage} // Adjust the dimensions as needed
                       />
-                     <TouchableOpacity onPress={handleDeleteGroup}>
+                     <TouchableOpacity onPress={() => handleDeleteGroup(groupId)}>
                        <Image style={styles.trashIcon}
                           source={require('travel-app/assets/icons/Trash_duotone_line.png')}
                         />  
