@@ -19,6 +19,7 @@ import People from '../screens/People';
 import Messages from '../screens/Messages';
 import ActivityRecommendations from '../screens/activityRecommendations';
 import CreateGroup from '../screens/createGroup';
+import EditProfile from '../screens/editProfile'
 import { useLoadFonts, fonts } from './FontLoader';
 
 const BottomNavBar = createBottomTabNavigator();
@@ -28,6 +29,8 @@ const GroupStack = createNativeStackNavigator();
 const MessagesStack = createNativeStackNavigator();
 const PeopleStack = createNativeStackNavigator();
 
+
+
 const HomeStackTab = () => {
     return(
         <HomeStack.Navigator initialRouteName="HomeScreen">
@@ -36,7 +39,7 @@ const HomeStackTab = () => {
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
-         <HomeStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
+         {/* <HomeStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/> */}
       </HomeStack.Navigator>
     )
 }
@@ -44,7 +47,7 @@ const HomeStackTab = () => {
 const ItineraryStackTab = () => {
     return(
         <ItineraryStack.Navigator initialRouteName="Itineraries">
-            <ItineraryStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
+            <ItineraryStack.Screen name="ItinerariesScreen" component={Itineraries} options={{headerShown: false}}/>
             <ItineraryStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} options={{headerShown: false}} />
             <ItineraryStack.Screen name="MoreInformation" component={MoreInformation} options={{headerShown: false}} />
       </ItineraryStack.Navigator>
@@ -54,7 +57,7 @@ const ItineraryStackTab = () => {
 const GroupsStackTab = () => {
     return(
         <GroupStack.Navigator initialRouteName="Groups">
-         <GroupStack.Screen name="Groups" component={Groups} options={{headerShown: false}}/>
+         <GroupStack.Screen name="GroupsScreen" component={Groups} options={{headerShown: false}}/>
          <GroupStack.Screen name="CreateGroup" component={CreateGroup} options={{headerShown: false}}/>
       </GroupStack.Navigator>
     )
@@ -63,15 +66,16 @@ const GroupsStackTab = () => {
 const MessagesStackTab = () => {
     return(
         <MessagesStack.Navigator initialRouteName="Messages">
-         <MessagesStack.Screen name="Messages" component={Messages} options={{headerShown: false}}/>
+         <MessagesStack.Screen name="MessagesScreen" component={Messages} options={{headerShown: false}}/>
       </MessagesStack.Navigator>
     )
 }
 const PeopleStackTab = () => {
     return(
         <PeopleStack.Navigator initialRouteName="People">
-         <PeopleStack.Screen name="People" component={People} options={{headerShown: false}}/>
+         <PeopleStack.Screen name="PeopleScreen" component={People} options={{headerShown: false}}/>
          <PeopleStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}}/>
+         <PeopleStack.Screen name="EditProfile" component={EditProfile} options={{headerShown: false}}/>
       </PeopleStack.Navigator>
     )
 }

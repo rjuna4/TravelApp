@@ -2,62 +2,20 @@ import { ImageBackground, StyleSheet, Text, View, Image, ScrollView, TouchableOp
 import React, {Component, useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { useLoadFonts, fonts } from '../components/FontLoader';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({route}) => {
   const navigation = useNavigation();
-  const [selectedProfilePicture, setSelectedProfilePicture] = useState(null);
-  const [selectedHeaderPicture, setSelectedHeaderPicture] = useState(null);
-
-  const pickProfilePicture = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-    });
-
-    if (!result.canceled) {
-        setSelectedProfilePicture(result.uri);
-    }
-  }
-
-  const pickHeaderPicture = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-    });
-
-    if (!result.canceled) {
-        setSelectedHeaderPicture(result.uri);
-    }
-  }
-
+  useLoadFonts(); 
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={pickHeaderPicture} style={styles.headerPictureContainer}>
-        {selectedHeaderPicture ? (
-            <ImageBackground
-            style={styles.selectedHeaderPicture}
-            source={{ uri: selectedHeaderPicture }} />
-        ) : (
-          <Image style={styles.cameraIcon}
-            source={require('travel-app/assets/icons/camera.png')} />
-        )}
-        
+     
+      <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+        <Image style={styles.editIcon}
+          source={require('travel-app/assets/icons/Edit_fill.png')} />
       </TouchableOpacity>
       <View>
-        <TouchableOpacity onPress={pickProfilePicture} style={styles.profilePictureContainer}>
-            {selectedProfilePicture ? (
-                <Image style={styles.selectedProfilePicture} source={{uri: selectedProfilePicture }} />
-            ) : (
-                <Image style={styles.cameraIcon}
-                source={require('travel-app/assets/icons/camera.png')}
-            />   
-            )}
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('ProfileSettings')}>
           <Image
             style={styles.settingsIcon}
@@ -222,6 +180,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 60,
     zIndex: 2,
+    tintColor: '#FFFFFF',
   },
   listView: {
     flexDirection: 'row',
@@ -282,4 +241,10 @@ const styles = StyleSheet.create({
   bottomSpace: {
     marginBottom: 40,
   },
+  // editIcon: {
+  //   width: 35,
+  //   height: 35,
+  //   top: 100,
+  //   left: 50,
+  // }
 });

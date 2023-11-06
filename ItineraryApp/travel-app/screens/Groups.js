@@ -3,10 +3,16 @@ import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/
 import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, FlatList, useColorScheme, View, TouchableOpacity, Image, ImageBackground} from 'react-native';
 import HeaderBanner from '../components/HeaderBanner';
 import CreateGroup from './createGroup';
+import ConfirmationModal from '../components/ConfirmationModal';
 import { fonts } from '../components/FontLoader';
 const User = require('../models/userModel')
 //const mongoose = require('mongoose')
 //const ObjectId = mongoose.Types.ObjectId
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import  { jwtDecode } from 'jwt-decode';
+import { MongoExpiredSessionError } from 'mongodb';
+import { decode } from 'base-64';
+
 
 const Groups = ({ route }) => {
     const navigation = useNavigation();
@@ -14,33 +20,42 @@ const Groups = ({ route }) => {
     //console.log("groupData on groups screen: ", groupData);
     const [updatedGroupData, setUpdatedGroupData] = useState(groupData);
     const [userGroups, setUserGroups] = useState([]);
-
-    // useEffect(() => {
-    //   // This effect will be triggered whenever groupData changes.
-    //   setUpdatedGroupData(groupData);
-    // }, [groupData]);
+    const [showModal, setShowModal] = useState(false);
 
     // useEffect(() => {
     //   const userId = '6386857fce851928b24c6b4f';
     //   fetchUserGroupsCreated(userId)
-    //   //   .then((data) => {
-    //   //     setUserGroups(data);
-    //   //   })
-    //   //   .catch((error) => {
-    //   //     console.error(error);
-    //   //   })
-    //   // setUpdatedGroupData(groupData);
-    // }, [groupData]);
+    //   .then((data) => {
+    //     setUserGroups(data);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+    // }, []);
 
     useEffect(() => {
-      const userId = '6386857fce851928b24c6b4f';
-      fetchUserGroupsCreated(userId)
-      .then((data) => {
-        setUserGroups(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      const fetchData = async () => {
+        try {
+          const jwt = await getJWT();
+          console.log("jwt in useEffect: ", jwt)
+          if (jwt) {
+            const tokenParts = jwt.split('.');
+            console.log("tokenParts: ", tokenParts);
+            if (tokenParts.length === 3) {
+              const payload = decode(tokenParts[1]);
+              const decodedToken = JSON.parse(payload);
+              console.log('decodedToken: ', decodedToken);
+              const userId = decodedToken.id;
+              console.log('userId: ', userId);
+              const groups = await fetchUserGroupsCreated(userId);
+              setUserGroups(groups);
+            }
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      fetchData();
     }, []);
 
 
@@ -52,27 +67,37 @@ const Groups = ({ route }) => {
         })
     }, [])
 
-    async function getUserIdByEmail(username) {
+   
+
+    const getJWT = async () => {
       try {
-        const user = await User.findOne({ username });
-        if (user) {
-          const userId = user._id;
-          return userId;
-        } else {
-          return null;
-        }
+        const jwt = await AsyncStorage.getItem('token');
+        console.log("jwt in getJWT: ", jwt)
+        return jwt;
       } catch (error) {
-        console.error(error);
-        throw error;
-      }
+        console.error("Error retrieving JWT: ", error);
+        return null;
+      } 
     }
 
     async function fetchUserGroupsCreated(userId) {
       try {
-        const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${userId}`);
+        const jwt = await getJWT();
+        console.log("token in fetchUserGroups", jwt);
+        if (!jwt) {
+          return null;
+        }
+        const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${jwt}`,
+          }
+        });
+
         if (response.status === 200) {
+          console.log("response in fetchUserGroups: ", response);
           const data = await response.json();
-          console.log("data: ", data);
+          console.log("data in fetchUserGroups: ", data);
           return data;
         } else {
           console.error("Error response: ", response);
@@ -85,10 +110,8 @@ const Groups = ({ route }) => {
     }
     console.log('userGroups:', userGroups);
 
-    const groupId = '65430d2a06dd93511c2dc226';
-    //const groupIdObject = new ObjectId(groupIdString)
-
     async function handleDeleteGroup(groupId) {
+      console.log("groupId in deletegroup: ", groupId);
       try {
         const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${groupId}`, {
           method: 'DELETE',
@@ -99,6 +122,7 @@ const Groups = ({ route }) => {
         if (response.status === 200) {
           const updatedUserGroups = userGroups.filter((group) => group._id !== groupId);
           setUserGroups(updatedUserGroups);
+          setShowModal(false);
         } else {
           console.error("Error deleting group clientside");
         }
@@ -107,25 +131,16 @@ const Groups = ({ route }) => {
         }
       };
 
-      async function updateGroupsCreatedData(groupId, updatedData) {
+
+      const handleCancel = () => {
+        setShowModal(false);
+      }
+
+      const saveTokenToStorage = async (token) => {
         try {
-          const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${groupId}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedData)
-          });
-          if (response.status === 200) {
-            const updatedGroup = await response.json();
-            return updatedGroup;
-          } else {
-              const errorData = await response.json();
-              throw new Error(`Error updating group: ${errorData.message}`)
-          }
+          await AsyncStorage.setItem('token', token);
         } catch (error) {
-          console.error("Network request error: ", error);
-          throw error;
+          console.error('Error saving token to storage: ', error);
         }
       }
 
@@ -135,7 +150,10 @@ const Groups = ({ route }) => {
             <HeaderBanner heading = "Groups" style={styles.banner}>
             </HeaderBanner>
             <View>
-              <TouchableOpacity onPress={() => navigation.navigate('CreateGroup', {groupData: groupData})}>
+              <TouchableOpacity onPress={() => navigation.navigate('CreateGroup', {
+                                                groupData: groupData, 
+                                                groupId: item._id,
+                                                fetchGroupData: fetchUserGroupsCreated})}>
                 <Image style={styles.addButton}
                   source={require('travel-app/assets/icons/add.png')}
                  />   
@@ -146,19 +164,54 @@ const Groups = ({ route }) => {
                   data={userGroups}
                   keyExtractor={(item) => item._id} // Replace with the actual unique key
                   renderItem={({ item }) => (
-                    <View style={{marginBottom: 40}}>
-                      <Text style={{color: '#FFFFFF'}}>{item.groupActivityDate}</Text>
-                      <Text style={{color: '#FFFFFF'}}>{item.groupActivityTime}</Text>
-                      <Text style={styles.activityTitle}>{item.groupTitle}</Text>
-                      <Image
+                    <View style={{display: 'flex', flexDirection: 'row', marginBottom: 20}}>
+                       <Image
                         source={{ uri: item.groupImageFilename }} // Provide the image URL
                         style={styles.selectedImage} // Adjust the dimensions as needed
                       />
-                     <TouchableOpacity onPress={() => handleDeleteGroup(groupId)}>
+                      
+                      <View style={{display: 'flex', flexDirection: 'column'}}>
+                        <Text style={styles.activityTitle}>{item.groupTitle}</Text>
+                        <View style={{display: 'flex', flexDirection: 'row'}}>
+                            <Image style={styles.dateIcon}
+                            source={require('travel-app/assets/icons/date.png')}
+                            />   
+                             <Text style={{color: '#D9D9D9', fontSize: 16, fontFamily: fonts.outfitRegular, marginTop: 15, marginLeft: 5}}>{item.groupActivityDate}</Text>
+                        </View>
+                        <View style={{display: 'flex', flexDirection: 'row'}}>
+                            <Image style={styles.timeIcon}
+                            source={require('travel-app/assets/icons/time.png')}
+                            />   
+                            <Text style={{color: '#D9D9D9', fontSize: 16, fontFamily: fonts.outfitRegular, marginTop: 15, marginLeft: 5}}>{item.groupActivityTime}</Text>
+                          </View>
+                      </View>
+                     {/* <TouchableOpacity onPress={() => handleDeleteGroup(item._id)}> */}
+                     <TouchableOpacity onPress={() => navigation.navigate('CreateGroup', {
+                                      groupData: groupData,
+                                      groupId: item._id,
+                                      fetchGroupData: fetchUserGroupsCreated,
+                                      userId: userId,
+                     })}>
+                       <Image style={styles.editIcon}
+                          source={require('travel-app/assets/icons/Edit_fill.png')}
+                        />  
+                     </TouchableOpacity>
+                     <View style={{display: 'flex', flexDirection: 'column', bottom: 120}}>
+         
+                     <TouchableOpacity onPress={() => setShowModal(true)}>
                        <Image style={styles.trashIcon}
                           source={require('travel-app/assets/icons/Trash_duotone_line.png')}
                         />  
                      </TouchableOpacity>
+                     </View>
+                     <View>
+                        <ConfirmationModal
+                            visible={showModal}
+                            message="Are you sure you want to delete this group?"
+                            onConfirm={() => handleDeleteGroup(item._id)}
+                            onCancel={handleCancel}
+                        />
+                     </View>
                     </View>
                   )}
               />
@@ -248,6 +301,12 @@ const styles = StyleSheet.create({
     trashIcon: {
       width: 30,
       height: 30,
+      marginTop: 130,
+    },
+    editIcon: {
+      width: 25,
+      height: 25,
+      marginTop: 130,
     },
     line: {
       borderBottomColor: '#818181',

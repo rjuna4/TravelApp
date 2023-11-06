@@ -186,7 +186,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/Seoul.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Seoul, South Korea
                     </Text>
@@ -199,7 +199,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                     <Image 
                     source={require('../assets/appimages/Tokyo.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Tokyo, Japan
                     </Text>
@@ -212,7 +212,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/Santorini.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Santorini, Greece
                     </Text>
@@ -225,7 +225,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/bangkok.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Bangkok, Thailand
                     </Text>
@@ -238,7 +238,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/newYork.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       New York, USA
                     </Text>
@@ -251,7 +251,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/barcelona.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Barcelona, Spain
                     </Text>
@@ -264,7 +264,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/bali.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Bali, Indonesia
                     </Text>

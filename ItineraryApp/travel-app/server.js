@@ -34,6 +34,9 @@ const querystring = require('querystring');
 
   //mongodb://localhost:27017/travelitineraryaccounts
 
+const morgan = require('morgan');
+app.use(morgan('combined'));
+
 mongoose.connect('mongodb+srv://PragyaK:772492@travelitineraryaccounts.yalqnry.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -159,23 +162,26 @@ app.post('/api/login', async (req, res) => {
 try {
     const user = await userModel.findOne({ username, password }).lean()
 
-    console.log('user: ', user)
+    console.log('User found in the database:', user);
+
     if(!user) {
         return res.json({ status: "error", error: "Invalid username/password" })
     }
     console.log("test1")
     if(bcrypt.compare(password, user.password)) {
         // the username password combo is successful
-        const token = jwt.sign(
-            { 
-                id: user._id, 
-                username: user.username
-            }, 
-            JWT_SECRET 
-        )
+        const payload = {
+            id: user._id,
+            username: user.username
+        };
+
+        console.log("JWT_SECRET in /api/login: ", JWT_SECRET);
+        const token = jwt.sign(payload, JWT_SECRET);
+
         console.log("token: ", token)
         return res.json({ status: "ok", data: token, user_id: user._id })
     }
+    console.log('Invalid username/password');
     res.json({ status: "error", data: "Invalid username/password" }) 
     } catch (error) {
     console.log("error", error)
@@ -184,6 +190,26 @@ try {
     console.log("test2")
     res.json({status: "ok"})
 })
+
+function authenticateJWT(req, res, next) {
+    const token = req.header('Authorization');
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    console.log("JWT_SECRET in authenticateJWT: ", JWT_SECRET);
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) {
+            console.log("403 error: ", err);
+            return res.status(403).json({ message: 'Forbidden'})
+        }
+        
+        req.user = user
+        next();
+    })
+}
+
+app.use(authenticateJWT);
 
 
     
@@ -237,15 +263,14 @@ app.post('/app/api/bookmarks', async (req, res) => {
 
 const userProfileSchema = new mongoose.Schema({
     userId: {type: String, requied: true, unique: true},
-    firstName: {type: String, required: true, unique: false},
-    lastName: {type: String, required: true, unique: false},
-    username: {type: String, required: true, unique: true},
-    pictures: [{type: String, required: true, unique: false}],
+    selectedProfilePicture: {type: String, required: true, unique: false},
+    selectedHeaderPicture: {type: String, required: false, unique: false},
     gender: {type: String, required: true, unique: false},
     age: {type: Number, required: true},
-    travelBucketList: [{listItem: {type: String, required: true}, 
+    travelBucketList: [{listItem: {type: String, required: false}, 
         listItemPicture: {type: String, required: false}}],
-    favoriteTravelLocation: {type: String, required: true},
+    favoriteTravelPhotos: [{listItem: {type: String, required: false}, 
+            listItemPicture: {type: String, required: false}}],
     }, { collection: 'User_Profiles' })
 
 const UserProfile = mongoose.model('UserProfile', userProfileSchema);
@@ -255,37 +280,30 @@ module.exports = UserProfile
 
 app.post('/api/userProfiles', async (req, res) => {
     console.log('inside user profiles');
-    const { userId, firstName, lastName, username, pictures, gender, age, travelBucketList, favoriteTravelLocation} = req.body
+    const { userId, profileData } = req.body;
+    const { selectedProfilePicture, selectedHeaderPicture, gender, age, travelBucketList, favoriteTravelPhotos} = profileData;
 
     console.log("request body: ", req.body)
 
-    console.log("userId: ", userId);
-    console.log("firstName: ", firstName);
-    console.log("lastName: ", lastName);
-    console.log("username: ", username);
-    console.log("pictures: ", pictures);
     console.log("gender: ", gender);
     console.log("age: ", age);
     console.log("travelBucketList: ", travelBucketList);
-    console.log("favoriteTravelLocation: ", favoriteTravelLocation);
+    console.log("favoriteTravelPhotos: ", favoriteTravelPhotos);
     
-    if (!userId || !firstName || !lastName || !username || !pictures || !gender || !age || !travelBucketList 
-        || !favoriteTravelLocation || typeof userId != 'string' || typeof firstName != 'string' || 
-        typeof lastName != 'string' || typeof username != 'string' || typeof pictures != [] ||
-        typeof gender != 'string' || typeof age != 'string' || typeof travelBucketList != [] || typeof favoriteTravelLocation != 'string') {
+    if (!userId || !selectedProfilePicture || !gender || !age || typeof userId != 'string' ||
+        typeof gender != 'string' || typeof age != 'string' || !Array.isArray(travelBucketList)
+        || !Array.isArray(favoriteTravelPhotos)) {
             return res.status(400).json( { status: 'error', error: 'Invalid or empty data'})
     }
 
     const userProfile = new UserProfile({
         userId,
-        firstName,
-        lastName,
-        username,
-        pictures,
+        selectedProfilePicture,
+        selectedHeaderPicture,
         gender,
         age,
         travelBucketList,
-        favoriteTravelLocation
+        favoriteTravelPhotos
     });
     try {
         await userProfile.save()

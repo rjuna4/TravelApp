@@ -1,4 +1,4 @@
-import React, { Component, useState, useLayoutEffect} from 'react';
+import React, { Component, useState, useLayoutEffect, useEffect} from 'react';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, useColorScheme, View, TouchableOpacity, Image} from 'react-native';
 import HeaderBanner from '../components/HeaderBanner';
@@ -13,11 +13,12 @@ import { format } from 'date-fns';
 const CreateGroup = ({route}) => {
     
     const navigation = useNavigation();
-    //const {groupData, setGroupData } = route.params;
-    //const {groupData} = route.params;
-    const {groupData: existingGroupData } = route.params || { groupData: [] };
+    const {groupData: existingGroupData, groupId, fetchGroupData, userId } = route.params || 
+                                                                    { groupData: [], 
+                                                                      groupId: null,
+                                                                      fetchGroupData: null,
+                                                                      userId: null }
     const [groupData, setGroupData] = useState(existingGroupData);
-    //const [newGroup, setNewGroup] = useState({ selectedImage: null, activityTitle: ''})
     const [selectedImage, setSelectedImage] = useState(null);
     const [activityTitle, setActivityTitle] = useState('');
  
@@ -27,6 +28,31 @@ const CreateGroup = ({route}) => {
     initialDate.setHours(0, 0, 0, 0);
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const [selectedStartTime, setSelectedStartTime] = useState(initialDate);
+
+    useEffect(() => {
+      if (groupId) {
+        console.log("groupId: ", groupId);
+        // Editing an existing group, so fetch its data using the provided function
+        if (fetchGroupData) {
+          fetchGroupData(userId) // Use the provided function
+            .then((data) => {
+              setGroupData(data);
+              // Update other state variables as needed
+              console.log("data on create groups screen: ", data)
+              setSelectedImage(data.groupImageFilename);
+              setActivityTitle(data.groupTitle);
+              // Update other state variables based on fetched data
+            })
+            .catch((error) => {
+              console.error(error);
+              // Handle any errors related to fetching group data
+            });
+        }
+      } else {
+        // Initialize the component for creating a new group
+        // You can leave this section empty for now
+      }
+    }, [groupId, fetchGroupData]);
 
     const handleDateChange = (event, selected) => {
       if (selected) {
@@ -141,10 +167,30 @@ const CreateGroup = ({route}) => {
         alert('Please fill in all the required fields.');
       }
     }
+
+    async function updateGroupsCreatedData(groupId, updatedData) {
+      try {
+        const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${groupId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedData)
+        });
+        if (response.status === 200) {
+          const updatedGroup = await response.json();
+          return updatedGroup;
+        } else {
+            const errorData = await response.json();
+            throw new Error(`Error updating group: ${errorData.message}`)
+        }
+      } catch (error) {
+        console.error("Network request error: ", error);
+        throw error;
+      }
+    }
+
     
-
-  
-
     useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
