@@ -90,7 +90,8 @@ const Groups = ({ route }) => {
         const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${userId}`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${jwt}`,
+            // 'Authorization': `Bearer ${jwt}`,
+            'Authorization': jwt,
           }
         });
 
@@ -150,10 +151,11 @@ const Groups = ({ route }) => {
             <HeaderBanner heading = "Groups" style={styles.banner}>
             </HeaderBanner>
             <View>
-              <TouchableOpacity onPress={() => navigation.navigate('CreateGroup', {
+              {/* <TouchableOpacity onPress={() => navigation.navigate('CreateGroup', {
                                                 groupData: groupData, 
                                                 groupId: item._id,
-                                                fetchGroupData: fetchUserGroupsCreated})}>
+                                                fetchGroupData: fetchUserGroupsCreated})}> */}
+              <TouchableOpacity onPress={() => navigation.navigate('CreateGroup')}>
                 <Image style={styles.addButton}
                   source={require('travel-app/assets/icons/add.png')}
                  />   

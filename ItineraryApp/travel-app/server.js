@@ -193,20 +193,22 @@ try {
 
 function authenticateJWT(req, res, next) {
     const token = req.header('Authorization');
+    console.log("token in authenticateJWT: ", token);
 
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
     console.log("JWT_SECRET in authenticateJWT: ", JWT_SECRET);
     jwt.verify(token, JWT_SECRET, (err, user) => {
+        console.log("token in verification: ", token);
         if (err) {
             console.log("403 error: ", err);
             return res.status(403).json({ message: 'Forbidden'})
         }
-        
         req.user = user
         next();
     })
+    console.log("token after verification: ", token);
 }
 
 app.use(authenticateJWT);
