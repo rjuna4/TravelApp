@@ -21,7 +21,12 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.example.myapp",
       "supportsApplePay": true,
-      "usesAppleMaps": true
+      "usesAppleMaps": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location to display users nearby you whom you can interact with.",
+        "NSLocationAlwaysUsageDescription": "We need your location to display users nearby you whom you can interact with."
+      }
+  
     },
     "android": {
       "adaptiveIcon": {

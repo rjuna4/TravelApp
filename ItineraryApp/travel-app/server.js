@@ -264,7 +264,7 @@ app.post('/app/api/bookmarks', async (req, res) => {
 })
 
 const userProfileSchema = new mongoose.Schema({
-    userId: {type: String, requied: true, unique: true},
+    userId: {type: String, requied: true, unique: false},
     selectedProfilePicture: {type: String, required: true, unique: false},
     selectedHeaderPicture: {type: String, required: false, unique: false},
     gender: {type: String, required: true, unique: false},
@@ -338,11 +338,11 @@ app.get('/api/userProfiles/:userId', async (req, res) => {
 
 
 const userCreatedGroupsSchema = new mongoose.Schema({
-    userId: {type: String, required: true, unique: false},
-    groupImageFilename: {type: String, required: true, unique: false },
-    groupTitle: { type: String, required: true, unique: false },
-    groupActivityDate: { type: String, required: true, unique: false},
-    groupActivityTime: { type: String, required: true, unique: false},
+    userId: {type: String, required: true},
+    groupImageFilename: {type: String, required: true },
+    groupTitle: { type: String, required: true},
+    groupActivityDate: { type: String, required: true},
+    groupActivityTime: { type: String, required: true},
   }, { collection: 'User_CreatedGroups' });
   
   const UserGroupsCreated = mongoose.model('UserGroup', userCreatedGroupsSchema);
@@ -388,6 +388,7 @@ app.post('/api/createdGroups', async (req, res) => {
         console.log("response: " + res)
     } catch(error) {
         if (error.code === 11000) {
+            console.log("11000 error: ", error)
             return res.status(400).json( {status: 'error', error: 'Group could not be saved' })
         }
         console.log("error: " + error)
