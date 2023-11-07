@@ -3,10 +3,16 @@ import React, { Component, useState, useLayoutEffect} from 'react';
 import HeaderBanner from '../components/HeaderBanner';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Itineraries from './Itineraries';
+import { fonts } from '../components/FontLoader';
+import * as ImagePicker from 'expo-image-picker';
+import { format } from 'date-fns';
 
-const CreateItinerary = ({navigation}) => {
-
+const CreateItinerary = ({route, navigation}) => {
+    const {itineraryData: existingItineraryData } = route.params || { itineraryData: [] };
+    const [itineraryData, setItineraryData] = useState(existingItineraryData);
     const [title, setTitle] = useState('');
+    const [selectedImage, setSelectedImage] = useState(null);
     const [selectedDates, setSelectedDates] = useState([]);
     const handleDateChange = (date) => {
         // Implement logic to update selectedDates
@@ -15,24 +21,24 @@ const CreateItinerary = ({navigation}) => {
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     
-    const onChange = (event, selectedDate) => {
-        if (event.type === 'set' && selectedDate) {
-            if (startDate && selectedDate.toDateString() === startDate.toDateString()) {
+    const onChangeDate = (event, selectedDates) => {
+        if (event.type === 'set' && selectedDates) {
+            if (startDate && selectedDates.toDateString() === startDate.toDateString()) {
                 // If the user selects the start date again, reset it to null
                 setStartDate(null);
         } else if (!startDate) {
             // Set the start date
-            setStartDate(selectedDate);
-            setSelectedDates([selectedDate]);
-        } else if (selectedDate > startDate) {
+            setStartDate(selectedDates);
+            setSelectedDates([selectedDates]);
+        } else if (selectedDates > startDate) {
             // Set the end date if it's greater than the start date
-            setEndDate(selectedDate);
-            setSelectedDates(getDatesInRange(startDate, selectedDate));
+            setEndDate(selectedDates);
+            setSelectedDates(getDatesInRange(startDate, selectedDates));
         } else {
             // Clear the start and end dates if a new start date is selected
-            setStartDate(selectedDate);
+            setStartDate(selectedDates);
             setEndDate(null);
-            setSelectedDates([selectedDate]);
+            setSelectedDates([selectedDates]);
         }
 
         // if (!startDate || !endDate) {
@@ -62,15 +68,17 @@ const CreateItinerary = ({navigation}) => {
     const CustomDate = ({ date, startDate, endDate }) => {
         const isInRange = date >= startDate && date <= endDate;
         const isSelected = date === startDate || date === endDate;
+        return (
         <View
             style={{
                 backgroundColor: isInRange ? 'blue' : 'transparent',
-                borderRadius: isSelected ? 15 : 0, // Add border radius for selected dates
+                borderRadius: isSelected ? 15 : 0,
                 padding: 5,
             }}
             >
         <Text style={{ color: isSelected ? 'white' : 'black' }}>{date.getDate()}</Text>
         </View>
+        )
     }
 
     const getDatesInRange = (start, end) => {
@@ -83,10 +91,94 @@ const CreateItinerary = ({navigation}) => {
         return dates;
       };
 
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setSelectedImage(result.uri);
+        }
+    }
+
+    const saveItinerary = () => {
+      if (selectedImage && title) {
+        //const formattedDate = format(selectedDate, 'MM-dd-yyyy')
+        //const formattedTime = format(selectedStartTime, 'HH:mm')
+        const newItinerary = {
+          // selectedImage,
+          // title,
+          //selectedDate: formattedDate,
+          //selectedStartTime: formattedTime,
+          selectedImage,
+          title,
+        }
+        const updatedItineraryData = [...itineraryData, newItinerary];
+        //console.log(updatedItineraryData);
+        setSelectedImage(null);
+        setTitle('');
+        setItineraryData(updatedItineraryData);
+        navigation.navigate('Itineraries', { 
+          itineraryData: updatedItineraryData, 
+          //selectedDates: selectedDates,
+          //selectedStartTime: selectedStartTime });
+        //console.log(updatedItineraryData)
+      });
+      }
+    }
+    
+
+    async function saveCreatedToDatabase() {
+      if (selectedImage && title && selectedDates) {
+         formattedDate = format(selectedDates, 'MM-dd-yyyy');
+        //const formattedTime = format(selectedStartTime, 'HH:mm');
+        const newItinerary = {
+          itineraryImageFileName: selectedImage,
+          itineraryTitle: title,
+          itineraryStartDate: startDate,
+          itineraryEndDate: endDate,
+        };
+
+        try {
+          const response = await fetch('http://172.20.10.7:8082/api/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: '6386857fce851928b24c6b4f',
+              ...newItinerary,
+            }),
+          });
+    
+          if (response.status === 200) {
+            alert('Itinerary saved successfully');
+          } else {
+            const data = await response.json();
+            alert(`Error: ${data.error}`);
+          }
+        } catch (error) {
+          console.error(error);
+          alert('An error occurred while saving the .');
+        }
+      } else {
+        alert('Please fill in all the required fields.');
+      }
+    }
+
     return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('Itineraries')}>
+                <Image style={styles.backButton}
+                  source={require('travel-app/assets/icons/Refund_back.png')}
+                 />   
+        </TouchableOpacity>
         <HeaderBanner heading = "Create Itinerary" style={styles.banner}>
         </HeaderBanner>
+        <View>
         <TextInput
         placeholder="Name Your Itinerary"
         placeholderTextColor="#FFFFFF"
@@ -94,6 +186,21 @@ const CreateItinerary = ({navigation}) => {
         onChangeText={setTitle}
         style={{ fontSize: 25, borderBottomWidth: 1, margin: 20, textAlign: "center", color: '#FFFFFF', paddingBottom: 10 , borderColor: "#FFFFFF" }}
         />
+        </View>
+        <View>
+        <View style={styles.imageContainer}>
+                    <TouchableOpacity onPress={pickImage}>
+                        {selectedImage ? (
+                            <Image style={styles.selectedImage} source={{uri: selectedImage }} />
+                        ) : (
+                            <Image style={styles.cameraIcon}
+                            source={require('travel-app/assets/icons/camera.png')}
+                        />   
+                        )}
+                    </TouchableOpacity>
+                  </View>
+        </View>
+
         <Text style={styles.text}>
             Select the dates for your trip:
         </Text>
@@ -107,7 +214,7 @@ const CreateItinerary = ({navigation}) => {
           mode="date"
           is24Hour={true}
           display="default"
-          onChange={onChange}
+          onChange={onChangeDate}
           minimumDate={new Date()} // Disable past dates
           maximumDate={new Date('2024-12-31')} // Limit to the end of 2024
           locale="en_US" // Customize the locale as needed
@@ -125,14 +232,9 @@ const CreateItinerary = ({navigation}) => {
         
         </View>
 
-        <TouchableOpacity 
-        style={styles.save}
-        title="Save Itinerary"
-        onPress={() => {
-            // Implement logic to save the itinerary
-            // You can use the 'title' and 'selectedDates' state here
-        }}
-        />
+        <TouchableOpacity style={styles.saveButton} onPress={saveItinerary}>
+              <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitMedium, fontSize: 18}}>Save</Text>
+            </TouchableOpacity>
     </View>
     );
 };
@@ -145,7 +247,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#232020",
         position: 'relative'
       },
-      text: {
+    text: {
         fontSize: 20,
         color: '#FFFFFF',
         margin: 20
@@ -155,5 +257,41 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         width: 60,
         height: 30
+    },
+    backButton: {
+      width: 30,
+      height: 30,
+      marginTop: 50,
+      marginLeft: 15,
+    },
+    imageContainer: {
+      width: 328,
+      height: 186,
+      borderRadius: 4,
+      backgroundColor: '#D9D9D9',
+      alignSelf: "center",
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    selectedImage: {
+      width: 328,
+      height: 186,
+      borderRadius: 4,
+    },
+    cameraIcon: {
+        width: 70,
+        height: 60,
+        zIndex: 2
+    },
+    saveButton: {
+      backgroundColor: '#57C2AF',
+      width: 114,
+      height: 37,
+      borderRadius: 22,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: "center",
+      marginBottom: 200,
     }
+
 })

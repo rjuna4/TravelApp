@@ -48,19 +48,21 @@ const handleScroll = Animated.event(
 { useNativeDriver: false}
 );
 
+const {itineraryData,} = route.params || {itineraryData: [] };
+
 const [myTripsContent, setContentArray] = useState([
-  {
-    id: 1,
-    title: 'Indonesia Trip',
-    imageSource: require('../assets/appimages/Indonesia.png'),
-    date: 'June 14th - June 24th',
-  },
-  {
-    id: 2,
-    title: 'Europe Trip',
-    imageSource: require('../assets/appimages/Europe.png'),
-    date: 'July 27th - August 13th',
-  },
+  // {
+  //   id: 1,
+  //   title: 'Indonesia Trip',
+  //   imageSource: require('../assets/appimages/Indonesia.png'),
+  //   date: 'June 14th - June 24th',
+  // },
+  // {
+  //   id: 2,
+  //   title: 'Europe Trip',
+  //   imageSource: require('../assets/appimages/Europe.png'),
+  //   date: 'July 27th - August 13th',
+  // },
   // add new object
 ]);
 
@@ -86,10 +88,10 @@ const changeTab = (tabNum) => {
 useLoadFonts();
 
 const [searchQuery, setSearchQuery] = useState('');
-const [filteredResults, setFilteredResults] = useState([...myTripsContent]);
+const [filteredResults, setFilteredResults] = useState([...itineraryData]);
 
 const handleSearch = () => {
-  const results = myTripsContent.filter((content) =>
+  const results = itineraryData.filter((content) =>
     content.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
   setFilteredResults(results);
@@ -104,9 +106,8 @@ const [isMyTripsActive, setMyTripsActive] = useState(false);
             <HeaderBanner heading = "Itineraries" style={styles.banner}>
               <View style={styles.iconContainer}>
                   <TouchableOpacity
-                    onPress={() => {navigation.navigate("CreateItinerary")
-                    }}
-                  >
+                    onPress={() => navigation.navigate("CreateItinerary", {
+                      itineraryData: itineraryData})}>
                     <Image
                       source={require('../assets/appimages/Add_round.png')}
                       resizeMode='contain'
@@ -116,9 +117,8 @@ const [isMyTripsActive, setMyTripsActive] = useState(false);
               </View>
             </HeaderBanner>
             <TouchableOpacity
-              onPress={() => {navigation.navigate("CreateItinerary")
-              }}
-            >
+              onPress={() => navigation.navigate("CreateItinerary", {
+                itineraryData: itineraryData})}>
               <Image
                 source={require('../assets/appimages/Add_round.png')}
                 resizeMode='contain'
@@ -170,49 +170,42 @@ const [isMyTripsActive, setMyTripsActive] = useState(false);
             <SearchBar placeholder="Search My Itineraries" 
               onChangeText={setSearchQuery}
               value={searchQuery}
-              myTripsContent={myTripsContent}
+              //myTripsContent={myTripsContent}
+              itineraryData={itineraryData}
               handleSearch={handleSearch}
               >
               </SearchBar>
-              <View style={styles.cards}>
-                <ScrollView>
-                  {searchQuery
-                  ? filteredResults
-                  .filter((content) =>
-                    content.title.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                  .map((content, index) => (
-                    <View key={index}>
-                      <View key={index} style={{display: 'flex', width: 302, marginTop: 55, paddingBottom: 25, flexDirection: 'row', marginHorizontal: 20}}>
-                      <Image
-                        source={content.imageSource}
-                        style={{width: 209, height: 144, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium'}}
-                      />
-                      <View style={styles.itineraryText}>
-                        <Text style={{color: '#D9D9D9', fontSize: 18, alignSelf: 'center'}}>{content.title}</Text>
-                        <Text style={{fontSize: 16, color: '#D9D9D9', alignSelf: 'center', padding: 10,}}>{content.date}</Text>
-                      </View>
+                
+              <FlatList
+                style={{top: 60, left: 10, height: 550}}
+                data={itineraryData}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <View>
+                    <View style={{display: 'flex', flexDirection: 'row', marginBottom: 20}}>
+                      {item.selectedImage && (
+                        <Image style={styles.selectedImage}
+                              source={{uri: item.selectedImage}}
+                        />      
+                      )}
+                        <View>
+                          {item.title && (
+                            <Text style={styles.title}>{item.title}</Text>
+                          )}
+                          <View>
+                            <Image style={styles.dateIcon}
+                            source={require('travel-app/assets/icons/date.png')}
+                            />   
+                            {item.selectedDate && (
+                              <Text style={{color: '#D9D9D9', fontSize: 16, fontFamily: fonts.outfitRegular, marginTop: 15, marginLeft: 5}}>{item.selectedDate}</Text>
+                            )}
+                        </View>
+                        </View>
+                          </View>
+                      <View style={styles.line} />
                     </View>
-                    </View>
-                    ))
-                  : 
-                  myTripsContent.map((content, index) => (
-                    <View>
-                    <View key={index} style={{display: 'flex', width: 302, marginTop: 55, paddingBottom: 25, flexDirection: 'row', marginHorizontal: 20}}>
-                      <Image
-                        source={content.imageSource}
-                        style={{width: 209, height: 144, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium'}}
-                      />
-                      <View style={styles.itineraryText}>
-                        <Text style={{color: '#D9D9D9', fontSize: 18, alignSelf: 'center'}}>{content.title}</Text>
-                        <Text style={{fontSize: 16, color: '#D9D9D9', alignSelf: 'center', padding: 10,}}>{content.date}</Text>
-                      </View>
-                    </View>
-                     <View style={styles.separator} />
-                     </View>
-                  ))}
-                </ScrollView>
-              </View>
+                )}
+               />
           </View>
           ) : (
             <View>
@@ -270,7 +263,7 @@ const [isMyTripsActive, setMyTripsActive] = useState(false);
               />
         </View>
         
-        <View style={{marginTop: 100}}>
+        <View style={{marginTop: 60}}>
           <ScrollView >
             <Text style={{color: '#FFFFFF', fontSize: 20, marginTop: 55}}>Trending Destinations</Text>
           <View style={{height: 270, backgroundColor: '#000000', marginTop: 10}}>
@@ -432,23 +425,18 @@ const styles = StyleSheet.create({
 
   list: {
     position: 'absolute',
-    width: 390,
-    marginHorizontal: 11,
-    top: 140,
+    alignSelf: "center",
+    width: 350,
+    marginHorizontal: 15,
+    top: 50,
     zIndex: 2,
   },
 
   searchBar: {
     borderRadius: 10,
   },
-
-  heading: {
-    color: '#FFFFFF', 
-    fontSize: 20,
-    fontFamily: fonts.outfitBold,
-  },
   
-  locationTitle: {}
+  locationTitle: {
     color: '#00F3C8', 
     fontSize: 18, 
     alignSelf: 'flex-start', 
@@ -473,12 +461,20 @@ const styles = StyleSheet.create({
     top: 10,
     marginHorizontal: 55,
   },
-  activityImage: {
-    width: '85%',
-    height: 180,
-    borderRadius: 13,
-    marginHorizontal: 30,
-    top: 20
+  tab1: {
+    fontFamily: 'Outfit Medium',
+    fontSize: 20,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    top: 10,
+    marginHorizontal: 55,
+  },
+  selectedImage: {
+    width: 209,
+    height: 144,
+    borderRadius: 4,
+    marginLeft: 10,
+    marginTop: 10,
   },
   name: {
     fontSize: 20,
@@ -514,21 +510,35 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1
   },
-  cards: {
-    marginTop: 25,
-  },
-  itineraryText: {
-    display: 'flex',
-    flexDirection: "column",
-    textAlign: "center",
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   separator: {
     height: 1,
     width: 380,
     alignSelf: "center",
     backgroundColor: '#818181'
-  }
+  },
+    line: {
+      borderBottomColor: '#818181',
+      width: 334,
+      borderBottomWidth: 1,
+    },
+    title: {
+      color: '#00F3C8',
+      fontSize: 20,
+      fontFamily: fonts.outfitMedium,
+      marginTop: 10,
+      marginLeft: 10,
+    },
+    dateIcon: {
+      width: 20,
+      height: 20,
+      marginTop: 15,
+      marginLeft: 8,
+    },
+    timeIcon: {
+      width: 20,
+      height: 20,
+      marginTop: 15,
+      marginLeft: 8,
+    },
 })
 

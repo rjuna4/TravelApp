@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 30,
         marginLeft: 30,
-        top: 50
+        top: 50,
+        fontFamily: fonts.outfitBold
     }
 })
 
