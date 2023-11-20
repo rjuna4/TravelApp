@@ -10,6 +10,8 @@ import { Marker, Callout } from 'react-native-maps';
 
 const People = ({route}) => {
     const navigation = useNavigation();
+    const [location, setLocation] = useState(null);
+
       useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
@@ -49,9 +51,10 @@ const People = ({route}) => {
       //const backgroundPermissionGranted = await requestBackgroundLocationPermission();
       if (foregroundPermissionGranted) {
         Location.watchPositionAsync(
-          { accuracy: Location.Accuracy.BestForNavigation, timeInterval: 1000, distanceInterval: 10 },
+          { accuracy: Location.Accuracy.BestForNavigation, timeInterval: 1000000, distanceInterval: 10 },
           (location) => {
-            console.log("Location update: ", location);
+            // console.log("Location update: ", location);
+            setLocation(location);
           }
         )
       }
@@ -76,6 +79,7 @@ const People = ({route}) => {
             display: "flex", justifyContent: 'center', alignItems: 'center'}} onPress={() => requestForegroundLocationPermission()}>
                 <Text style={{color: "#000000", fontSize: 18}}>Track User Location</Text>
             </TouchableOpacity>
+            {location && (
             <MapView
               style={{width: '90%', height: '50%', left: '5%', top: '5%', borderRadius: 4 }}
               initialRegion={{
@@ -84,14 +88,16 @@ const People = ({route}) => {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
-            />
-            {/* <MapView.Marker
+            >
+            <Marker
                 coordinate={{
                   latitude: location.coords.latitude,
                   longitude: location.coords.longitude,
                 }}
                 title="User's Approximate Location"
-              /> */}
+              />
+          </MapView>
+          )}
         </View>
       </View>  
     )  

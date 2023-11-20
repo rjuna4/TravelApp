@@ -15,6 +15,7 @@
     "@react-navigation/bottom-tabs": "^6.5.8",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "@realm/react": "^0.6.1",
     "axios": "^1.5.0",
     "base-64": "^1.0.0",
     "date-fns": "^2.30.0",
@@ -23,23 +24,28 @@
     "expo-font": "~11.4.0",
     "expo-image-picker": "~14.3.2",
     "expo-location": "~16.1.0",
-    "expo-secure-store": "^12.5.0",
+    "expo-permissions": "~14.2.1",
+    "expo-secure-store": "~12.3.1",
     "expo-status-bar": "~1.6.0",
     "jwt-decode": "^4.0.0",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "react": "18.2.0",
-    "react-native": "0.72.5",
+    "react-native": "0.72.6",
     "react-native-datepicker": "^1.7.2",
     "react-native-dialog": "^9.3.0",
     "react-native-dialog-input": "^1.0.8",
     "react-native-google-places-autocomplete": "^2.5.1",
-    "react-native-maps": "^1.8.0",
+    "react-native-maps": "1.7.1",
     "react-native-modal": "^13.0.1",
-    "realm": "^12.2.1",
-    "expo-permissions": "~14.2.1"
+    "realm": "^12.3.0",
+    "expo-dev-client": "~2.4.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
+  },
+  "engines": {
+    "jsEngine": "metro"
   },
   "private": true
 }

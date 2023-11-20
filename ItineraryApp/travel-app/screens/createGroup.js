@@ -11,6 +11,32 @@ import greenMarker from 'travel-app/assets/icons/greenMarker.png'
 import { format } from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { decode } from 'base-64';
+//import Realm from "realm";
+import {createRealmContext} from '@realm/react'
+import { MongoClient } from 'mongodb-realm/browser';
+import * as FileSystem from 'expo-file-system'
+
+const GroupCreatedSchema = {
+  name: 'GroupCreated',
+  properties: {
+    userId: 'string',
+    groupImageFilename: 'string',
+    groupTitle: 'string',
+    groupActivityDate: 'string',
+    groupActivityTime: 'string',
+  },
+};
+
+//const app = new Realm.App({ id: 'travelapp-ernoi' });
+
+// const realm = new Realm({
+//   schema: [GroupCreatedSchema],
+//   path: 'your-realm-path.realm'
+// })
+
+// const RealmContext = createRealmContext({
+//   current: realm,
+// })
 
 const CreateGroup = ({route}) => {
     
@@ -31,6 +57,8 @@ const CreateGroup = ({route}) => {
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const [selectedStartTime, setSelectedStartTime] = useState(initialDate);
     const [userUserId, setUserId] = useState(null);
+
+
 
     useEffect(() => {
       const fetchData = async () => {
@@ -137,8 +165,13 @@ const CreateGroup = ({route}) => {
           groupActivityDate: formattedDate,
           groupActivityTime: formattedTime,
         };
-    
+
         try {
+          // realm.write(() => {
+          //   realm.create('GroupCreated', newGroup);
+          // })
+          // console.log("Group saved locally");
+
           const jwt = await getJWT();
           console.log("jwt in save group: ", jwt);
           //console.log("userId in saveGroup: ", userId);
@@ -230,6 +263,7 @@ const CreateGroup = ({route}) => {
     }
 
     return (
+      // <RealmContext.Provider value={realm}>
         <View style={styles.container}>
           <ScrollView>
           <View>
@@ -382,7 +416,7 @@ const CreateGroup = ({route}) => {
           </View>
           </ScrollView>
       </View>  
-    
+    // </RealmContext.Provider>
     )  
 }
 

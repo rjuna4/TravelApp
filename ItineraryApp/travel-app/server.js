@@ -16,7 +16,9 @@ const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'epiurfgiwfbjw!@#^&&*%%dsfiuwqopqsm'
 const querystring = require('querystring');
 //import UserGroupsCreated from 'groupsCreatedModel'
-
+app.use(bodyParser.json({ limit: '10mb' }));
+const multer = require('multer');
+  
 
   const userSchema = mongoose.Schema({
       fullName: {type: String, required: true, unique: false},
@@ -269,18 +271,28 @@ const userProfileSchema = new mongoose.Schema({
     selectedHeaderPicture: {type: String, required: false, unique: false},
     gender: {type: String, required: true, unique: false},
     age: {type: Number, required: true},
-    travelBucketList: [{listItem: {type: String, required: false}, 
-        listItemPicture: {type: String, required: false}}],
-    favoriteTravelPhotos: [{listItem: {type: String, required: false}, 
-            listItemPicture: {type: String, required: false}}],
+    travelBucketList: [Buffer],
+    favoriteTravelPhotos: [Buffer],
     }, { collection: 'User_Profiles' })
 
 const UserProfile = mongoose.model('UserProfile', userProfileSchema);
 
 module.exports = UserProfile
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Store uploaded files in the 'uploads' directory
+    },
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      cb(null, Date.now() + ext); // Rename the file with a unique name
+    },
+  });
 
-app.post('/api/userProfiles', async (req, res) => {
+  const upload = multer({storage: storage});
+
+
+app.post('/api/userProfiles', upload.array('travelBucketList', 10), upload.array('favoriteTravelPhotos', 10), async (req, res) => {
     console.log('inside user profiles');
     const { userId, profileData } = req.body;
     const { selectedProfilePicture, selectedHeaderPicture, gender, age, travelBucketList, favoriteTravelPhotos} = profileData;
@@ -291,10 +303,11 @@ app.post('/api/userProfiles', async (req, res) => {
     console.log("age: ", age);
     console.log("travelBucketList: ", travelBucketList);
     console.log("favoriteTravelPhotos: ", favoriteTravelPhotos);
+    const uploadedTravelBucketList = req.files.map(file => file.path);
+    const uploadedFavoriteTravelPhotos = req.files.map(file => file.path);
     
     if (!userId || !selectedProfilePicture || !gender || !age || typeof userId != 'string' ||
-        typeof gender != 'string' || typeof age != 'string' || !Array.isArray(travelBucketList)
-        || !Array.isArray(favoriteTravelPhotos)) {
+        typeof gender != 'string' || typeof age != 'string') {
             return res.status(400).json( { status: 'error', error: 'Invalid or empty data'})
     }
 
@@ -304,8 +317,8 @@ app.post('/api/userProfiles', async (req, res) => {
         selectedHeaderPicture,
         gender,
         age,
-        travelBucketList,
-        favoriteTravelPhotos
+        travelBucketList: uploadedTravelBucketList,
+        favoriteTravelPhotos: uploadedFavoriteTravelPhotos,
     });
     try {
         await userProfile.save()
@@ -313,13 +326,10 @@ app.post('/api/userProfiles', async (req, res) => {
             console.log("Save result:", result);
             res.status(200).json({ status: 'ok' });
           })
-        console.log("Profile info saved successfully: ", res)
-        console.log("response: " + res)
     } catch(error) {
         if (error.code === 11000) {
             return res.status(400).json( {status: 'error', error: 'Profile info could not be saved' })
         }
-        console.log("error: " + error)
         //throw error
         res.status(500).json({ status: 'error', error: 'Internal server error'})
     }

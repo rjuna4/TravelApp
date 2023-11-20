@@ -149,6 +149,7 @@ const Groups = ({ route }) => {
 
     return (
         <View style={styles.container}>
+          <ScrollView>
           <View>
             <HeaderBanner heading = "Groups" style={styles.banner}>
             </HeaderBanner>
@@ -258,6 +259,7 @@ const Groups = ({ route }) => {
              
             </View>
           </View>
+          </ScrollView>
       </View>  
     )  
 }

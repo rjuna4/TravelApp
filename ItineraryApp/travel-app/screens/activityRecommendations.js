@@ -16,7 +16,9 @@ const ActivityRecommendations = ({route}) => {
   // const {placeData, placeDetails} = route.params;
   // console.log("placeData: " + placeData);
   // console.log("placeDetails: " + placeDetails);
-  const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
+  const { ne_lat, ne_lng, sw_lat, sw_lng, activityType, placeData } = route.params;
+
+  // console.log("place data in Activity Recommendations: ", placeData);
 
   const toggleFilters = () => {
     setFiltersVisible(!isFiltersVisible);
@@ -36,10 +38,10 @@ const ActivityRecommendations = ({route}) => {
       const[clicked, setClicked] = useState(false);
       const[mainData, setMainData] = useState([])
       const[loading, setLoading] = useState(false)
-      //const[ne_lat, set_ne_lat] = useState(null);
-      //const[ne_lng, set_ne_lng] = useState(null);
-      //const[sw_lat, set_sw_lat] = useState(null);
-      //const[sw_lng, set_sw_lng] = useState(null);
+      //const[updated_ne_lat, set_updated_ne_lat] = useState(null);
+      //const[updated_ne_lng, set_updated_ne_lng] = useState(null);
+      //const[updated_sw_lat, set_updated_sw_lat] = useState(null);
+      //const[updated_sw_lng, set_updated_sw_lng] = useState(null);
       
       
         useLayoutEffect(() => {
@@ -49,19 +51,34 @@ const ActivityRecommendations = ({route}) => {
         }, []);
         useEffect(() =>  {
           setLoading(true);
+          if (placeData) {
+            setMainData(placeData);
+            setLoading(false);
+            return;
+          }
+          console.log("Before API Call in Activity Recs:", { ne_lat, ne_lng, sw_lat, sw_lng });
           getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
+            console.log("After API Call in Activity Recs:", {
+              ne_lat,
+              ne_lng,
+              sw_lat,
+              sw_lng,
+            });
           setMainData(data);
-          setInterval(() => {
+          // setInterval(() => {
+          // setLoading(false);
+          // }, 3000)
           setLoading(false);
-          }, 3000)
           })
           .catch((error) => {
             console.error("Error fetching data", error);
             setLoading(false);
           });
-        }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+          console.log("After API Call in Activity Recs:", { ne_lat, ne_lng, sw_lat, sw_lng });
+        }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType, placeData])
 
-    console.log("mainData: " + mainData);
+    // console.log("mainData: " + mainData);
+    console.log("lat/lng in Activity Recs:", { ne_lat, ne_lng, sw_lat, sw_lng });
   
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -72,52 +89,10 @@ const ActivityRecommendations = ({route}) => {
   
     const data = route?.params?.param
 
-
-
-    const [itineraryData, setItineraryData] = useState({
-      userId: '6386857fce851928b24c6b4f',
-      imageURL: data?.photo?.images?.medium?.url,
-      title: data?.name,
-      time: ''
-    })
-
-    console.log("description:  " + data?.description);
-    console.log("name: " + data?.name);
+    console.log("placeData: ", placeData);
+    console.log("description:  " + placeData[0]?.description);
+    console.log("name: " + placeData[0]?.name);
   
-
-
-    // async function sendItineraryToDatabase() {
-    //     if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
-    //       alert('Itinerary data does not exist');
-    //       return;
-    //     }
-    //     setItineraryData( {...itineraryData, imageURL: data?.photo?.images?.medium?.url} )
-    //     setItineraryData( {...itineraryData, title:  data?.name} )
-    //     await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
-    //       method: 'POST',
-    //       headers: {
-    //           'Content-Type': 'application/json',
-    //           'Accept': 'application/json'
-    //       }, 
-    //       body: JSON.stringify(bookmarkData)
-    //   }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-    //     data => {
-    //       //alert("data.errror: ", data.error)
-    //       if(data.error) {
-    //         alert("inside error")
-    //         setErrorMessage(data.error);
-    //         alert("data error: " + data.error)
-    //         console.log("error")
-    //       } else {
-    //           alert("inside else statement")
-    //             //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
-    //             alert("inside else statement")
-    //             console.log("inside else statement")
-    //         alert('Itinerary activity saved successfully');
-    //       }
-    //     }
-    //   )
-    // }
     return (
       <>
       <ScrollView>
@@ -136,11 +111,11 @@ const ActivityRecommendations = ({route}) => {
         </View>
           <SearchBar></SearchBar>
           <View>
-            <TouchableOpacity onPress={toggleFilters}>
+            {/* <TouchableOpacity onPress={toggleFilters}>
               <Image style={styles.filterIcon}
                 source ={require('travel-app/assets/icons/Filter.png')} 
               />
-            </TouchableOpacity>  
+            </TouchableOpacity>   */}
 
             <FiltersScreen visible={isFiltersVisible} onClose={toggleFilters} />
           </View>
@@ -149,28 +124,6 @@ const ActivityRecommendations = ({route}) => {
           />
          
             <View>
-                <Modal 
-                  animationType="slide"
-                  transparent={true}
-                  visible={isModalVisible}>
-                    <View style={styles.modalContainer}>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
-                    <Text style={[styles.text, {color:"#A067A5"}]}>Add to Itinerary</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('Iineraries')}>
-                    <Text style={[styles.text, {color:"#A067A5"}]}>Create new Itinerary</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>
-                    <Text style={[styles.text, {color:"red"}]}>Cancel</Text>
-                  </TouchableOpacity>
-                  </View>
-                </Modal>
-              {/* <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
-              <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View>
-                <Image style={styles.saveButton}
-                  source={require('travel-app/assets/icons/Bookmark_fill(1).png')}
-                 /> 
-              </TouchableOpacity> */}
             </View>
         
         <View>
@@ -182,7 +135,10 @@ const ActivityRecommendations = ({route}) => {
        <View style={styles.activitiesContainer}>
          {mainData?.length > 0 ? (
            <>
-           {mainData?.map((data, i) => (
+           {mainData?.map((data, i) => {
+            //  console.log("data in map: ", data); 
+
+             return (
              <ActivityContainer
                key={i}
                image={
@@ -194,7 +150,8 @@ const ActivityRecommendations = ({route}) => {
                location={data?.location_string}
                data={data}
              />  
-             ))}
+             );
+              })}
              </>
              ) : (
              <>
@@ -221,7 +178,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
-    marginBottom: 50
+    //marginBottom: 50
   },
   text: {
     fontFamily: 'ABeeZee-Regular',

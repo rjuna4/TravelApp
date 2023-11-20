@@ -4,6 +4,8 @@ import {useNavigation} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { useLoadFonts, fonts } from '../components/FontLoader';
 import { response } from 'express';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { decode } from 'base-64';
  
 
 const EditProfile = () => {
@@ -17,6 +19,7 @@ const EditProfile = () => {
   const [travelBucketList, setTravelBucketList] = useState([]);
   const [favoriteTravelPhotos, setFavoriteTravelPhotos] = useState([]);
   const [travelInterests, setTravelInterests] = useState('');
+  const [userUserId, setUserId] = useState(null);
   useLoadFonts();
 
   const pickProfilePicture = async () => {
@@ -60,19 +63,55 @@ const EditProfile = () => {
 
     if (!result.canceled) {
         if (list === 'favoriteTravelPhotos') {
-            setFavoriteTravelPhotos([...favoriteTravelPhotos, result.assets[0].uri]);
+            setFavoriteTravelPhotos([...favoriteTravelPhotos, result.uri]);
             console.log('favoriteTravelPhotos: ', favoriteTravelPhotos);
         } else if (list === 'travelBucketList') {
-            console.log('Selected Image URI:', result.assets[0].uri);
-            setTravelBucketList([...travelBucketList, result.assets[0].uri]);
+            console.log('Selected Image URI:', result.uri);
+            setTravelBucketList([...travelBucketList, result.uri]);
             console.log('travelBucketList:', travelBucketList);
         }
     }
+}
+
+  const getJWT = async () => {
+    try {
+      const jwt = await AsyncStorage.getItem('token');
+      console.log("jwt in getJWT: ", jwt)
+      return jwt;
+    } catch (error) {
+      console.error("Error retrieving JWT: ", error);
+      return null;
+    } 
   }
 
+//   useEffect(() => {
+    
+//     console.log('travelBucketList:', travelBucketList);
+//   }, [travelBucketList]);
+
+
   useEffect(() => {
-    console.log('travelBucketList:', travelBucketList);
-  }, [travelBucketList]);
+    const fetchData = async () => {
+      try {
+        const jwt = await getJWT();
+        if (jwt) {
+          const tokenParts = jwt.split('.');
+          console.log("tokenParts: ", tokenParts);
+          if (tokenParts.length === 3) {
+            const payload = decode(tokenParts[1]);
+            const decodedToken = JSON.parse(payload);
+            console.log('decodedToken: ', decodedToken);
+            const currentUserId = decodedToken.id;
+            console.log('currentUserId: ', currentUserId);
+            setUserId(currentUserId);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+    fetchData();
+  }, []);
 
 
   const renderImages = (imageList, list) => {
@@ -105,20 +144,34 @@ const EditProfile = () => {
             age,
             gender,
             travelBucketList,
-            favoriteTravelPhotos
+            favoriteTravelPhotos,
         }
 
         try {
+
+            const jwt = await getJWT();
+            console.log("jwt in save group: ", jwt);
+            //console.log("userId in saveGroup: ", userId);
+            if (!jwt) {
+              console.error("JWT is missing");
+              alert("JWT is missing");
+              return;
+            }
+
             const response = await fetch('http://172.20.10.7:8082/api/userProfiles', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': jwt,
                 },
                 body: JSON.stringify({
-                    userId: '6386857fce851928b24c6b4f',
+                    userId: userUserId,
                     profileData,
                 })
             });
+
+            const responseText = await response.text();
+            console.log('Response content:', responseText);
 
             console.log('response status: ', response.status);
 
@@ -392,8 +445,8 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       left: 100,
-      top: 100,
+      //top: 100,
       //left: 40,
-      //bottom: 300,
+      bottom: 300,
   }
 });

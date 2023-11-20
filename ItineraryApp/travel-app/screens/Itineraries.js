@@ -32,12 +32,17 @@ const Itineraries = ({route, data}) => {
     }, []);
     useEffect(() =>  {
       setLoading(true);
+      // console.log("Before API Call in Itineraries:", { ne_lat, ne_lng, sw_lat, sw_lng });
       getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
+      console.log("Start of new call");
+      console.log("After API Call in Itineraries:", { ne_lat, ne_lng, sw_lat, sw_lng });
       setMainData(data);
-      setInterval(() => {
+      // setInterval(() => {
+      // setLoading(false);
+      // }, 3000)
       setLoading(false);
-      }, 3000)
       })
+      
       }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
 
   const [scrollX, setScrollX] = useState(new Animated.Value(0));
@@ -47,19 +52,6 @@ const Itineraries = ({route, data}) => {
     { useNativeDriver: false}
   );
 
-//     const [date, setDate] = useState([   //pull from api
-//     {key: '1', name: 'Item 1'},
-//     {key: '2', name: 'Item 2'},
-//     {key: '3', name: 'Item 3'},
-//     {key: '4', name: 'Item 1'},
-//     {key: '5', name: 'Item 2'},
-//     {key: '6', name: 'Item 3'},
-//     {key: '7', name: 'Item 1'},
-//     {key: '8', name: 'Item 2'},
-//     {key: '9', name: 'Item 3'},
-//     {key: '10', name: 'Item 3'}
-
-// ])
 
 const [tabColor, changeColor] = useState("#00F3C8");
 const [tab2Color, changeColor2] = useState("#FFFFFF");
@@ -142,22 +134,56 @@ const changeTab = (tabNum) => {
                 }}
                 fetchDetails={true}
                 onPress={(data, details = null) => {
-                    console.log("data: ", data)
-                    console.error("data: " + data);
-                    console.log("details: ", details);
-                    console.error("details", details);
+                    // console.log("data: ", data)
+                    // console.error("data: " + data);
+                    // console.log("details: ", details);
+                    // console.error("details", details);
                     console.log(JSON.stringify(details?.geometry?.viewport));
-                    set_ne_lat(details?.geometry?.viewport?.northeast?.lat)
-                    set_ne_lng(details?.geometry?.viewport?.northeast?.lng)
-                    set_sw_lat(details?.geometry?.viewport?.southwest?.lat)
-                    set_sw_lng(details?.geometry?.viewport?.southwest?.lng)
+
+                    const locationDataNeLat = details?.geometry?.viewport?.northeast?.lat
+                    set_ne_lat(locationDataNeLat)
+                    console.log("new_ne_lat", locationDataNeLat)
+
+                    const locationDataNeLng = details?.geometry?.viewport?.northeast?.lng
+                    set_ne_lng(locationDataNeLng)
+                    console.log("new_ne_lng", locationDataNeLng)
+
+                    const locationDataSwLat = details?.geometry?.viewport?.southwest?.lat
+                    set_sw_lat(locationDataSwLat)
+                    console.log("new_sw_lat", locationDataSwLat)
+                    
+                    const locationDataSwLng = details?.geometry?.viewport?.southwest?.lng
+                    set_sw_lng(locationDataSwLng)
+                    console.log("new_sw_lng", locationDataSwLng)
+                    
+                    set_ne_lat((locationDataNeLat) => {
+                      console.log("ne_lat:", locationDataNeLat);
+                      return locationDataNeLat;
+                    });
+                    set_ne_lng((locationDataNeLng) => {
+                      console.log("ne_lng:", locationDataNeLng);
+                      return locationDataNeLng;
+                    });
+                    set_sw_lat((locationDataSwLat) => {
+                      console.log("sw_lat:", locationDataSwLat);
+                      return locationDataSwLat;
+                    });
+                    set_sw_lng((locationDataSwLng) => {
+                      console.log("sw_lng:", locationDataSwLng);
+                      return locationDataSwLng;
+                    });
+                    console.log("ne_lat before navigating: ", locationDataNeLat);
+                    console.log("ne_lng before navigating: ", locationDataNeLng);
+                    console.log("sw_lat before navigating: ", locationDataSwLat);
+                    console.log("sw_lng before navigating: ", locationDataSwLng);
                     // navigation.navigate('ActivityRecommendations', {placeData: data, placeDetails: details});
                     navigation.navigate('ActivityRecommendations', {
-                      ne_lat,
-                      ne_lng,
-                      sw_lat,
-                      sw_lng,
-                      activityType,
+                      ne_lat: locationDataNeLat,
+                      ne_lng: locationDataNeLng,
+                      sw_lat: locationDataSwLat,
+                      sw_lng: locationDataSwLng,
+                      activityType: activityType,
+                      placeData: mainData,
                     });
                 }}
                 onFail={error => console.log(error)}

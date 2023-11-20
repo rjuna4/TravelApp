@@ -44,17 +44,19 @@ const MoreInformation = ({route}) => {
       const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
 
 
-      useEffect(() =>  {
-        getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
-        setMainData(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data", error);
-          setLoading(false);
-        });
-      }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+      // useEffect(() =>  {
+      //   console.log("Before API Call in More Info:", { ne_lat, ne_lng, sw_lat, sw_lng });
+      //   getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
+      //   setMainData(data);
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error fetching data", error);
+      //     setLoading(false);
+      //   });
+      //   console.log("After API Call in More Info:", { ne_lat, ne_lng, sw_lat, sw_lng });
+      // }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
 
-  console.log("mainData on more information screen: " + mainData);
+  // console.log("mainData on more information screen: " + mainData);
 
 
   const data = route?.params?.param
@@ -142,8 +144,8 @@ const MoreInformation = ({route}) => {
       time: ''
     })
 
-    console.log("description:  " + data?.description);
-    console.log("name: " + data?.name);
+    // console.log("description:  " + data?.description);
+    // console.log("name: " + data?.name);
     // async function sendItineraryToDatabase() {
     //     if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
     //       alert('Itinerary data does not exist');
@@ -181,9 +183,10 @@ const MoreInformation = ({route}) => {
 
     return (
       <>
-      <ScrollView style={{height: 1000}}>
+      {/* <ScrollView style={{height: 1000}}> */}
         <StatusBar style="dark-content" />
         <View style={styles.container}>
+          <ScrollView style={{height: 2000}}>
           <Image style={styles.activityImage}
             source={{ uri: data?.photo?.images?.large?.url }}
           />
@@ -297,8 +300,9 @@ const MoreInformation = ({route}) => {
               <Text style={styles.price}>{data?.price}</Text>
               {/*<Text style={styles.hours}>{data?.hours}</Text> */}
             </View>
+            </ScrollView>
         </View>
-      </ScrollView>  
+      {/* </ScrollView>   */}
       </>
     );
   }
@@ -306,7 +310,7 @@ const MoreInformation = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 800,
+    //height: 800,
     backgroundColor: '#322F2F',
   },
   text: {
