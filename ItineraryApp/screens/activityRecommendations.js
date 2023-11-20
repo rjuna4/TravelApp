@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   text: {
-    fontFamily: 'ABeeZee-Regular',
+    fontFamily: 'Outfit-Medium',
     fontSize: 25,
     textAlign: 'center',
     paddingVertical: 11,

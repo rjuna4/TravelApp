@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     fontWeight: '520',
     marginTop: 35,
     marginBottom: 15,
-    fontFamily: 'ABeeZee-Regular',
+    fontFamily: 'Outfit-Medium-Regular',
     marginLeft: 15,
   },
   mainOptionText: {

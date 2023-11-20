@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontFamily: 'ABeeZee',
+    fontFamily: 'Outfit-Medium',
     fontSize: 38,
     color: "#744578",
     textAlign: "center",

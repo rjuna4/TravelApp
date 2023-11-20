@@ -1,4 +1,4 @@
-import React, { Component, useState, useLayoutEffect} from 'react';
+import React, { Component, useState, useLayoutEffect, useEffect} from 'react';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, useColorScheme, View, TouchableOpacity, Image} from 'react-native';
 import HeaderBanner from '../components/HeaderBanner';
@@ -9,15 +9,18 @@ import DatePicker from '@react-native-community/datetimepicker';
 import redMarker from 'travel-app/assets/icons/redMarker.png'
 import greenMarker from 'travel-app/assets/icons/greenMarker.png'
 import { format } from 'date-fns';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { decode } from 'base-64';
 
 const CreateGroup = ({route}) => {
     
     const navigation = useNavigation();
-    //const {groupData, setGroupData } = route.params;
-    //const {groupData} = route.params;
-    const {groupData: existingGroupData } = route.params || { groupData: [] };
+    const {groupData: existingGroupData, groupId, fetchGroupData, userId } = route.params || 
+                                                                    { groupData: [], 
+                                                                      groupId: null,
+                                                                      fetchGroupData: null,
+                                                                      userId: null }
     const [groupData, setGroupData] = useState(existingGroupData);
-    //const [newGroup, setNewGroup] = useState({ selectedImage: null, activityTitle: ''})
     const [selectedImage, setSelectedImage] = useState(null);
     const [activityTitle, setActivityTitle] = useState('');
  
@@ -27,6 +30,65 @@ const CreateGroup = ({route}) => {
     initialDate.setHours(0, 0, 0, 0);
     const [selectedDate, setSelectedDate] = useState(initialDate);
     const [selectedStartTime, setSelectedStartTime] = useState(initialDate);
+    const [userUserId, setUserId] = useState(null);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const jwt = await getJWT();
+          if (jwt) {
+            const tokenParts = jwt.split('.');
+            console.log("tokenParts: ", tokenParts);
+            if (tokenParts.length === 3) {
+              const payload = decode(tokenParts[1]);
+              const decodedToken = JSON.parse(payload);
+              console.log('decodedToken: ', decodedToken);
+              const currentUserId = decodedToken.id;
+              console.log('currentUserId: ', currentUserId);
+              setUserId(currentUserId);
+
+              if (groupId) {
+                console.log("groupId: ", groupId);
+                // Editing an existing group, so fetch its data using the provided function
+                if (fetchGroupData) {
+                  fetchGroupData(userId) // Use the provided function
+                    .then((data) => {
+                      setGroupData(data);
+                      // Update other state variables as needed
+                      console.log("data on create groups screen: ", data)
+                      setSelectedImage(data.groupImageFilename);
+                      setActivityTitle(data.groupTitle);
+                      // Update other state variables based on fetched data
+                    })
+                    .catch((error) => {
+                      console.error(error);
+                      // Handle any errors related to fetching group data
+                    });
+                }
+              } else {
+                // Initialize the component for creating a new group
+                // You can leave this section empty for now
+              }
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+      fetchData();
+    }, [groupId, fetchGroupData]);
+
+
+    const getJWT = async () => {
+      try {
+        const jwt = await AsyncStorage.getItem('token');
+        console.log("jwt in getJWT: ", jwt)
+        return jwt;
+      } catch (error) {
+        console.error("Error retrieving JWT: ", error);
+        return null;
+      } 
+    }
 
     const handleDateChange = (event, selected) => {
       if (selected) {
@@ -65,31 +127,6 @@ const CreateGroup = ({route}) => {
         }
     }
 
-    const saveGroup = () => {
-      if (selectedImage && activityTitle) {
-        const formattedDate = format(selectedDate, 'MM-dd-yyyy')
-        const formattedTime = format(selectedStartTime, 'HH:mm')
-        const newGroup = {
-          selectedImage,
-          activityTitle,
-          selectedDate: formattedDate,
-          selectedStartTime: formattedTime,
-        };
-        //console.log(newGroup.selectedImage);
-        //console.log(newGroup.activityTitle);
-        const updatedGroupData = [...groupData, newGroup];
-        //console.log(updatedGroupData);
-        setSelectedImage(null);
-        setActivityTitle('');
-        setGroupData(updatedGroupData);
-        navigation.navigate('Groups', { 
-          groupData: updatedGroupData, 
-          selectedDate: selectedDate, 
-          selectedStartTime: selectedStartTime });
-        //console.log(updatedGroupData);
-      }
-    }
-
     async function saveCreatedGroupToDatabase() {
       if (selectedImage && activityTitle && selectedDate && selectedStartTime) {
         const formattedDate = format(selectedDate, 'MM-dd-yyyy');
@@ -102,35 +139,80 @@ const CreateGroup = ({route}) => {
         };
     
         try {
-          const response = await fetch('http://172.20.10.7:8082/api/login', {
+          const jwt = await getJWT();
+          console.log("jwt in save group: ", jwt);
+          //console.log("userId in saveGroup: ", userId);
+          if (!jwt) {
+            console.error("JWT is missing");
+            alert("JWT is missing");
+            return;
+          }
+
+          const response = await fetch('http://172.20.10.7:8082/api/createdGroups', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': jwt,
             },
             body: JSON.stringify({
-              userId: '6386857fce851928b24c6b4f',
+              userId: userUserId,
               ...newGroup,
             }),
           });
+
+          console.log("userId in save group: ", userUserId);
+          console.log('response status: ', response.status);
     
           if (response.status === 200) {
+            console.log("Group saved successfully");
             alert('Group saved successfully');
+            const updatedGroupData = [...groupData, newGroup];
+            setSelectedImage(null);
+            setActivityTitle('');
+            setGroupData(updatedGroupData);
+            navigation.navigate('Groups', { 
+              groupData: updatedGroupData, 
+              selectedDate: selectedDate, 
+              selectedStartTime: selectedStartTime 
+            });
           } else {
             const data = await response.json();
+            console.error("Error response: ", data);
             alert(`Error: ${data.error}`);
           }
         } catch (error) {
-          console.error(error);
+          console.error("Netwowrk request error: ", error);
           alert('An error occurred while saving the group.');
         }
       } else {
+        console.log("Please fill in all the required fields");
         alert('Please fill in all the required fields.');
       }
     }
+
+    async function updateGroupsCreatedData(groupId, updatedData) {
+      try {
+        const response = await fetch(`http://172.20.10.7:8082/api/createdGroups/${groupId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedData)
+        });
+        if (response.status === 200) {
+          const updatedGroup = await response.json();
+          return updatedGroup;
+        } else {
+            const errorData = await response.json();
+            throw new Error(`Error updating group: ${errorData.message}`)
+        }
+      } catch (error) {
+        console.error("Network request error: ", error);
+        throw error;
+      }
+    }
+
     
-
-  
-
     useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
@@ -293,7 +375,7 @@ const CreateGroup = ({route}) => {
             </View>
             {/* <TouchableOpacity style={styles.saveButton} onPress={() => navigation.navigate('Groups', {groupData: groupData})}> */}
             {/* <TouchableOpacity style={styles.saveButton} onPress={saveGroup}> */}
-            <TouchableOpacity style={styles.saveButton} onPress={saveGroup}>
+            <TouchableOpacity style={styles.saveButton} onPress={() => saveCreatedGroupToDatabase(userId)}>
               <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitMedium, fontSize: 18}}>Save</Text>
             </TouchableOpacity>
             </View>

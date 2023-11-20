@@ -9,10 +9,14 @@ import { useLoadFonts, fonts } from '../components/FontLoader';
 import Itineraries from './Itineraries';
 import ActivityRecommendations from './activityRecommendations';
 import ActivityContainer from '../components/ActivityContainer';
+import MapView from 'react-native-maps';
+import { Marker, Callout } from 'react-native-maps';
+import CreateItinerary from './CreateItinerary';
 
 const MoreInformation = ({route}) => {
 
     const [userId, setUserId] = useState('');
+    const[mainData, setMainData] = useState([])
     var user_id;
 
     // async function loadUserId() {
@@ -38,6 +42,34 @@ const MoreInformation = ({route}) => {
       //     })
       // }, [setUserId]) 
 
+      const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
+
+
+      useEffect(() =>  {
+        getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
+        setMainData(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data", error);
+          setLoading(false);
+        });
+      }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+
+  console.log("mainData on more information screen: " + mainData);
+
+
+  const data = route?.params?.param
+
+  //console.log("This is the route params data: " + data);
+
+  const latitude = data?.latitude;
+  const longitude = data?.longitude;
+  console.log("latitude: ", latitude);
+  console.log("longitude: ", longitude);
+    
+
+
+
   const navigation = useNavigation();
       useLayoutEffect(() => {
         navigation.setOptions({
@@ -51,9 +83,12 @@ const MoreInformation = ({route}) => {
       setIsModalVisible(() => !isModalVisible)
     };
 
-  
-    const data = route?.params?.param
+    const onRegionChange = (region) => {
+      console.log("region: ", region);
+    }
 
+  
+    
     const [errorMessage, setErrorMessage] = useState(null);
 
     const [bookmarkData, setBookmarkData] = useState({
@@ -73,35 +108,35 @@ const MoreInformation = ({route}) => {
       }
     }
 
-    async function sendBookmarkToDatabase() {
+    // async function sendBookmarkToDatabase() {
 
 
-        setBookmarkData( {...bookmarkData, imageURL: data?.photo?.images?.medium?.url})
-        setBookmarkData( {...bookmarkData, title:  data?.name})
+    //     setBookmarkData( {...bookmarkData, imageURL: data?.photo?.images?.medium?.url})
+    //     setBookmarkData( {...bookmarkData, title:  data?.name})
 
         
-        await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-          }, 
-          body: JSON.stringify(bookmarkData)
-      }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-        data => {
-          if(data.error) {
-            alert("inside error")
-            setErrorMessage(data.error);
-            alert("data error: " + data.error)
-            console.log("error")
-          } else {
-              saveUserBookmarks(data.user_id, data.image_URL, data._title)
-              console.log("inside else statement")
-              alert('Bookmark saved successfully');
-          }
-        }
-      )
-    }
+    //     await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
+    //       method: 'POST',
+    //       headers: {
+    //           'Content-Type': 'application/json',
+    //           'Accept': 'application/json'
+    //       }, 
+    //       body: JSON.stringify(bookmarkData)
+    //   }).then().catch(error=>console.log(error)).then(res => res.json()).then(
+    //     data => {
+    //       if(data.error) {
+    //         alert("inside error")
+    //         setErrorMessage(data.error);
+    //         alert("data error: " + data.error)
+    //         console.log("error")
+    //       } else {
+    //           saveUserBookmarks(data.user_id, data.image_URL, data._title)
+    //           console.log("inside else statement")
+    //           alert('Bookmark saved successfully');
+    //       }
+    //     }
+    //   )
+    // }
 
     const [itineraryData, setItineraryData] = useState({
       userId: '6386857fce851928b24c6b4f',
@@ -112,44 +147,50 @@ const MoreInformation = ({route}) => {
 
     console.log("description:  " + data?.description);
     console.log("name: " + data?.name);
-    async function sendItineraryToDatabase() {
-        if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
-          alert('Itinerary data does not exist');
-          return;
-        }
-        setItineraryData( {...itineraryData, imageURL: data?.photo?.images?.medium?.url} )
-        setItineraryData( {...itineraryData, title:  data?.name} )
-        await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-          }, 
-          body: JSON.stringify(bookmarkData)
-      }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-        data => {
-          //alert("data.errror: ", data.error)
-          if(data.error) {
-            alert("inside error")
-            setErrorMessage(data.error);
-            alert("data error: " + data.error)
-            console.log("error")
-          } else {
-              alert("inside else statement")
-                //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
-                alert("inside else statement")
-                console.log("inside else statement")
-            alert('Itinerary activity saved successfully');
-          }
-        }
-      )
-    }
+    // async function sendItineraryToDatabase() {
+    //     if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
+    //       alert('Itinerary data does not exist');
+    //       return;
+    //     }
+    //     setItineraryData( {...itineraryData, imageURL: data?.photo?.images?.medium?.url} )
+    //     setItineraryData( {...itineraryData, title:  data?.name} )
+    //     await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
+    //       method: 'POST',
+    //       headers: {
+    //           'Content-Type': 'application/json',
+    //           'Accept': 'application/json'
+    //       }, 
+    //       body: JSON.stringify(bookmarkData)
+    //   }).then().catch(error=>console.log(error)).then(res => res.json()).then(
+    //     data => {
+    //       //alert("data.errror: ", data.error)
+    //       if(data.error) {
+    //         alert("inside error")
+    //         setErrorMessage(data.error);
+    //         alert("data error: " + data.error)
+    //         console.log("error")
+    //       } else {
+    //           alert("inside else statement")
+    //             //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
+    //             alert("inside else statement")
+    //             console.log("inside else statement")
+    //         alert('Itinerary activity saved successfully');
+    //       }
+    //     }
+    //   )
+    // }
+
+    const activityData = {
+      image: data?.photo?.images?.large?.url,
+      name: data?.name,
+      location: data?.location_string,
+    };
 
     useLoadFonts(); 
 
     return (
       <>
-      <ScrollView>
+      <ScrollView style={{height: 1000}}>
         <StatusBar style="dark-content" />
         <View style={styles.container}>
           <Image style={styles.activityImage}
@@ -176,10 +217,10 @@ const MoreInformation = ({route}) => {
                   height="150"
                   visible={isModalVisible}>
                     <View style={styles.modalContainer}>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}> 
                     <Text style={[styles.text, {color:"#57C2AF"}]}>Add to Itinerary</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('Iineraries')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('CreateItinerary')}>
                     <Text style={[styles.text, {color:"#57C2AF"}]}>Create new Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>
@@ -232,6 +273,34 @@ const MoreInformation = ({route}) => {
               </View>
             <View>
               <Text style={styles.description} numberOfLines={10} renderTruncatedFooter>{data?.description}</Text>
+            </View>
+            <View>
+              <MapView
+                //provider="apple"
+                style={{width: '90%', height: '50%', left: '5%', top: '5%', borderRadius: 4 }}
+                onRegionChange={onRegionChange}
+                initialRegion={{
+                  latitude: data?.latitude,
+                  longitude: data?.longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+            >
+              <Marker
+                coordinate={{
+                  latitude: data?.latitude,
+                  longitude: data?.longitude
+                }}
+                title="Activity Marker"
+                pinColor="#29927F" 
+              >
+              <Callout>
+                <View>
+                  <Text>{data?.name}</Text>
+                </View>
+              </Callout>
+              </Marker>
+            </MapView>
             </View>
             <View>
               <Text style={styles.price}>{data?.price}</Text>

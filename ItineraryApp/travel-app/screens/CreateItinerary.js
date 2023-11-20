@@ -1,4 +1,4 @@
-import {Icon, SafeAreaView, TextInput, ImageBackground, StyleSheet, View, Text, Platform, Dimensions, TouchableOpacity, Pressable, Image, VirtualizedList, ScrollView, FlatList, Touchable} from 'react-native';
+import {Icon, SafeAreaView, TextInput, ImageBackground, StyleSheet, View, Text, Platform, Dimensions, TouchableOpacity, Pressable, Image, VirtualizedList, ScrollView, FlatList, Touchable, useEffect} from 'react-native';
 import React, { Component, useState, useLayoutEffect} from 'react';
 import HeaderBanner from '../components/HeaderBanner';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -7,9 +7,11 @@ import Itineraries from './Itineraries';
 import { fonts } from '../components/FontLoader';
 import * as ImagePicker from 'expo-image-picker';
 import { format } from 'date-fns';
+import ItineraryActivity from '../components/ItineraryActivity';
 
 const CreateItinerary = ({route, navigation}) => {
     const {itineraryData: existingItineraryData } = route.params || { itineraryData: [] };
+    //const {activityData} = route.params;
     const [itineraryData, setItineraryData] = useState(existingItineraryData);
     const [title, setTitle] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
@@ -118,17 +120,18 @@ const CreateItinerary = ({route, navigation}) => {
         }
         const updatedItineraryData = [...itineraryData, newItinerary];
         //console.log(updatedItineraryData);
-        setSelectedImage(null);
-        setTitle('');
-        setItineraryData(updatedItineraryData);
-        navigation.navigate('Itineraries', { 
-          itineraryData: updatedItineraryData, 
-          //selectedDates: selectedDates,
+         setSelectedImage(null);
+         setTitle('');
+         setItineraryData(updatedItineraryData);
+          navigation.navigate('Tabs', { itineraryData: updatedItineraryData });
+          console.log("made it past save button");
+        [updatedItineraryData, navigation];
+    }
+      }
+      //selectedDates: selectedDates,
           //selectedStartTime: selectedStartTime });
         //console.log(updatedItineraryData)
-      });
-      }
-    }
+    
     
 
     async function saveCreatedToDatabase() {
@@ -252,12 +255,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         margin: 20
       },
-    save: {
-        flex: 1,
-        color: '#FFFFFF',
-        width: 60,
-        height: 30
-    },
     backButton: {
       width: 30,
       height: 30,

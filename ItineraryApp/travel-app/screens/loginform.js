@@ -3,6 +3,7 @@ import React, {Component, useState, useLayoutEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import { useLoadFonts, fonts } from '../components/FontLoader';
 import SignupForm from './signupform';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const image = {
   uri: 'https://images.unsplash.com/photo-1527838832700-5059252407fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=998&q=80',
@@ -28,35 +29,27 @@ const LoginForm = () => {
     password: '',
   });
 
+const storeJWT = async (token) => {
+  try {
+    await AsyncStorage.setItem('token', token);
+    console.log("token in storeJWT: ", token);
+    console.log('JWT stored successfully')
+  } catch (error) {
+    console.error("Error storing JWT: ", error);
+  }
+}
 
-//   async function sendToDatabase() {
-//     //console.log(formData)
-//       // check if all fields are filled out
-//       if (!formData.username|| !formData.password) {
-//         setErrorMessage('All fields are required.');
-//         return;
-//       }
+const getJWT = async () => {
+  try {
+    const jwt = await AsyncStorage.getItem('token');
+    return jwt;
+  } catch (error) {
+    console.error("Error retrieving JWT: ", error);
+    return null;
+  } 
+}
 
-//       await fetch('http://10.24.66.78:8081/api/login', {
-//           method: 'POST',
-//           headers: {
-//               'Accept': 'application/json',
-//               'Content-Type': 'application/json',
 
-//           }, 
-//           body: JSON.stringify(formData)
-//         }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-//           //}).then().catch(error=>console.log(error)).then(
-//             data => {
-//               // alert("data: ", data.json);
-//               if(data.error) {
-//                 setErrorMessage(data.error);
-//               } else {
-//                 navigation.navigate('Tabs')
-//               }  
-//         }
-//       )
-// }
 
 async function sendToDatabase() {
   if (!formData.username || !formData.password) {
@@ -75,16 +68,25 @@ async function sendToDatabase() {
       timeout: 30000,
     });
 
+    console.log('response status: ', response.status);
+
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
 
     const data = await response.json();
+    console.log("data in login: ", data);
+    //console.log("data.token: ", data.token);
 
     if (data.error) {
       setErrorMessage(data.error);
       console.log(errorMessage);
     } else {
+      if (data.data) {
+        const token = data.data;
+        console.log("data.token: ", token);
+        await storeJWT(token);
+      }
       navigation.navigate('Tabs');
     }
   } catch (error) {
@@ -160,6 +162,7 @@ async function sendToDatabase() {
     </View>
   );
 };
+
 export default LoginForm;
 
 const styles = StyleSheet.create({

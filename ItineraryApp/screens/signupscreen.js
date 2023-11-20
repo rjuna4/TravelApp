@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
       //tintColor: '#FFFFFF'
     },
     custom: {
-      fontFamily: 'ABeeZee',
+      fontFamily: 'Outfit-Medium',
       fontSize: 28,
       color: "white",
       textAlign: "center",

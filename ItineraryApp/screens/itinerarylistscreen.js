@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   title: {
-    fontFamily: 'ABeeZee',
+    fontFamily: 'Outfit-Medium',
     fontSize: 38,
     color: "#744578",
     textAlign: "center",
