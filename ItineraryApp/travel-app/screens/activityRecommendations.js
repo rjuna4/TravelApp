@@ -17,7 +17,7 @@ const ActivityRecommendations = ({route, data}) => {
   const [isFiltersVisible, setFiltersVisible] = useState(false);
    //const {placeData, placeDetails} = route.params;
    console.log("placeData: " + placeData);
-   console.log("placeDetails: " + placeDetails);
+   //console.log("placeDetails: " + placeDetails);
   const { ne_lat, ne_lng, sw_lat, sw_lng, activityType, placeData} = route.params;
   console.log(ne_lat, ne_lng, sw_lat, sw_lng, activityType, placeData);
 

@@ -164,7 +164,7 @@ const changeTab = (tabNum) => {
                     console.log(activityType);
                     console.log("this is data again: " , data);
                     // navigation.navigate('ActivityRecommendations', {placeData: data, placeDetails: details});
-                    navigation.navigate('Itineraries', {
+                    navigation.navigate('ActivityRecommendations', {
                       //screen: 'ActivityRecommendations',
                       placeData: mainData,
                       ne_lat,
