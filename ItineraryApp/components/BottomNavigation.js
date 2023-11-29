@@ -34,6 +34,7 @@ const HomeStackTab = () => {
          <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/>
+         <HomeStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} /> 
       </HomeStack.Navigator>
     )
 }

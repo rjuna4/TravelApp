@@ -7,7 +7,7 @@ import { getPlaceDetails } from '../api';
 import HeaderBanner from '../components/HeaderBanner';
 import imgOne from '../assets/appimages/Santorini.png'
 //import { Text } from 'react-native-elements';
-import font from '../assets/fonts/Outfit-Medium.ttf'
+import { useLoadFonts, fonts } from '../components/FontLoader';
 import ActivityRecommendations from './activityRecommendations';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
@@ -103,7 +103,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}}>
                 <Image 
                   source={require('../assets/appimages/Seoul.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Seoul, South Korea
                   </Text>
@@ -114,7 +114,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}} onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                   source={require('../assets/appimages/Tokyo.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Tokyo, Japan
                   </Text>
@@ -125,7 +125,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}}>
                 <Image 
                   source={require('../assets/appimages/Santorini.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Santorini, Greece
                   </Text>
@@ -136,7 +136,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}}>
                 <Image 
                   source={require('../assets/appimages/bangkok.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Bangkok, Thailand
                   </Text>
@@ -147,7 +147,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}}>
                 <Image 
                   source={require('../assets/appimages/newYork.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     New York, USA
                   </Text>
@@ -158,7 +158,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}}>
                 <Image 
                   source={require('../assets/appimages/barcelona.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Barcelona, Spain
                   </Text>
@@ -169,7 +169,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}}>
                 <Image 
                   source={require('../assets/appimages/bali.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Bali, Indonesia
                   </Text>
@@ -187,7 +187,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}} onPress={() => navigation.navigate("ActivityRecommendations", {param : data})}>
                   <Image 
                   source={require('../assets/appimages/colosseum.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Tokyo, Japan
                   </Text>
@@ -198,7 +198,7 @@ const changeTab = (tabNum) => {
               <View style={{display: 'flex', width: 302}}>
                 <Image 
                   source={require('../assets/appimages/angkorWat.png')}
-                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
+                  style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
                   <Text style={{color: '#00F3C8', fontSize: 18, alignSelf: 'flex-start', paddingTop: 5, marginLeft: 23 }}>
                     Santorini, Greece
                   </Text>
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   tabs: {
-    fontFamily: 'Outfit-Medium',
+    fontFamily: fonts.outfitMedium,
     fontSize: 18,
     color: "#FFFFFF",
     justifyContent: 'center',
@@ -234,7 +234,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 55,
   },
   tab1: {
-    fontFamily: 'Outfit Medium',
     fontSize: 20,
     justifyContent: 'center',
     flexDirection: 'row',

@@ -11,7 +11,6 @@ import MoreInformation from '../screens/moreInformation';
 import HomeScreen from '../screens/homescreen';
 import ProfileScreen from '../screens/profilescreen';
 import BookmarksScreen from '../screens/bookmarksscreen';
-import ItineraryListScreen from '../screens/itinerarylistscreen';
 import Itineraries from '../screens/Itineraries';
 import ProfileSettings from '../screens/profileSettings';
 import Groups from '../screens/Groups';
@@ -37,7 +36,6 @@ const HomeStackTab = () => {
          <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
          <HomeStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} /> 
          <HomeStack.Screen name="MoreInformation" component={MoreInformation} /> 
-         <HomeStack.Screen name="ItineraryListScreen" component={ItineraryListScreen} options={{headerShown: false}}/>
          <HomeStack.Screen name="BookmarksScreen" component={BookmarksScreen} options={{headerShown: false}}/>
          {/* <HomeStack.Screen name="Itineraries" component={Itineraries} options={{headerShown: false}}/> */}
       </HomeStack.Navigator>
@@ -59,6 +57,7 @@ const GroupsStackTab = () => {
         <GroupStack.Navigator initialRouteName="Groups">
          <GroupStack.Screen name="GroupsScreen" component={Groups} options={{headerShown: false}}/>
          <GroupStack.Screen name="CreateGroup" component={CreateGroup} options={{headerShown: false}}/>
+         <GroupStack.Screen name="ActivityRecommendations" component={ActivityRecommendations} />
       </GroupStack.Navigator>
     )
 }

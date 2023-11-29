@@ -10,13 +10,16 @@ import Itineraries from './Itineraries';
 import SearchBar from '../components/SearchBar';
 import ActivityContainer from '../components/ActivityContainer';
 import FiltersScreen from './filtersScreen';
+import CreateItinerary from './CreateItinerary';
+import { useLoadFonts, fonts } from '../components/FontLoader';
 
-const ActivityRecommendations = ({route}) => {
+const ActivityRecommendations = ({route, data}) => {
   const [isFiltersVisible, setFiltersVisible] = useState(false);
-  // const {placeData, placeDetails} = route.params;
-  // console.log("placeData: " + placeData);
-  // console.log("placeDetails: " + placeDetails);
-  const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
+   //const {placeData, placeDetails} = route.params;
+   console.log("placeData: " + placeData);
+   console.log("placeDetails: " + placeDetails);
+  const { ne_lat, ne_lng, sw_lat, sw_lng, activityType, placeData} = route.params;
+  console.log(ne_lat, ne_lng, sw_lat, sw_lng, activityType, placeData);
 
   const toggleFilters = () => {
     setFiltersVisible(!isFiltersVisible);
@@ -47,21 +50,19 @@ const ActivityRecommendations = ({route}) => {
               headerShown: false,
            })
         }, []);
-        useEffect(() =>  {
-          setLoading(true);
-          getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
-          setMainData(data);
-          setInterval(() => {
-          setLoading(false);
-          }, 3000)
-          })
-          .catch((error) => {
-            console.error("Error fetching data", error);
-            setLoading(false);
-          });
-        }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+        // useEffect(() =>  {
+        //   setLoading(true);
+        //   getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, data, activityType, placeData).then(data => {
+          // setMainData(placeData);
+        //   setLoading(false);
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error fetching data", error);
+        //     setLoading(false);
+        //   });
+        // }, [placeData])
 
-    console.log("mainData: " + mainData);
+    //console.log("mainData is this: ", placeData);
   
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -70,7 +71,7 @@ const ActivityRecommendations = ({route}) => {
     };
 
   
-    const data = route?.params?.param
+    //const data = route?.params?.param
 
 
 
@@ -81,43 +82,9 @@ const ActivityRecommendations = ({route}) => {
       time: ''
     })
 
-    console.log("description:  " + data?.description);
-    console.log("name: " + data?.name);
+    console.log("description is this:  ", mainData[1]?.description);
+    console.log("name is this: " + mainData?.name);
   
-
-
-    // async function sendItineraryToDatabase() {
-    //     if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
-    //       alert('Itinerary data does not exist');
-    //       return;
-    //     }
-    //     setItineraryData( {...itineraryData, imageURL: data?.photo?.images?.medium?.url} )
-    //     setItineraryData( {...itineraryData, title:  data?.name} )
-    //     await fetch('http://10.0.2.2:8000/app/api/bookmarks', {
-    //       method: 'POST',
-    //       headers: {
-    //           'Content-Type': 'application/json',
-    //           'Accept': 'application/json'
-    //       }, 
-    //       body: JSON.stringify(bookmarkData)
-    //   }).then().catch(error=>console.log(error)).then(res => res.json()).then(
-    //     data => {
-    //       //alert("data.errror: ", data.error)
-    //       if(data.error) {
-    //         alert("inside error")
-    //         setErrorMessage(data.error);
-    //         alert("data error: " + data.error)
-    //         console.log("error")
-    //       } else {
-    //           alert("inside else statement")
-    //             //AsyncStorage.setItem('user_id', '63826e91c853c9f1a4566f65')
-    //             alert("inside else statement")
-    //             console.log("inside else statement")
-    //         alert('Itinerary activity saved successfully');
-    //       }
-    //     }
-    //   )
-    // }
     return (
       <>
       <ScrollView>
@@ -145,7 +112,7 @@ const ActivityRecommendations = ({route}) => {
             <FiltersScreen visible={isFiltersVisible} onClose={toggleFilters} />
           </View>
           <Image style={styles.activityImage}
-            source={{ uri: data?.photo?.images?.large?.url }}
+            source={{ uri: mainData?.photo?.images?.large?.url }}
           />
          
             <View>
@@ -154,10 +121,10 @@ const ActivityRecommendations = ({route}) => {
                   transparent={true}
                   visible={isModalVisible}>
                     <View style={styles.modalContainer}>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('Tabs')}>
                     <Text style={[styles.text, {color:"#A067A5"}]}>Add to Itinerary</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('Iineraries')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('CreateItinerary')}>
                     <Text style={[styles.text, {color:"#A067A5"}]}>Create new Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>
@@ -182,17 +149,17 @@ const ActivityRecommendations = ({route}) => {
        <View style={styles.activitiesContainer}>
          {mainData?.length > 0 ? (
            <>
-           {mainData?.map((data, i) => (
+           {mainData?.map((mainData, i) => (
              <ActivityContainer
                key={i}
                image={
-                 data?.photo?.images?.medium?.url
+                 mainData?.photo?.images?.medium?.url
                  //? data?.photo?.images?.medium?.url
                  //: 'ItineraryApp/assets/icons/restaurant(1).png'
                }
-               name={data?.name}
-               location={data?.location_string}
-               data={data}
+               name={mainData?.name}
+               location={mainData?.location_string}
+               data={mainData}
              />  
              ))}
              </>
@@ -224,7 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: 50
   },
   text: {
-    fontFamily: 'ABeeZee-Regular',
+    fontFamily: fonts.outfitMediumRegular,
     fontSize: 25,
     textAlign: 'center',
     paddingVertical: 11,

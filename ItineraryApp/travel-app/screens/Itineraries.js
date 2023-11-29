@@ -11,7 +11,6 @@ import imgOne from '../assets/appimages/Santorini.png'
 import ActivityRecommendations from './activityRecommendations';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useLoadFonts, fonts } from '../components/FontLoader';
-
 import SearchBar from '../components/SearchBar';
 
 const Itineraries = ({route, data}) => {
@@ -25,20 +24,22 @@ const Itineraries = ({route, data}) => {
     const[ne_lng, set_ne_lng] = useState(null);
     const[sw_lat, set_sw_lat] = useState(null);
     const[sw_lng, set_sw_lng] = useState(null);
-      useLayoutEffect(() => {
+    useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
         })
     }, []);
-    useEffect(() =>  {
-      setLoading(true);
-      getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
-      setMainData(data);
-      setInterval(() => {
-      setLoading(false);
-      }, 3000)
-      })
-      }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
+useEffect(() =>  {
+  setLoading(true);
+  getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
+  setMainData(data);
+  setLoading(false);
+  })
+  .catch(error => {
+    console.error("Error fetching data", error);
+    setLoading(false);
+  });
+  }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType]);
 
   const [scrollX, setScrollX] = useState(new Animated.Value(0));
 
@@ -47,19 +48,7 @@ const Itineraries = ({route, data}) => {
     { useNativeDriver: false}
   );
 
-//     const [date, setDate] = useState([   //pull from api
-//     {key: '1', name: 'Item 1'},
-//     {key: '2', name: 'Item 2'},
-//     {key: '3', name: 'Item 3'},
-//     {key: '4', name: 'Item 1'},
-//     {key: '5', name: 'Item 2'},
-//     {key: '6', name: 'Item 3'},
-//     {key: '7', name: 'Item 1'},
-//     {key: '8', name: 'Item 2'},
-//     {key: '9', name: 'Item 3'},
-//     {key: '10', name: 'Item 3'}
-
-// ])
+const {itineraryData,} = route.params || {itineraryData: [] };
 
 const [tabColor, changeColor] = useState("#00F3C8");
 const [tab2Color, changeColor2] = useState("#FFFFFF");
@@ -77,8 +66,29 @@ const changeTab = (tabNum) => {
     return (
       <View style={styles.container}>
         <View>
-          <HeaderBanner heading = "Itineraries" style={styles.banner}>
-          </HeaderBanner>
+          <View>
+            <HeaderBanner heading = "Itineraries" style={styles.banner}>
+              <View style={styles.iconContainer}>
+                  {/* <TouchableOpacity
+                    onPress={() => navigation.navigate("CreateItinerary",  {
+                      itineraryData: itineraryData})}>
+                    <Image
+                      source={require('../assets/appimages/Add_round.png')}
+                      resizeMode='contain'
+                      style={{ width: 80, height: 59}}
+                    />
+                </TouchableOpacity> */}
+              </View>
+            </HeaderBanner>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("CreateItinerary")}>
+              <Image
+                source={require('../assets/icons/Add_round.png')}
+                resizeMode='contain'
+                style={{ width: 80, height: 51 }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.tabs}>
             <View style={styles.tabContainer}>
@@ -142,17 +152,21 @@ const changeTab = (tabNum) => {
                 }}
                 fetchDetails={true}
                 onPress={(data, details = null) => {
-                    console.log("data: ", data)
-                    console.error("data: " + data);
-                    console.log("details: ", details);
-                    console.error("details", details);
+                    console.log("this is the logged data: ", data)
+                    //console.error("data: " + data);
+                    console.log("these are the logged details: ", details);
+                    //console.error("details", details);
                     console.log(JSON.stringify(details?.geometry?.viewport));
                     set_ne_lat(details?.geometry?.viewport?.northeast?.lat)
                     set_ne_lng(details?.geometry?.viewport?.northeast?.lng)
                     set_sw_lat(details?.geometry?.viewport?.southwest?.lat)
                     set_sw_lng(details?.geometry?.viewport?.southwest?.lng)
+                    console.log(activityType);
+                    console.log("this is data again: " , data);
                     // navigation.navigate('ActivityRecommendations', {placeData: data, placeDetails: details});
-                    navigation.navigate('ActivityRecommendations', {
+                    navigation.navigate('Itineraries', {
+                      //screen: 'ActivityRecommendations',
+                      placeData: mainData,
                       ne_lat,
                       ne_lng,
                       sw_lat,
@@ -212,7 +226,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/Santorini.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Santorini, Greece
                     </Text>
@@ -225,7 +239,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/bangkok.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Bangkok, Thailand
                     </Text>
@@ -362,12 +376,20 @@ const styles = StyleSheet.create({
     top: 10,
     marginHorizontal: 55,
   },
-  activityImage: {
-    width: '85%',
-    height: 180,
-    borderRadius: 13,
-    marginHorizontal: 30,
-    top: 20
+  tab1: {
+    fontFamily: 'Outfit Medium',
+    fontSize: 20,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    top: 10,
+    marginHorizontal: 55,
+  },
+  selectedImage: {
+    width: 209,
+    height: 144,
+    borderRadius: 4,
+    marginLeft: 10,
+    marginTop: 10,
   },
   name: {
     fontSize: 20,

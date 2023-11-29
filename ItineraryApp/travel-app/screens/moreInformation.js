@@ -208,10 +208,16 @@ const MoreInformation = ({route}) => {
                   height="150"
                   visible={isModalVisible}>
                     <View style={styles.modalContainer}>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => {
+                      navigation.navigate('Tabs');
+                      setIsModalVisible(false); // Close the modal
+                    }}> 
                     <Text style={[styles.text, {color:"#57C2AF"}]}>Add to Itinerary</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('Iineraries')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => {
+                      navigation.navigate('CreateItinerary');
+                      setIsModalVisible(false); // Close the modal
+                    }}>
                     <Text style={[styles.text, {color:"#57C2AF"}]}>Create new Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>

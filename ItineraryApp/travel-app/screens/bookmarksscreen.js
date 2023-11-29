@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import ItineraryContainer from 'travel-app/components/ItineraryContainer';
 import ActivityContainer from '../components/ActivityContainer';
 //import AsyncStorage from '@react-native-community/async-storage'
+import { useLoadFonts, fonts } from '../components/FontLoader';
 
 
 const BookmarksScreen = ({route}) => {
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontFamily: 'ABeeZee',
+    fontFamily: fonts.outfitMedium,
     fontSize: 38,
     color: "#744578",
     textAlign: "center",

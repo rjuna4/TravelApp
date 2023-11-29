@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   custom: {
-    fontFamily: 'ABeeZee',
+    fontFamily: fonts.outfitMedium,
     fontSize: 25,
     color: "white",
     textAlign: "center",
