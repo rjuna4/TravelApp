@@ -15,9 +15,6 @@ import { useLoadFonts, fonts } from '../components/FontLoader';
 
 const ActivityRecommendations = ({route, data}) => {
   const [isFiltersVisible, setFiltersVisible] = useState(false);
-   //const {placeData, placeDetails} = route.params;
-   console.log("placeData: " + placeData);
-   //console.log("placeDetails: " + placeDetails);
   const { ne_lat, ne_lng, sw_lat, sw_lng, activityType, placeData} = route.params;
   console.log(ne_lat, ne_lng, sw_lat, sw_lng, activityType, placeData);
 
@@ -37,12 +34,7 @@ const ActivityRecommendations = ({route, data}) => {
       //const[activityType, changeActivityType] = useState("attractions");
       const[searchItem, setSearchItem] = useState("");
       const[clicked, setClicked] = useState(false);
-      const[mainData, setMainData] = useState([])
       const[loading, setLoading] = useState(false)
-      //const[ne_lat, set_ne_lat] = useState(null);
-      //const[ne_lng, set_ne_lng] = useState(null);
-      //const[sw_lat, set_sw_lat] = useState(null);
-      //const[sw_lng, set_sw_lng] = useState(null);
       
       
         useLayoutEffect(() => {
@@ -50,19 +42,8 @@ const ActivityRecommendations = ({route, data}) => {
               headerShown: false,
            })
         }, []);
-        // useEffect(() =>  {
-        //   setLoading(true);
-        //   getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, data, activityType, placeData).then(data => {
-          // setMainData(placeData);
-        //   setLoading(false);
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error fetching data", error);
-        //     setLoading(false);
-        //   });
-        // }, [placeData])
 
-    //console.log("mainData is this: ", placeData);
+    console.log("mainData is this: ", placeData);
   
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -70,20 +51,17 @@ const ActivityRecommendations = ({route, data}) => {
       setIsModalVisible(() => !isModalVisible)
     };
 
-  
-    //const data = route?.params?.param
-
 
 
     const [itineraryData, setItineraryData] = useState({
       userId: '6386857fce851928b24c6b4f',
-      imageURL: data?.photo?.images?.medium?.url,
-      title: data?.name,
+      imageURL: placeData?.photo?.images?.medium?.url,
+      title: placeData?.name,
       time: ''
     })
 
-    console.log("description is this:  ", mainData[1]?.description);
-    console.log("name is this: " + mainData?.name);
+    console.log("description is this:  ", placeData[1]?.description);
+    console.log("name is this: " , placeData[1]?.name);
   
     return (
       <>
@@ -112,33 +90,8 @@ const ActivityRecommendations = ({route, data}) => {
             <FiltersScreen visible={isFiltersVisible} onClose={toggleFilters} />
           </View>
           <Image style={styles.activityImage}
-            source={{ uri: mainData?.photo?.images?.large?.url }}
+            source={{ uri: placeData?.photo?.images?.large?.url }}
           />
-         
-            <View>
-                <Modal 
-                  animationType="slide"
-                  transparent={true}
-                  visible={isModalVisible}>
-                    <View style={styles.modalContainer}>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('Tabs')}>
-                    <Text style={[styles.text, {color:"#A067A5"}]}>Add to Itinerary</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('CreateItinerary')}>
-                    <Text style={[styles.text, {color:"#A067A5"}]}>Create new Itinerary</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>
-                    <Text style={[styles.text, {color:"red"}]}>Cancel</Text>
-                  </TouchableOpacity>
-                  </View>
-                </Modal>
-              {/* <TouchableOpacity onPress={() => sendBookmarkToDatabase()}>
-              <View style={[styles.box1, {marginHorizontal: 345, marginBottom: -45}]}></View>
-                <Image style={styles.saveButton}
-                  source={require('travel-app/assets/icons/Bookmark_fill(1).png')}
-                 /> 
-              </TouchableOpacity> */}
-            </View>
         
         <View>
        <ScrollView>
@@ -147,19 +100,17 @@ const ActivityRecommendations = ({route, data}) => {
            <ActivityIndicator visible ={loading} size="large" color="#A067A5" />
          </View> :
        <View style={styles.activitiesContainer}>
-         {mainData?.length > 0 ? (
+         {placeData?.length > 0 ? (
            <>
-           {mainData?.map((mainData, i) => (
+           {placeData?.map((placeData, i) => (
              <ActivityContainer
                key={i}
                image={
-                 mainData?.photo?.images?.medium?.url
-                 //? data?.photo?.images?.medium?.url
-                 //: 'ItineraryApp/assets/icons/restaurant(1).png'
+                 placeData?.photo?.images?.medium?.url
                }
-               name={mainData?.name}
-               location={mainData?.location_string}
-               data={mainData}
+               name={placeData?.name}
+               location={placeData?.location_string}
+               data={placeData}
              />  
              ))}
              </>

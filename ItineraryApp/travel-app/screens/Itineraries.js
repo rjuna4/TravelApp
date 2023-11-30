@@ -163,6 +163,7 @@ const changeTab = (tabNum) => {
                     set_sw_lng(details?.geometry?.viewport?.southwest?.lng)
                     console.log(activityType);
                     console.log("this is data again: " , data);
+                    console.log("this is main data again: " , mainData);
                     // navigation.navigate('ActivityRecommendations', {placeData: data, placeDetails: details});
                     navigation.navigate('ActivityRecommendations', {
                       //screen: 'ActivityRecommendations',

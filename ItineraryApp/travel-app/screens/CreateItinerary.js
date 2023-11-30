@@ -14,6 +14,8 @@ const CreateItinerary = ({route}) => {
     const {itineraryData: existingItineraryData } = route.params || { itineraryData: [] };
     //const {activityData} = route.params;
     const [itineraryData, setItineraryData] = useState(existingItineraryData);
+    console.log("itinerary data: ", itineraryData); //displays the data
+    console.log("existing itinerary data: ", existingItineraryData); //displays empty
     const [title, setTitle] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedDates, setSelectedDates] = useState([]);

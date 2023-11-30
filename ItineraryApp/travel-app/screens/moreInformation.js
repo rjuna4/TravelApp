@@ -13,10 +13,8 @@ import MapView from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 
 const MoreInformation = ({route}) => {
-
     const [userId, setUserId] = useState('');
-    const[mainData, setMainData] = useState([])
-    var user_id;
+    const {data} = route.params;
 
     // async function loadUserId() {
     //   try {
@@ -41,28 +39,14 @@ const MoreInformation = ({route}) => {
       //     })
       // }, [setUserId]) 
 
-      const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
+  const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
 
-
-      useEffect(() =>  {
-        getPlaceDetails(ne_lat, ne_lng, sw_lat, sw_lng, activityType).then(data => {
-        setMainData(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data", error);
-          setLoading(false);
-        });
-      }, [ne_lat, ne_lng, sw_lat, sw_lng, activityType])
-
-  console.log("mainData on more information screen: " + mainData);
-
-
-  const data = route?.params?.param
-
-  const latitude = data?.latitude;
-  const longitude = data?.longitude;
-  console.log("latitude: ", latitude);
-  console.log("longitude: ", longitude);
+  console.log("mainData on more information screen: " , data);
+  console.log("latitude: ", data?.latitude);
+  console.log("longitude: ", data?.longitude);
+  console.log("city: ", data?.address_obj.city);
+  console.log("description:  " + data?.description);
+  console.log("name: " + data?.name);
     
 
 
@@ -142,8 +126,6 @@ const MoreInformation = ({route}) => {
       time: ''
     })
 
-    console.log("description:  " + data?.description);
-    console.log("name: " + data?.name);
     // async function sendItineraryToDatabase() {
     //     if (!itineraryData.userId || !itineraryData.imageURL || !itineraryData.title || !itineraryData.time) {
     //       alert('Itinerary data does not exist');
@@ -188,7 +170,7 @@ const MoreInformation = ({route}) => {
             source={{ uri: data?.photo?.images?.large?.url }}
           />
             <View>
-              <TouchableOpacity onPress={() => navigation.navigate('Itineraries')}>
+              <TouchableOpacity onPress={() => navigation.navigate('ActivityRecommendations')}>
               {/* <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View> */}
                 <Image style={styles.backButton}
                   source={require('travel-app/assets/icons/backIcon.png')}
@@ -197,7 +179,6 @@ const MoreInformation = ({route}) => {
             </View>
             <View>
               <TouchableOpacity onPress={() => handleModal()}>
-              {/* <View style={[styles.box1, {marginHorizontal: 18, marginBottom: -50}]}></View> */}
                 <Image style={styles.addButton}
                   source={require('travel-app/assets/icons/addToItinerary.png')}
                  /> 
@@ -209,7 +190,9 @@ const MoreInformation = ({route}) => {
                   visible={isModalVisible}>
                     <View style={styles.modalContainer}>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() => {
-                      navigation.navigate('Tabs');
+                      navigation.navigate('');
+                      //open itinerary list modal
+                      
                       setIsModalVisible(false); // Close the modal
                     }}> 
                     <Text style={[styles.text, {color:"#57C2AF"}]}>Add to Itinerary</Text>

@@ -7,10 +7,11 @@ import ActivityRecommendations from "../screens/activityRecommendations";
 
 
 const ActivityContainer = ({image, name, location, data}) => {
+    //console.log("these are the activity container details:", name , data);
     const navigation = useNavigation();
     useLoadFonts();
     return (
-        <TouchableOpacity onPress={() => navigation.navigate("MoreInformation", {param : data})}>
+        <TouchableOpacity onPress={() => navigation.navigate("MoreInformation", {data : data})}>
             <Image style = {styles.activityImage}
                 source={{uri: image}}
             />
