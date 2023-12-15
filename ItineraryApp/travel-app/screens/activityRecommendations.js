@@ -10,8 +10,10 @@ import Itineraries from './Itineraries';
 import SearchBar from '../components/SearchBar';
 import ActivityContainer from '../components/ActivityContainer';
 import FiltersScreen from './filtersScreen';
+import CreateItinerary from './CreateItinerary';
+import { useLoadFonts, fonts } from '../components/FontLoader';
 
-const ActivityRecommendations = ({route}) => {
+const ActivityRecommendations = ({route, data}) => {
   const [isFiltersVisible, setFiltersVisible] = useState(false);
   // const {placeData, placeDetails} = route.params;
   // console.log("placeData: " + placeData);
@@ -36,7 +38,6 @@ const ActivityRecommendations = ({route}) => {
       //const[activityType, changeActivityType] = useState("attractions");
       const[searchItem, setSearchItem] = useState("");
       const[clicked, setClicked] = useState(false);
-      const[mainData, setMainData] = useState([])
       const[loading, setLoading] = useState(false)
       //const[updated_ne_lat, set_updated_ne_lat] = useState(null);
       //const[updated_ne_lng, set_updated_ne_lng] = useState(null);
@@ -120,7 +121,7 @@ const ActivityRecommendations = ({route}) => {
             <FiltersScreen visible={isFiltersVisible} onClose={toggleFilters} />
           </View>
           <Image style={styles.activityImage}
-            source={{ uri: data?.photo?.images?.large?.url }}
+            source={{ uri: placeData?.photo?.images?.large?.url }}
           />
          
             <View>
@@ -133,7 +134,7 @@ const ActivityRecommendations = ({route}) => {
            <ActivityIndicator visible ={loading} size="large" color="#A067A5" />
          </View> :
        <View style={styles.activitiesContainer}>
-         {mainData?.length > 0 ? (
+         {placeData?.length > 0 ? (
            <>
            {mainData?.map((data, i) => {
             //  console.log("data in map: ", data); 
@@ -142,13 +143,11 @@ const ActivityRecommendations = ({route}) => {
              <ActivityContainer
                key={i}
                image={
-                 data?.photo?.images?.medium?.url
-                 //? data?.photo?.images?.medium?.url
-                 //: 'ItineraryApp/assets/icons/restaurant(1).png'
+                 placeData?.photo?.images?.medium?.url
                }
-               name={data?.name}
-               location={data?.location_string}
-               data={data}
+               name={placeData?.name}
+               location={placeData?.location_string}
+               data={placeData}
              />  
              );
               })}
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
     //marginBottom: 50
   },
   text: {
-    fontFamily: 'ABeeZee-Regular',
+    fontFamily: fonts.outfitMediumRegular,
     fontSize: 25,
     textAlign: 'center',
     paddingVertical: 11,

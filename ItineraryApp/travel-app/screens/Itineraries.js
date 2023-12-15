@@ -11,7 +11,6 @@ import imgOne from '../assets/appimages/Santorini.png'
 import ActivityRecommendations from './activityRecommendations';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useLoadFonts, fonts } from '../components/FontLoader';
-
 import SearchBar from '../components/SearchBar';
 
 const Itineraries = ({route, data}) => {
@@ -25,7 +24,7 @@ const Itineraries = ({route, data}) => {
     const[ne_lng, set_ne_lng] = useState(null);
     const[sw_lat, set_sw_lat] = useState(null);
     const[sw_lng, set_sw_lng] = useState(null);
-      useLayoutEffect(() => {
+    useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
         })
@@ -69,8 +68,29 @@ const changeTab = (tabNum) => {
     return (
       <View style={styles.container}>
         <View>
-          <HeaderBanner heading = "Itineraries" style={styles.banner}>
-          </HeaderBanner>
+          <View>
+            <HeaderBanner heading = "Itineraries" style={styles.banner}>
+              <View style={styles.iconContainer}>
+                  {/* <TouchableOpacity
+                    onPress={() => navigation.navigate("CreateItinerary",  {
+                      itineraryData: itineraryData})}>
+                    <Image
+                      source={require('../assets/appimages/Add_round.png')}
+                      resizeMode='contain'
+                      style={{ width: 80, height: 59}}
+                    />
+                </TouchableOpacity> */}
+              </View>
+            </HeaderBanner>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("CreateItinerary")}>
+              <Image
+                source={require('../assets/icons/Add_round.png')}
+                resizeMode='contain'
+                style={{ width: 80, height: 51 }}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.tabs}>
             <View style={styles.tabContainer}>
@@ -238,7 +258,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/Santorini.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Santorini, Greece
                     </Text>
@@ -251,7 +271,7 @@ const changeTab = (tabNum) => {
                 <TouchableOpacity onPress={() => navigation.navigate("ActivityRecommendations")}>
                   <Image 
                     source={require('../assets/appimages/bangkok.png')}
-                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: fonts.outfitMedium, marginLeft: 20}} />
+                    style={{width: 282, height: 167, borderRadius: 4, paddingTop: 10, fontFamily: 'Outfit Medium', marginLeft: 20}} />
                     <Text style={styles.locationTitle}>
                       Bangkok, Thailand
                     </Text>
@@ -388,12 +408,20 @@ const styles = StyleSheet.create({
     top: 10,
     marginHorizontal: 55,
   },
-  activityImage: {
-    width: '85%',
-    height: 180,
-    borderRadius: 13,
-    marginHorizontal: 30,
-    top: 20
+  tab1: {
+    fontFamily: 'Outfit Medium',
+    fontSize: 20,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    top: 10,
+    marginHorizontal: 55,
+  },
+  selectedImage: {
+    width: 209,
+    height: 144,
+    borderRadius: 4,
+    marginLeft: 10,
+    marginTop: 10,
   },
   name: {
     fontSize: 20,

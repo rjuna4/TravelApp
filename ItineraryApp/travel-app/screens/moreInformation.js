@@ -13,10 +13,8 @@ import MapView from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 
 const MoreInformation = ({route}) => {
-
     const [userId, setUserId] = useState('');
-    const[mainData, setMainData] = useState([])
-    var user_id;
+    //const {data} = route.params;
 
     // async function loadUserId() {
     //   try {
@@ -41,7 +39,7 @@ const MoreInformation = ({route}) => {
       //     })
       // }, [setUserId]) 
 
-      const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
+  const { ne_lat, ne_lng, sw_lat, sw_lng, activityType } = route.params;
 
 
       // useEffect(() =>  {
@@ -191,7 +189,7 @@ const MoreInformation = ({route}) => {
             source={{ uri: data?.photo?.images?.large?.url }}
           />
             <View>
-              <TouchableOpacity onPress={() => navigation.navigate('Itineraries')}>
+              <TouchableOpacity onPress={() => navigation.navigate('ActivityRecommendations')}>
               {/* <View style={[styles.box1, {marginHorizontal: 18, marginBottom: 150}]}></View> */}
                 <Image style={styles.backButton}
                   source={require('travel-app/assets/icons/backIcon.png')}
@@ -200,7 +198,6 @@ const MoreInformation = ({route}) => {
             </View>
             <View>
               <TouchableOpacity onPress={() => handleModal()}>
-              {/* <View style={[styles.box1, {marginHorizontal: 18, marginBottom: -50}]}></View> */}
                 <Image style={styles.addButton}
                   source={require('travel-app/assets/icons/addToItinerary.png')}
                  /> 
@@ -211,10 +208,18 @@ const MoreInformation = ({route}) => {
                   height="150"
                   visible={isModalVisible}>
                     <View style={styles.modalContainer}>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('ItineraryListScreen')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => {
+                      navigation.navigate('');
+                      //open itinerary list modal
+                      
+                      setIsModalVisible(false); // Close the modal
+                    }}> 
                     <Text style={[styles.text, {color:"#57C2AF"}]}>Add to Itinerary</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => navigation.navigate('Iineraries')}>
+                  <TouchableOpacity style={[styles.menuOptions]} onPress={() => {
+                      navigation.navigate('CreateItinerary');
+                      setIsModalVisible(false); // Close the modal
+                    }}>
                     <Text style={[styles.text, {color:"#57C2AF"}]}>Create new Itinerary</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.menuOptions]} onPress={() =>handleModal()}>

@@ -27,6 +27,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import ActivityContainer from './components/ActivityContainer';
+import ActivityRecommendations from './screens/activityRecommendations';
 
 
 const Stack = createNativeStackNavigator();
@@ -45,6 +47,7 @@ class App extends Component {
           <Stack.Screen name="Groups" component={Groups} options={{headerShown: false}}/>
           <Stack.Screen name="People" component={People} options={{headerShown: false}}/>
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: false}}/>
+          <Stack.Screen name="ActivityRecommendations" component={ActivityRecommendations} options={{headerShown: false}}/>
         </Stack.Navigator>
         {/* <BottomNavigator /> */}
       </NavigationContainer>

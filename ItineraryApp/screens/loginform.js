@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     width: 420,
   },
   title: {
-    fontFamily: 'ABeeZee',
+    fontFamily: fonts.outfitMedium,
     fontSize: 38,
     color: 'white',
     textAlign: 'center',
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   custom: {
-    fontFamily: 'ABeeZee',
+    fontFamily: fonts.outfitMedium,
     fontSize: 25,
     color: 'white',
     textAlign: 'center',

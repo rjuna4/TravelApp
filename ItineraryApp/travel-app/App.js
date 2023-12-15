@@ -8,7 +8,6 @@ import HomeScreen from './screens/homescreen';
 import ProfileScreen from './screens/profilescreen';
 import ProfileSettings from './screens/profileSettings';
 import BookmarksScreen from './screens/bookmarksscreen';
-import ItineraryListScreen from './screens/itinerarylistscreen';
 import Itineraries from './screens/Itineraries';
 import Groups from './screens/Groups';
 import CreateGroup from './screens/createGroup';
@@ -30,6 +29,8 @@ import {
   View,
 } from 'react-native';
 import ActivityRecommendations from './screens/activityRecommendations';
+import ItineraryActivity from './components/ItineraryActivity';
+import CreateItinerary from './screens/CreateItinerary';
 
 
 const Stack = createNativeStackNavigator();
@@ -64,6 +65,9 @@ const App = () => {
           <Stack.Screen name="Groups" component={Groups} options={{headerShown: false}}/>
           <Stack.Screen name="People" component={People} options={{headerShown: false}}/>
           <Stack.Screen name="Messages" component={Messages} options={{headerShown: false}}/>
+          <Stack.Screen name ="ItineraryActivity" component={ItineraryActivity} options={{headerShown: false}}/>
+          <Stack.Screen name ="CreateItinerary" component={CreateItinerary} options={{headerShown: false}}/>
+          {/* <Stack.Screen name="MoreInformation" component={MoreInformation} options={{headerShown: false}}/> */}
         </Stack.Navigator>
         {/* <BottomNavigator /> */}
       </NavigationContainer>
