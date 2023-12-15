@@ -13,7 +13,7 @@ import FiltersScreen from './filtersScreen';
 import CreateItinerary from './CreateItinerary';
 import { useLoadFonts, fonts } from '../components/FontLoader';
 
-const ActivityRecommendations = ({route, data}) => {
+const ActivityRecommendations = ({route}) => {
   const [isFiltersVisible, setFiltersVisible] = useState(false);
   // const {placeData, placeDetails} = route.params;
   // console.log("placeData: " + placeData);

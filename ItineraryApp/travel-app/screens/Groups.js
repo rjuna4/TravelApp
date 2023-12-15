@@ -169,12 +169,12 @@ const Groups = ({ route }) => {
             <View>
             <FlatList
                   data={userGroups}
-                  keyExtractor={(item) => item._id} // Replace with the actual unique key
+                  keyExtractor={(item) => item._id} 
                   renderItem={({ item }) => (
                     <View style={{display: 'flex', flexDirection: 'row', marginBottom: 20}}>
                        <Image
-                        source={{ uri: item.groupImageFilename }} // Provide the image URL
-                        style={styles.selectedImage} // Adjust the dimensions as needed
+                        source={{ uri: item.groupImageFilename }} 
+                        style={styles.selectedImage} 
                       />
                       
                       <View style={{display: 'flex', flexDirection: 'column'}}>
