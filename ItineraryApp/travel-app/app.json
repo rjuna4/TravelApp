@@ -26,16 +26,21 @@
         "NSLocationWhenInUseUsageDescription": "We need your location to display users nearby you whom you can interact with.",
         "NSLocationAlwaysUsageDescription": "We need your location to display users nearby you whom you can interact with."
       }
-  
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.example.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "059bd6cf-ea2f-42ae-b9fd-2fecb520f533"
+      }
     }
   }
 }

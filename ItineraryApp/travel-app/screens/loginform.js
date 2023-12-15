@@ -58,7 +58,7 @@ async function sendToDatabase() {
   }
 
   try {
-    const response = await fetch('http://172.20.10.7:8082/api/login', {
+    const response = await fetch('http://10.24.75.194:8082/api/login', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

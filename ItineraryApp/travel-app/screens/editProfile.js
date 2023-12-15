@@ -6,7 +6,40 @@ import { useLoadFonts, fonts } from '../components/FontLoader';
 import { response } from 'express';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { decode } from 'base-64';
- 
+import Realm from "realm";
+import * as FileSystem from 'expo-file-system';
+import RealmManager from '../schemas/RealmManager';
+
+const ProfileSchema = {
+  name: 'Profile',
+  properties: {
+    userId: 'string',
+    selectedProfilePicture: 'string',
+    selectedHeaderPicture: 'string',
+    gender: 'string',
+    age: 'string',
+    travelBucketList: 'string',
+    favoriteTravelPhotos: 'string',
+  },
+};
+
+
+// if (realm) {
+//   realm.close();
+// }
+
+// const realmConfig = {
+//   schema: [ProfileSchema],
+//   path: `${FileSystem.documentDirectory}/my-local-realm-file.realm`,
+// };
+
+// const realm = new Realm(realmConfig);
+
+//const realm = RealmManager.openRealm(ProfileSchema);
+// Perform Realm operations
+
+// Close Realm when done
+//RealmManager.closeRealm();
 
 const EditProfile = () => {
   const navigation = useNavigation();
@@ -141,14 +174,25 @@ const EditProfile = () => {
     if (age && gender && selectedProfilePicture) {
         const profileData = {
             selectedProfilePicture,
-            age,
+            selectedHeaderPicture,
+            age: Number(age),
             gender,
             travelBucketList,
             favoriteTravelPhotos,
         }
 
         try {
+          realm.write(() => {
+            realm.create('Profile', { ...profileData, userId: userUserId });
+          });
+          console.log('Profile saved locally');
+        } catch (localSaveError) {
+          console.error("Error saving profile locally:", localSaveError);
+          alert('An error occurred while saving the profile locally.');
+          return;
+        }
 
+        try {
             const jwt = await getJWT();
             console.log("jwt in save group: ", jwt);
             //console.log("userId in saveGroup: ", userId);
@@ -157,37 +201,41 @@ const EditProfile = () => {
               alert("JWT is missing");
               return;
             }
-
-            const response = await fetch('http://172.20.10.7:8082/api/userProfiles', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': jwt,
-                },
-                body: JSON.stringify({
-                    userId: userUserId,
-                    profileData,
-                })
+            console.log('Request Payload:', {
+              userId: userUserId,
+              profileData,
             });
 
-            const responseText = await response.text();
-            console.log('Response content:', responseText);
+            const response = await fetch('http://172.20.10.7:8082/api/userProfiles', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': jwt,
+              },
+              body: JSON.stringify({
+                userId: userUserId,
+                profileData,
+              }),
+            });
 
+            console.log('userId in save profile: ', userUserId);
             console.log('response status: ', response.status);
 
+            const responseData = await response.json(); // Read the response body once
+
             if (response.status === 200) {
-                console.log("Profile saved successfully");
-                alert('Profile saved successfully');
-                navigation.navigate('ProfileScreen', {profileData});
+              console.log('Profile saved successfully');
+              alert('Profile saved successfully');
+              navigation.navigate('ProfileScreen', { profileData });
             } else {
-                const data = await response.json();
-                console.error("Error response: ", data);
-                alert(`Error: ${data.error}`);
+              console.error('Error response: ', responseData);
+              alert(`Error: ${responseData.error || 'Unknown error'}`);
             }
-        } catch (error) {
-            console.error("Network request error: ", error);
+          } catch (networkError) {
+            console.error('Network request error: ', networkError);
             alert('An error occurred while saving the profile');
-        }      
+          }
+          
     } else {
         console.log("Please fill in all the required fields");
         alert('Please fill in all the required fields');
@@ -226,14 +274,6 @@ const EditProfile = () => {
                 </View>
             )}
         </TouchableOpacity>
-        {/* <TouchableOpacity onPress={() => navigation.navigate('ProfileSettings')}>
-          <Image
-            style={styles.settingsIcon}
-            source={{
-              uri: 'https://i.stack.imgur.com/oLA6F.png',
-            }}
-          />
-        </TouchableOpacity> */}
       </View>
         <View style={{display: 'flex', flexDirection: 'row'}}>
           <Text style={styles.myLikes}>Age: </Text>

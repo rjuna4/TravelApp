@@ -11,10 +11,14 @@ import greenMarker from 'travel-app/assets/icons/greenMarker.png'
 import { format } from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { decode } from 'base-64';
-//import Realm from "realm";
+import Realm from "realm";
 import {createRealmContext} from '@realm/react'
+import * as FileSystem from 'expo-file-system';
+//import createRealmContext from '../models/createRealmContext.js';
+import RealmManager from '../schemas/RealmManager';
+
 import { MongoClient } from 'mongodb-realm/browser';
-import * as FileSystem from 'expo-file-system'
+
 
 const GroupCreatedSchema = {
   name: 'GroupCreated',
@@ -27,16 +31,9 @@ const GroupCreatedSchema = {
   },
 };
 
-//const app = new Realm.App({ id: 'travelapp-ernoi' });
 
-// const realm = new Realm({
-//   schema: [GroupCreatedSchema],
-//   path: 'your-realm-path.realm'
-// })
-
-// const RealmContext = createRealmContext({
-//   current: realm,
-// })
+const realm = RealmManager.openRealm(GroupCreatedSchema);
+RealmManager.closeRealm();
 
 const CreateGroup = ({route}) => {
     
@@ -77,25 +74,20 @@ const CreateGroup = ({route}) => {
 
               if (groupId) {
                 console.log("groupId: ", groupId);
-                // Editing an existing group, so fetch its data using the provided function
                 if (fetchGroupData) {
-                  fetchGroupData(userId) // Use the provided function
+                  fetchGroupData(userId) 
                     .then((data) => {
                       setGroupData(data);
-                      // Update other state variables as needed
                       console.log("data on create groups screen: ", data)
                       setSelectedImage(data.groupImageFilename);
                       setActivityTitle(data.groupTitle);
-                      // Update other state variables based on fetched data
                     })
                     .catch((error) => {
                       console.error(error);
-                      // Handle any errors related to fetching group data
+
                     });
                 }
               } else {
-                // Initialize the component for creating a new group
-                // You can leave this section empty for now
               }
           }
         }
@@ -156,31 +148,54 @@ const CreateGroup = ({route}) => {
     }
 
     async function saveCreatedGroupToDatabase() {
+      console.log('saveCreatedGroupToDatabase function called');
       if (selectedImage && activityTitle && selectedDate && selectedStartTime) {
+        console.log("userUserId:", userUserId);
+        if (!userUserId) {
+          console.error("User ID is missing");
+          console.log("User id is missing");
+          alert("User ID is missing");
+          return;
+        }
         const formattedDate = format(selectedDate, 'MM-dd-yyyy');
+        console.log("formattedDate: ", formattedDate);
         const formattedTime = format(selectedStartTime, 'HH:mm');
+        console.log("formattedTime: ", formattedTime);
         const newGroup = {
           groupImageFilename: selectedImage,
           groupTitle: activityTitle,
           groupActivityDate: formattedDate,
           groupActivityTime: formattedTime,
         };
-
+        console.log("newGroup: ", newGroup);
+    
+        // Try saving data locally
         try {
-          // realm.write(() => {
-          //   realm.create('GroupCreated', newGroup);
-          // })
-          // console.log("Group saved locally");
-
+          realm.write(() => {
+            realm.create('GroupCreated', { ...newGroup, userId: userUserId });
+          });
+          console.log("Group saved locally");
+        } catch (localSaveError) {
+            console.error("Error saving group locally:", localSaveError);
+            alert('An error occurred while saving the group locally.');
+            return;
+        }
+    
+        // Try saving data to the database
+        try {
           const jwt = await getJWT();
           console.log("jwt in save group: ", jwt);
-          //console.log("userId in saveGroup: ", userId);
           if (!jwt) {
             console.error("JWT is missing");
             alert("JWT is missing");
             return;
           }
-
+    
+          console.log("Request Payload:", {
+            userId: userUserId,
+            ...newGroup,
+          });
+    
           const response = await fetch('http://172.20.10.7:8082/api/createdGroups', {
             method: 'POST',
             headers: {
@@ -192,30 +207,34 @@ const CreateGroup = ({route}) => {
               ...newGroup,
             }),
           });
-
+    
           console.log("userId in save group: ", userUserId);
           console.log('response status: ', response.status);
     
           if (response.status === 200) {
             console.log("Group saved successfully");
-            alert('Group saved successfully');
+            // alert('Group saved successfully');
             const updatedGroupData = [...groupData, newGroup];
             setSelectedImage(null);
             setActivityTitle('');
             setGroupData(updatedGroupData);
-            navigation.navigate('Groups', { 
-              groupData: updatedGroupData, 
-              selectedDate: selectedDate, 
-              selectedStartTime: selectedStartTime 
-            });
+            try {
+              navigation.push('Groups', {
+                groupData: updatedGroupData,
+                selectedDate: selectedDate,
+                selectedStartTime: selectedStartTime,
+              });
+            } catch (error) {
+              console.error('Error navigating to Groups:', error);
+            }
           } else {
             const data = await response.json();
             console.error("Error response: ", data);
             alert(`Error: ${data.error}`);
           }
-        } catch (error) {
-          console.error("Netwowrk request error: ", error);
-          alert('An error occurred while saving the group.');
+        } catch (networkError) {
+          console.error("Network request error: ", networkError);
+          alert('An error occurred while saving the group to the database.');
         }
       } else {
         console.log("Please fill in all the required fields");
@@ -407,8 +426,7 @@ const CreateGroup = ({route}) => {
               <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 20, marginLeft: 10}}>Activity Location</Text>
               <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitRegular, fontSize: 20, marginLeft: 30}}>Custom Marker</Text>
             </View>
-            {/* <TouchableOpacity style={styles.saveButton} onPress={() => navigation.navigate('Groups', {groupData: groupData})}> */}
-            {/* <TouchableOpacity style={styles.saveButton} onPress={saveGroup}> */}
+            {/* <TouchableOpacity style={styles.saveButton} onPress={() => navigation.navigate('Groups', {groupData: updatedGroupData})}> */}
             <TouchableOpacity style={styles.saveButton} onPress={() => saveCreatedGroupToDatabase(userId)}>
               <Text style={{color: '#FFFFFF', fontFamily: fonts.outfitMedium, fontSize: 18}}>Save</Text>
             </TouchableOpacity>
@@ -416,7 +434,7 @@ const CreateGroup = ({route}) => {
           </View>
           </ScrollView>
       </View>  
-    // </RealmContext.Provider>
+     /* </RealmContext.Provider> */
     )  
 }
 

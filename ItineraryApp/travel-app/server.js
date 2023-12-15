@@ -293,21 +293,25 @@ const storage = multer.diskStorage({
 
 
 app.post('/api/userProfiles', upload.array('travelBucketList', 10), upload.array('favoriteTravelPhotos', 10), async (req, res) => {
+    console.log('Request Payload:', req.body);
     console.log('inside user profiles');
     const { userId, profileData } = req.body;
     const { selectedProfilePicture, selectedHeaderPicture, gender, age, travelBucketList, favoriteTravelPhotos} = profileData;
 
+    //const uploadedTravelBucketList = req.files ? req.files.map(file => file.path) : [];
+    //const uploadedFavoriteTravelPhotos = req.files ? req.files.map(file => file.path) : [];
+    const uploadedTravelBucketList = Array.isArray(travelBucketList) ? travelBucketList.map(file => file.path) : [];
+    const uploadedFavoriteTravelPhotos = Array.isArray(favoriteTravelPhotos) ? favoriteTravelPhotos.map(file => file.path) : [];
     console.log("request body: ", req.body)
-
+    console.log('Profile Data:', profileData);
     console.log("gender: ", gender);
     console.log("age: ", age);
     console.log("travelBucketList: ", travelBucketList);
     console.log("favoriteTravelPhotos: ", favoriteTravelPhotos);
-    const uploadedTravelBucketList = req.files.map(file => file.path);
-    const uploadedFavoriteTravelPhotos = req.files.map(file => file.path);
+
     
     if (!userId || !selectedProfilePicture || !gender || !age || typeof userId != 'string' ||
-        typeof gender != 'string' || typeof age != 'string') {
+        typeof gender != 'string' || typeof age != 'number') {
             return res.status(400).json( { status: 'error', error: 'Invalid or empty data'})
     }
 
@@ -316,19 +320,18 @@ app.post('/api/userProfiles', upload.array('travelBucketList', 10), upload.array
         selectedProfilePicture,
         selectedHeaderPicture,
         gender,
-        age,
+        age: Number(age),
         travelBucketList: uploadedTravelBucketList,
         favoriteTravelPhotos: uploadedFavoriteTravelPhotos,
     });
+
     try {
-        await userProfile.save()
-        .then(result => {
-            console.log("Save result:", result);
-            res.status(200).json({ status: 'ok' });
-          })
+        const result = await userProfile.save()
+        console.log("Save result:", result);
+        res.status(200).json({ status: 'ok' });
     } catch(error) {
         if (error.code === 11000) {
-            return res.status(400).json( {status: 'error', error: 'Profile info could not be saved' })
+            return res.status(400).json( {status: 'error', error: 'Profile info already exists. Please update instead' })
         }
         //throw error
         res.status(500).json({ status: 'error', error: 'Internal server error'})

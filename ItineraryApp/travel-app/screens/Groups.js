@@ -122,6 +122,7 @@ const Groups = ({ route }) => {
             'Content-Type': 'application/json',
           }
         });
+        console.log("response: ", response);
         if (response.status === 200) {
           const updatedUserGroups = userGroups.filter((group) => group._id !== groupId);
           setUserGroups(updatedUserGroups);
@@ -131,6 +132,7 @@ const Groups = ({ route }) => {
         }
        } catch (error) {
           console.error("Netwok request error: ", error);
+          console.error("Error message:", error.message);
         }
       };
 
